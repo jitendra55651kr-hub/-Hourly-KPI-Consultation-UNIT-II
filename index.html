@@ -607,6 +607,82 @@
       color: #070e1c !important;
       letter-spacing: 0.3px;
     }
+
+    /* Top 5 Break / Idle Panel Styling */
+    .break-panel {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      margin-top: 36px;
+      margin-bottom: 30px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.1);
+    }
+
+    .break-header-banner {
+      background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%);
+      color: #ffffff;
+      padding: 16px 26px;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #6366f1;
+    }
+
+    .break-badge-danger {
+      background: rgba(239, 68, 68, 0.25);
+      border: 1px solid #f87171;
+      color: #fca5a5;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 6px;
+    }
+
+    .break-table th {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      font-size: 15.5px !important;
+      font-weight: 900;
+      padding: 14px 10px;
+    }
+
+    .break-table td {
+      font-size: 16.5px;
+      font-weight: 800;
+      padding: 13px 10px;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #0f172a;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .rank-1 { background: #fef08a; color: #854d0e; border: 2px solid #eab308; }
+    .rank-2 { background: #e2e8f0; color: #334155; border: 2px solid #94a3b8; }
+    .rank-3 { background: #ffedd5; color: #9a3412; border: 2px solid #fb923c; }
+
+    .break-time-badge {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 900;
+      display: inline-block;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -674,6 +750,37 @@
 
     <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
+
+    <!-- Top 5 Highest Break Agents Panel (Bottom Hook) -->
+    <section class="break-panel" id="breakPanel">
+      <div class="break-header-banner">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span>☕ TOP 5 AGENTS — MAXIMUM BREAK / IDLE TIME</span>
+        </div>
+        <span class="break-badge-danger">Gaps &gt; 20 Mins Detected</span>
+      </div>
+      <div class="table-container">
+        <table class="break-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">RANK</th>
+              <th style="min-width: 220px;">AGENT NAME</th>
+              <th style="min-width: 150px;">TEAM</th>
+              <th style="min-width: 140px;">SHIFT</th>
+              <th style="min-width: 130px;">TOTAL CASES</th>
+              <th style="min-width: 160px; background: #991b1b !important;">TOTAL BREAK TIME</th>
+              <th style="min-width: 150px;">BREAK SESSIONS</th>
+              <th style="min-width: 170px;">LONGEST SINGLE BREAK</th>
+            </tr>
+          </thead>
+          <tbody id="breakTableBody">
+            <tr>
+              <td colspan="8" style="padding: 24px; color: #94a3b8; font-weight: 700;">CSV file upload kijiye break analysis dekhne ke liye.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- Interactive Drill-Down Section -->
     <section id="drilldownSection">
@@ -954,6 +1061,109 @@
       
       document.getElementById("statLowestAgent").innerText = globalMinAgent.tat !== 9999 ? `${globalMinAgent.name} (${globalMinAgent.tat}m)` : "--";
       document.getElementById("statHighestAgent").innerText = globalMaxAgent.tat !== -1 ? `${globalMaxAgent.name} (${globalMaxAgent.tat}m)` : "--";
+
+      renderTopBreakAgents();
+    }
+
+    // Function to calculate and render Top 5 Highest Break Agents
+    function renderTopBreakAgents() {
+      const tbody = document.getElementById("breakTableBody");
+      if (!tbody) return;
+
+      const breakStats = [];
+
+      ROSTER.forEach(team => {
+        team.members.forEach(agent => {
+          const store = agentCaseStore[agent.name];
+          if (!store) return;
+
+          let allCases = [];
+          SLOTS.forEach(s => {
+            if (store[s] && store[s].length > 0) {
+              allCases = allCases.concat(store[s]);
+            }
+          });
+
+          if (allCases.length < 2) return;
+
+          // Sort cases by Appt Time chronologically
+          const validCases = allCases.filter(c => c.apptTime && c.apptTime !== '-');
+          validCases.sort((a, b) => {
+            const timeA = new Date(a.apptTime.trim().replace(' ', 'T')).getTime();
+            const timeB = new Date(b.apptTime.trim().replace(' ', 'T')).getTime();
+            return timeA - timeB;
+          });
+
+          let totalBreakMins = 0;
+          let breakCount = 0;
+          let maxSingleBreak = 0;
+
+          for (let i = 0; i < validCases.length - 1; i++) {
+            const currentEndStr = validCases[i].feedbackEndTime && validCases[i].feedbackEndTime !== '-' 
+              ? validCases[i].feedbackEndTime 
+              : validCases[i].apptTime;
+
+            const nextStartStr = validCases[i + 1].apptTime;
+
+            const curEnd = new Date(currentEndStr.trim().replace(' ', 'T')).getTime();
+            const nxtStart = new Date(nextStartStr.trim().replace(' ', 'T')).getTime();
+
+            if (!isNaN(curEnd) && !isNaN(nxtStart)) {
+              const gapMins = (nxtStart - curEnd) / (1000 * 60);
+              // Consider a gap > 20 minutes as a break/idle session (capped at 240 mins)
+              if (gapMins >= 20 && gapMins <= 240) {
+                totalBreakMins += gapMins;
+                breakCount++;
+                if (gapMins > maxSingleBreak) maxSingleBreak = gapMins;
+              }
+            }
+          }
+
+          if (totalBreakMins > 0) {
+            breakStats.push({
+              name: agent.name,
+              team: team.team,
+              shift: agent.shift || "--",
+              totalCases: allCases.length,
+              totalBreakMins: Math.round(totalBreakMins),
+              breakCount: breakCount,
+              maxSingleBreak: Math.round(maxSingleBreak)
+            });
+          }
+        });
+      });
+
+      // Sort by highest total break time
+      breakStats.sort((a, b) => b.totalBreakMins - a.totalBreakMins);
+      const top5 = breakStats.slice(0, 5);
+
+      if (top5.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="padding: 24px; color: #94a3b8; font-weight: 700;">Data me koi lamba break (&gt; 20 mins) record nahi mila.</td></tr>`;
+        return;
+      }
+
+      let html = "";
+      top5.forEach((item, index) => {
+        const rankClass = index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : "";
+        const hoursPart = Math.floor(item.totalBreakMins / 60);
+        const minsPart = item.totalBreakMins % 60;
+        const formattedTotal = hoursPart > 0 ? `${hoursPart}h ${minsPart}m` : `${minsPart}m`;
+
+        html += `
+          <tr>
+            <td><span class="rank-badge ${rankClass}">#${index + 1}</span></td>
+            <td class="col-agent-name" style="text-align: center;" onclick="openDrilldown('${item.name.replace(/'/g, "\\'")}', 'ALL')">${item.name}</td>
+            <td style="color: #4338ca; font-weight: 900;">${item.team}</td>
+            <td><span class="shift-pill">${item.shift}</span></td>
+            <td style="font-weight: 900;">${item.totalCases}</td>
+            <td><span class="break-time-badge">${formattedTotal}</span></td>
+            <td style="font-weight: 900; color: #b91c1c;">${item.breakCount} sessions</td>
+            <td style="color: #64748b; font-weight: 800;">${item.maxSingleBreak} mins</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
     }
 
     function formatDateTimeBold(str) {
