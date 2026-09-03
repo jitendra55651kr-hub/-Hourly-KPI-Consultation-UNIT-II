@@ -815,13 +815,13 @@
     <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
 
-    <!-- Top 5 Highest Break Agents Panel (Minutes Column Removed) -->
+    <!-- Top 5 Highest Break Agents Panel -->
     <section class="break-panel" id="breakPanel">
       <div class="break-header-banner">
         <div style="display: flex; align-items: center; gap: 12px;">
           <span>☕ TOP 5 AGENTS — MAXIMUM BREAK / IDLE TIME</span>
         </div>
-        <span class="break-badge-danger">Click Agent Name for Break Schedule</span>
+        <span class="break-badge-danger">Gaps &gt; 15 Mins Detected (Click Agent Name)</span>
       </div>
       <div class="table-container">
         <table class="break-table">
@@ -845,7 +845,7 @@
       </div>
     </section>
 
-    <!-- Dedicated Break Details Breakdown Section (Kon kitne bje se kitne bje tak break liya) -->
+    <!-- Dedicated Break Details Breakdown Section -->
     <section id="breakDetailSection">
       <div class="break-detail-header">
         <div class="break-detail-title">
@@ -858,10 +858,10 @@
           <thead>
             <tr>
               <th style="width: 80px;">SESSION</th>
-              <th style="min-width: 170px;">PREVIOUS CASE END (BREAK START)</th>
-              <th style="min-width: 170px;">NEXT CASE APPT (BREAK END)</th>
-              <th style="min-width: 150px; background-color: #991b1b !important;">BREAK DURATION</th>
-              <th style="min-width: 220px;">CONTEXT (PREV CASE → NEXT CASE)</th>
+              <th style="min-width: 170px;">CONSULTATION END TIME (BREAK START)</th>
+              <th style="min-width: 170px;">NEXT APPT TIME (BREAK END)</th>
+              <th style="min-width: 150px; background-color: #991b1b !important;">GAYAB RAHA (DURATION)</th>
+              <th style="min-width: 220px;">CASE CONTEXT (PREVIOUS → NEXT)</th>
             </tr>
           </thead>
           <tbody id="breakDetailTableBody"></tbody>
@@ -1154,7 +1154,7 @@
       renderTopBreakAgents();
     }
 
-    // Calculate breaks & Render Top 5 Table (Without Longest Single Break column)
+    // Logic: Previous Consultation End Time to Next Appt Time gap > 15 mins
     function renderTopBreakAgents() {
       const tbody = document.getElementById("breakTableBody");
       if (!tbody) return;
@@ -1176,7 +1176,7 @@
 
           if (allCases.length < 2) return;
 
-          // Chronological Sort
+          // Chronological sort based on Appt Time
           const validCases = allCases.filter(c => c.apptTime && c.apptTime !== '-');
           validCases.sort((a, b) => {
             const timeA = new Date(a.apptTime.trim().replace(' ', 'T')).getTime();
@@ -1188,9 +1188,12 @@
           const breakList = [];
 
           for (let i = 0; i < validCases.length - 1; i++) {
-            const currentEndStr = validCases[i].feedbackEndTime && validCases[i].feedbackEndTime !== '-' 
-              ? validCases[i].feedbackEndTime 
-              : validCases[i].apptTime;
+            // Priority: Pure Consultation End Time -> Feedback End Time -> Appt Time
+            const currentEndStr = validCases[i].consultEndTime && validCases[i].consultEndTime !== '-'
+              ? validCases[i].consultEndTime
+              : (validCases[i].feedbackEndTime && validCases[i].feedbackEndTime !== '-' 
+                 ? validCases[i].feedbackEndTime 
+                 : validCases[i].apptTime);
 
             const nextStartStr = validCases[i + 1].apptTime;
 
@@ -1199,8 +1202,8 @@
 
             if (!isNaN(curEnd) && !isNaN(nxtStart)) {
               const gapMins = (nxtStart - curEnd) / (1000 * 60);
-              // Break considered if gap >= 20 mins
-              if (gapMins >= 20 && gapMins <= 240) {
+              // Threshold: 15 min se zyada kitni der tak gayab raha
+              if (gapMins > 15 && gapMins <= 360) {
                 totalBreakMins += gapMins;
                 breakList.push({
                   startTime: currentEndStr,
@@ -1233,7 +1236,7 @@
       const top5 = breakStats.slice(0, 5);
 
       if (top5.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #94a3b8; font-weight: 700;">Data me koi lamba break (&gt; 20 mins) record nahi mila.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #94a3b8; font-weight: 700;">Data me koi 15+ mins ka break/gap record nahi mila.</td></tr>`;
         return;
       }
 
@@ -1247,7 +1250,7 @@
         html += `
           <tr>
             <td><span class="rank-badge ${rankClass}">#${index + 1}</span></td>
-            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view detailed break timestamps" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
+            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view breakdown: kitne bje se kitne bje tak break liya" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
             <td style="color: #4338ca; font-weight: 900;">${item.team}</td>
             <td><span class="shift-pill">${item.shift}</span></td>
             <td style="font-weight: 900;">${item.totalCases}</td>
@@ -1260,7 +1263,7 @@
       tbody.innerHTML = html;
     }
 
-    // Open detailed timeline for break timings (Kitne bje se kitne bje tak)
+    // Modal view: Consultation End Time se Next Appt Time tak
     function openBreakDetail(agentName) {
       const section = document.getElementById("breakDetailSection");
       const titleText = document.getElementById("breakDetailTitleText");
@@ -1268,11 +1271,11 @@
 
       const breaks = agentBreakStore[agentName] || [];
       if (breaks.length === 0) {
-        alert(`${agentName} ka koi 20+ mins ka break record nahi hai.`);
+        alert(`${agentName} ka koi 15+ mins ka break record nahi mila.`);
         return;
       }
 
-      titleText.innerHTML = `☕ ${agentName.toUpperCase()} — BREAK SCHEDULE (${breaks.length} SESSIONS)`;
+      titleText.innerHTML = `☕ ${agentName.toUpperCase()} — DETAILED BREAK TIMELINE (&gt; 15 MINS GAPS)`;
       tbody.innerHTML = "";
 
       breaks.forEach((b, idx) => {
@@ -1495,7 +1498,7 @@
       const diffMs = e.getTime() - s.getTime();
       const diffMins = diffMs / (1000 * 60);
 
-      return (diffMins >= 0 && diffMins <= 300) ? diffMins : null;
+      return (diffMins >= 0 && diffMins <= 360) ? diffMins : null;
     }
 
     function processRawRows(rows) {
@@ -1537,6 +1540,10 @@
             }
 
             const fbEndTime = row["Immediate Feedback End Time"] || "";
+            
+            // Capture actual Consultation End Time from CSV columns
+            const consultEndTime = row["Consult EndTime"] || row["Doc Consult EndTime"] || row["Consultation End Time"] || row["Immediate Feedback End Time"] || "";
+
             const calculatedTatMins = parseDifferenceInMinutes(apptTime, fbEndTime);
 
             if (calculatedTatMins !== null) {
@@ -1555,6 +1562,7 @@
               type: row["Type"] || "-",
               tat: calculatedTatMins !== null ? calculatedTatMins.toFixed(1) : "-",
               apptTime: apptTime,
+              consultEndTime: consultEndTime,
               feedbackEndTime: fbEndTime
             });
           });
