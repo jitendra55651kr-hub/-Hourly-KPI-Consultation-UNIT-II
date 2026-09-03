@@ -42,6 +42,20 @@
       margin: 0 auto;
     }
 
+    /* Sticky Wrapper for Header and KPI Board */
+    .sticky-top-section {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding-top: 10px;
+      padding-bottom: 6px;
+      margin-top: -10px;
+      margin-bottom: 22px;
+    }
+
     /* Top Command Header Bar */
     .top-bar {
       background: rgba(9, 19, 34, 0.92);
@@ -56,7 +70,7 @@
       justify-content: space-between;
       gap: 20px;
       box-shadow: 0 10px 30px -5px rgba(244, 114, 182, 0.22), 0 8px 20px rgba(7, 14, 28, 0.4);
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
 
     .header-center-content {
@@ -130,7 +144,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 0;
     }
 
     .kpi-card-navy {
@@ -488,60 +502,65 @@
 
   <div class="container">
 
-    <!-- Top Command Header Bar -->
-    <header class="top-bar">
-      <div style="width: 40px;" class="hidden-spacer"></div>
+    <!-- Frozen Sticky Top Section (Header + KPI Cards) -->
+    <div class="sticky-top-section">
 
-      <div class="header-center-content">
-        <div class="luxury-watch-white" title="Live Operations Clock">
-          <svg viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="46" stroke="#0f1e36" stroke-width="3.5" fill="#ffffff" />
-            <line x1="50" y1="9" x2="50" y2="16" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
-            <line x1="50" y1="84" x2="50" y2="91" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
-            <line x1="9" y1="50" x2="16" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
-            <line x1="84" y1="50" x2="91" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
-            <line x1="50" y1="50" x2="68" y2="38" stroke="#0f1e36" stroke-width="4" stroke-linecap="round" />
-            <line x1="50" y1="50" x2="50" y2="18" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round" />
-            <circle cx="50" cy="50" r="4.5" fill="#0f1e36" />
-          </svg>
+      <!-- Top Command Header Bar -->
+      <header class="top-bar">
+        <div style="width: 40px;" class="hidden-spacer"></div>
+
+        <div class="header-center-content">
+          <div class="luxury-watch-white" title="Live Operations Clock">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="46" stroke="#0f1e36" stroke-width="3.5" fill="#ffffff" />
+              <line x1="50" y1="9" x2="50" y2="16" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+              <line x1="50" y1="84" x2="50" y2="91" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+              <line x1="9" y1="50" x2="16" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+              <line x1="84" y1="50" x2="91" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+              <line x1="50" y1="50" x2="68" y2="38" stroke="#0f1e36" stroke-width="4" stroke-linecap="round" />
+              <line x1="50" y1="50" x2="50" y2="18" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round" />
+              <circle cx="50" cy="50" r="4.5" fill="#0f1e36" />
+            </svg>
+          </div>
+          <h1 class="main-heading">HOURLY KPI CONSULTATION  UNIT II</h1>
         </div>
-        <h1 class="main-heading">HOURLY KPI CONSULTATION  UNIT II</h1>
-      </div>
 
-      <div>
-        <label class="btn-file-upload">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-          </svg>
-          <span>Upload CSV File</span>
-          <input type="file" id="csvUploader" accept=".csv" style="display: none;">
-        </label>
-      </div>
-    </header>
+        <div>
+          <label class="btn-file-upload">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+            </svg>
+            <span>Upload CSV File</span>
+            <input type="file" id="csvUploader" accept=".csv" style="display: none;">
+          </label>
+        </div>
+      </header>
 
-    <!-- Top KPI Board -->
-    <section class="kpi-board">
-      <div class="kpi-card-navy card-cyan">
-        <div class="kpi-title">Total Consultations</div>
-        <div id="statTotal" class="kpi-number">0</div>
-      </div>
-      <div class="kpi-card-navy card-blue">
-        <div class="kpi-title">Average Team TAT</div>
-        <div id="statTat" class="kpi-number">0.0 m</div>
-      </div>
-      <div class="kpi-card-navy card-purple">
-        <div class="kpi-title">Active Agents</div>
-        <div id="statAgents" class="kpi-number">0 / 27</div>
-      </div>
-      <div class="kpi-card-navy card-green">
-        <div class="kpi-title" style="color: #6ee7b7;">Lowest TAT (Best)</div>
-        <div id="statLowestAgent" class="kpi-agent-name text-best-green">--</div>
-      </div>
-      <div class="kpi-card-navy card-red">
-        <div class="kpi-title" style="color: #fda4af;">Highest TAT (Slowest)</div>
-        <div id="statHighestAgent" class="kpi-agent-name text-worst-red">--</div>
-      </div>
-    </section>
+      <!-- Top KPI Board -->
+      <section class="kpi-board">
+        <div class="kpi-card-navy card-cyan">
+          <div class="kpi-title">Total Consultations</div>
+          <div id="statTotal" class="kpi-number">0</div>
+        </div>
+        <div class="kpi-card-navy card-blue">
+          <div class="kpi-title">Average Team TAT</div>
+          <div id="statTat" class="kpi-number">0.0 m</div>
+        </div>
+        <div class="kpi-card-navy card-purple">
+          <div class="kpi-title">Active Agents</div>
+          <div id="statAgents" class="kpi-number">0 / 27</div>
+        </div>
+        <div class="kpi-card-navy card-green">
+          <div class="kpi-title" style="color: #6ee7b7;">Lowest TAT (Best)</div>
+          <div id="statLowestAgent" class="kpi-agent-name text-best-green">--</div>
+        </div>
+        <div class="kpi-card-navy card-red">
+          <div class="kpi-title" style="color: #fda4af;">Highest TAT (Slowest)</div>
+          <div id="statHighestAgent" class="kpi-agent-name text-worst-red">--</div>
+        </div>
+      </section>
+
+    </div>
 
     <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
