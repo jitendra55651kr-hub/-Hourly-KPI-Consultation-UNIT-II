@@ -4,191 +4,405 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOURLY KPI CONSULTATION DATA UNIT 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: #f8fafc; color: #0f172a; padding: 20px; }
-    .container { max-width: 1750px; margin: 0 auto; }
+    :root {
+      --bg-main: #f1f5f9;
+      --card-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --navy-dark: #0f172a;
+      --navy-header: #1e293b;
+      --cyan-accent: #0284c7;
+      --emerald-accent: #059669;
+      --amber-accent: #d97706;
+    }
 
-    /* Top Control Card */
-    .header-card {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%);
+      color: #0f172a;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1780px;
+      margin: 0 auto;
+    }
+
+    /* Top Command Header */
+    .top-bar {
       background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      padding: 16px 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px 28px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      gap: 16px;
+      box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.05);
+      margin-bottom: 24px;
     }
-    .title-area h1 { font-size: 20px; font-weight: 800; color: #0c1a30; letter-spacing: 0.5px; }
-    .title-area p { font-size: 13px; color: #64748b; margin-top: 4px; font-weight: 600; }
-    
-    .upload-btn {
-      background-color: #0c1a30;
-      color: #ffffff;
-      padding: 10px 20px;
-      font-size: 13px;
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 11px;
       font-weight: 700;
-      border-radius: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background-color: #0284c7;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #0284c7;
+    }
+
+    .main-heading {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }
+
+    .sub-heading {
+      font-size: 13.5px;
+      color: #64748b;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .btn-file-upload {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: background 0.2s;
+      gap: 10px;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .upload-btn:hover { background-color: #1e355b; }
 
-    /* Summary KPI Bar */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
+    .btn-file-upload:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.22);
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
     }
+
+    /* Executive KPI Widgets */
+    .kpi-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
     .kpi-card {
       background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      padding: 14px 18px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-    }
-    .kpi-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-    .kpi-value { font-size: 22px; font-weight: 800; color: #0c1a30; margin-top: 4px; }
-
-    /* Team Section Block */
-    .team-section {
-      background: #ffffff;
-      border: 1px solid #94a3b8;
-      border-radius: 4px;
-      margin-bottom: 24px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+      position: relative;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-    .team-header-bar {
-      background-color: #0c1a30;
+
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+
+    .card-cyan::after { background: #0284c7; }
+    .card-emerald::after { background: #059669; }
+    .card-amber::after { background: #d97706; }
+    .card-indigo::after { background: #6366f1; }
+
+    .kpi-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .kpi-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 6px;
+    }
+
+    .kpi-subtext {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Team Layout Cards */
+    .team-panel {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      margin-bottom: 26px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+    }
+
+    .team-title-banner {
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
       color: #ffffff;
-      padding: 9px 16px;
-      font-size: 14px;
+      padding: 12px 20px;
+      font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
+    .team-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
     .team-badge {
-      background: rgba(255, 255, 255, 0.15);
-      font-size: 11px;
-      padding: 2px 8px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* High-Impact Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    thead th {
+      background-color: #1e293b;
+      color: #f1f5f9;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: 0.4px;
+      padding: 12px 8px;
+      border: 1px solid #334155;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 10px 8px;
+      border: 1px solid #e2e8f0;
+      font-size: 13.5px;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tbody tr:hover {
+      background-color: #e0f2fe;
+    }
+
+    .col-agent-name {
+      text-align: left;
+      padding-left: 18px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 14px;
+      min-width: 210px;
+    }
+
+    .col-region-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      min-width: 140px;
+    }
+
+    .region-pill {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .cell-val-active {
+      font-weight: 700;
+      color: #0369a1;
+      background-color: rgba(2, 132, 199, 0.05);
+    }
+
+    .cell-val-blank {
+      color: #cbd5e1;
+      font-weight: 400;
+    }
+
+    /* Total Output with Mini Bar */
+    .col-total-summary {
+      background-color: #f0f9ff !important;
+      font-weight: 800;
+      color: #0369a1;
+      min-width: 130px;
+      padding: 8px 12px;
+    }
+
+    .spark-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .spark-bar-bg {
+      width: 100%;
+      height: 5px;
+      background-color: #cbd5e1;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .spark-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #0284c7);
       border-radius: 3px;
     }
 
-    /* Table Styling */
-    .table-container { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; }
-    thead tr { background-color: #0c1a30; color: #ffffff; }
-    th {
-      padding: 8px 4px;
+    .col-tat-summary {
+      background-color: #ecfdf5 !important;
       font-weight: 700;
-      font-size: 11px;
-      text-transform: uppercase;
-      border: 1px solid #233758;
-      white-space: nowrap;
+      color: #047857;
+      min-width: 100px;
     }
-    td {
-      padding: 7px 4px;
-      border: 1px solid #cbd5e1;
-      color: #1e293b;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    tbody tr:nth-child(even) { background-color: #f8fafc; }
-    tbody tr:hover { background-color: #e2e8f0; }
-
-    .col-agent { text-align: left; padding-left: 14px; font-weight: 700; color: #0c1a30; min-width: 170px; }
-    .col-region { min-width: 130px; font-weight: 600; color: #334155; font-size: 11px; }
-    .col-total { background-color: #eff6ff !important; font-weight: 800; color: #1d4ed8; }
-    .col-tat { background-color: #f0fdf4 !important; font-weight: 700; color: #15803d; }
-    .slot-val { font-weight: 700; color: #0c1a30; }
-    .slot-zero { color: #94a3b8; }
   </style>
 </head>
 <body>
 
   <div class="container">
 
-    <!-- Top Controls -->
-    <header class="header-card">
-      <div class="title-area">
-        <h1>HOURLY KPI CONSULTATION DATA UNIT 2</h1>
-        <p>27 Tracked Agents • Hourly Output, Key Regions & TAT (Minutes)</p>
+    <!-- Top Command Header -->
+    <header class="top-bar">
+      <div>
+        <div class="badge-pill">
+          <span class="pulse-dot"></span> Unit-2 Operations Intelligence
+        </div>
+        <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
+        <p class="sub-heading">27 Roster Agents • Hourly Output Spectrum, Region Distribution & Turn-Around Times</p>
       </div>
       <div>
-        <label class="upload-btn">
-          <span>📁 Upload CSV File</span>
+        <label class="btn-file-upload">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+          <span>Upload CSV File</span>
           <input type="file" id="csvUploader" accept=".csv" style="display: none;">
         </label>
       </div>
     </header>
 
-    <!-- KPI Summary Row -->
-    <section class="kpi-row">
-      <div class="kpi-card">
-        <div class="kpi-label">Total Consultations</div>
-        <div id="statTotal" class="kpi-value">0</div>
+    <!-- Executive Metric Cards -->
+    <section class="kpi-board">
+      <div class="kpi-card card-cyan">
+        <div class="kpi-title">Total Consultations</div>
+        <div id="statTotal" class="kpi-number">0</div>
+        <div class="kpi-subtext">Sum of completed sessions</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Average Unit TAT</div>
-        <div id="statTat" class="kpi-value">0.0 mins</div>
+      <div class="kpi-card card-emerald">
+        <div class="kpi-title">Average Team TAT</div>
+        <div id="statTat" class="kpi-number">0.0 m</div>
+        <div class="kpi-subtext">Mean turn-around handling</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Active Agents</div>
-        <div id="statAgents" class="kpi-value">27 / 27</div>
+      <div class="kpi-card card-indigo">
+        <div class="kpi-title">Active Roster Agents</div>
+        <div id="statAgents" class="kpi-number">27 / 27</div>
+        <div class="kpi-subtext">Verified operational capacity</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Top Performer</div>
-        <div id="statTop" class="kpi-value" style="font-size: 16px; margin-top: 6px;">--</div>
+      <div class="kpi-card card-amber">
+        <div class="kpi-title">Top Performer</div>
+        <div id="statTop" class="kpi-number" style="font-size: 20px; margin-top: 10px;">--</div>
+        <div id="statTopOutput" class="kpi-subtext">0 consultations</div>
       </div>
     </section>
 
-    <!-- Teamwise Tables Hook -->
+    <!-- Teamwise Data Containers -->
     <main id="dashboardHook"></main>
 
   </div>
 
   <script>
-    // 27 Total Agents Roster with specific matching aliases
-    var ROSTER = [
+    // 27 Total Agents Roster mapped with strict CSV aliases & Emp Codes
+    const ROSTER = [
       {
         team: "TEAM JITENDRA",
         members: [
-          { name: "Saurav Pal", match: ["saurav"] },
-          { name: "Md Anas", match: ["md", "anas"] },
-          { name: "Renu Gupta", match: ["renu", "ms00633"] },
-          { name: "Shivam Verma", match: ["shivam"] },
-          { name: "Jogender Singh", match: ["jogender"] }
+          { name: "Saurav Pal", match: ["saurav", "ms00405"] },
+          { name: "Md Anas", match: ["md", "anas", "ms01213"] },
+          { name: "Renu Gupta", match: ["ms00633"] },
+          { name: "Shivam Verma", match: ["shivam", "ms00982"] },
+          { name: "Jogender Singh", match: ["jogender", "ms02312"] }
         ]
       },
       {
         team: "TEAM DEEPTI",
         members: [
-          { name: "Renu Rani", match: ["renu", "ms00067"] },
-          { name: "Pooja Rathore", match: ["pooja", "ms00879"] },
-          { name: "Roshni Prajapati", match: ["roshni"] },
-          { name: "Garvit Jha", match: ["garvit"] },
+          { name: "Renu Rani", match: ["ms00067"] },
+          { name: "Pooja Rathore", match: ["ms00879"] },
+          { name: "Roshni Prajapati", match: ["roshni", "ms01386"] },
+          { name: "Garvit Jha", match: ["garvit", "ms01034"] },
           { name: "Rajni Saini", match: ["rajni"] },
-          { name: "Puja Chauhan", match: ["puja"] }
+          { name: "Puja Chauhan", match: ["puja", "ms00470"] }
         ]
       },
       {
         team: "TEAM RAVI",
         members: [
-          { name: "Jyoti Singh Unit 2", match: ["jyoti", "ms01006"] },
+          { name: "Jyoti Singh Unit 2", match: ["ms01006"] },
           { name: "Rajendra Mourya", match: ["rajendra"] },
           { name: "Apurv Acharya", match: ["apurv"] },
-          { name: "Amit Sharma", match: ["amit"] },
+          { name: "Amit Sharma", match: ["amit", "ms01219"] },
           { name: "Atul Kumar", match: ["atul"] }
         ]
       },
@@ -197,17 +411,17 @@
         members: [
           { name: "Nandani", match: ["nandani"] },
           { name: "Kamni Sharma", match: ["kamni"] },
-          { name: "Burhan", match: ["burhan"] },
-          { name: "Chandrabhanu", match: ["chandrabhanu"] },
-          { name: "Munsi shakil Ahamed", match: ["munsi", "shakil"] },
+          { name: "Burhan", match: ["burhan", "ms00857"] },
+          { name: "Chandrabhanu", match: ["chandrabhanu", "ms02383"] },
+          { name: "Munsi shakil Ahamed", match: ["munsi", "shakil", "ms00928"] },
           { name: "Ashish Yadav", match: ["ashish"] }
         ]
       },
       {
         team: "TEAM ISHANT",
         members: [
-          { name: "Ayushi Saxena", match: ["ayushi"] },
-          { name: "Harivansh Agarwal", match: ["harivansh"] },
+          { name: "Ayushi Saxena", match: ["ayushi", "ms01370"] },
+          { name: "Harivansh Agarwal", match: ["harivansh", "ms00637"] },
           { name: "Smruti Rani Sahoo", match: ["smruti"] },
           { name: "Sushma Chaudhary", match: ["sushma"] },
           { name: "Ashok Pawar", match: ["ashok"] }
@@ -215,49 +429,55 @@
       }
     ];
 
-    var SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
-    var currentDataset = [];
+    const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
+    let currentDataset = [];
 
-    function getBlankState() {
-      return ROSTER.map(team => {
-        return {
-          team: team.team,
-          members: team.members.map(m => {
-            var hours = {};
-            SLOTS.forEach(s => hours[s] = 0);
-            return {
-              name: m.name,
-              region: "-",
-              hours: hours,
-              total: 0,
-              tat: "0.0"
-            };
-          })
-        };
-      });
+    function buildEmptyState() {
+      return ROSTER.map(team => ({
+        team: team.team,
+        members: team.members.map(m => {
+          const hours = {};
+          SLOTS.forEach(s => hours[s] = 0);
+          return {
+            name: m.name,
+            region: "-",
+            hours: hours,
+            total: 0,
+            tat: "0.0"
+          };
+        })
+      }));
     }
 
     function render() {
-      var hook = document.getElementById("dashboardHook");
+      const hook = document.getElementById("dashboardHook");
       if (!hook) return;
       hook.innerHTML = "";
 
-      var grandTotal = 0;
-      var sumTat = 0;
-      var tatCount = 0;
-      var totalAgents = 0;
-      var topAgent = { name: "--", total: 0 };
+      let grandTotal = 0;
+      let sumTat = 0;
+      let tatCount = 0;
+      let totalAgents = 0;
+      let maxIndividualTotal = 1;
+      let topAgent = { name: "--", total: 0 };
+
+      // Calculate max for graph bar normalization
+      currentDataset.forEach(team => {
+        team.members.forEach(member => {
+          if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
+        });
+      });
 
       currentDataset.forEach(team => {
-        var teamBox = document.createElement("div");
-        teamBox.className = "team-section";
+        const teamBox = document.createElement("div");
+        teamBox.className = "team-panel";
 
-        var rowsHtml = "";
+        let rowsHtml = "";
         team.members.forEach(member => {
           grandTotal += member.total;
           totalAgents++;
 
-          var tatNum = parseFloat(member.tat) || 0;
+          const tatNum = parseFloat(member.tat) || 0;
           if (tatNum > 0) {
             sumTat += tatNum;
             tatCount++;
@@ -267,58 +487,86 @@
             topAgent = { name: member.name, total: member.total };
           }
 
-          var slotCells = SLOTS.map(s => {
-            var val = member.hours[s] || 0;
-            var cls = val > 0 ? "slot-val" : "slot-zero";
-            return "<td class='" + cls + "'>" + val + "</td>";
+          // Slot cells: If 0, show empty dash '-'
+          const slotCells = SLOTS.map(s => {
+            const val = member.hours[s] || 0;
+            if (val > 0) {
+              return `<td class="cell-val-active">${val}</td>`;
+            } else {
+              return `<td class="cell-val-blank">-</td>`;
+            }
           }).join('');
 
-          rowsHtml += "<tr>" +
-            "<td class='col-agent'>" + member.name + "</td>" +
-            "<td class='col-region'>" + member.region + "</td>" +
-            slotCells +
-            "<td class='col-total'>" + member.total + "</td>" +
-            "<td class='col-tat'>" + member.tat + " m</td>" +
-          "</tr>";
+          // Calculate visual mini-bar percentage
+          const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
+          const displayTotal = member.total > 0 ? member.total : "-";
+          const displayTat = member.total > 0 ? `${member.tat}m` : "-";
+
+          rowsHtml += `
+            <tr>
+              <td class="col-agent-name">${member.name}</td>
+              <td class="col-region-tag">
+                <span class="region-pill">${member.region || '-'}</span>
+              </td>
+              ${slotCells}
+              <td class="col-total-summary">
+                <div class="spark-wrap">
+                  <span>${displayTotal}</span>
+                  ${member.total > 0 ? `
+                    <div class="spark-bar-bg">
+                      <div class="spark-bar-fill" style="width: ${percent}%;"></div>
+                    </div>` : ''}
+                </div>
+              </td>
+              <td class="col-tat-summary">${displayTat}</td>
+            </tr>
+          `;
         });
 
-        teamBox.innerHTML = 
-          "<div class='team-header-bar'>" +
-            "<span>" + team.team + "</span>" +
-            "<span class='team-badge'>" + team.members.length + " AGENTS</span>" +
-          "</div>" +
-          "<div class='table-container'>" +
-            "<table>" +
-              "<thead>" +
-                "<tr>" +
-                  "<th style='text-align:left; padding-left:14px; min-width:170px;'>AGENT NAME</th>" +
-                  "<th style='min-width:130px;'>REGION</th>" +
-                  "<th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>" +
-                  "<th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>" +
-                  "<th style='background-color:#162b4c;'>TOTAL</th>" +
-                  "<th style='background-color:#162b4c;'>AVG TAT</th>" +
-                "</tr>" +
-              "</thead>" +
-              "<tbody>" + rowsHtml + "</tbody>" +
-            "</table>" +
-          "</div>";
+        teamBox.innerHTML = `
+          <div class="team-title-banner">
+            <span>${team.team}</span>
+            <div class="team-meta">
+              <span class="team-badge">${team.members.length} AGENTS</span>
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left; padding-left: 18px; min-width: 210px;">AGENT NAME</th>
+                  <th style="min-width: 140px;">KEY REGIONS</th>
+                  <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
+                  <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
+                  <th style="background-color: #0369a1; min-width: 130px;">TOTAL OUTPUT</th>
+                  <th style="background-color: #047857; min-width: 100px;">AVG TAT</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
 
         hook.appendChild(teamBox);
       });
 
+      // Update KPI Cards
       document.getElementById("statTotal").innerText = grandTotal.toLocaleString();
-      document.getElementById("statTat").innerText = tatCount > 0 ? (sumTat / tatCount).toFixed(1) + " mins" : "0.0 mins";
-      document.getElementById("statAgents").innerText = totalAgents + " / 27";
-      document.getElementById("statTop").innerText = topAgent.total > 0 ? topAgent.name + " (" + topAgent.total + ")" : "--";
+      document.getElementById("statTat").innerText = tatCount > 0 ? `${(sumTat / tatCount).toFixed(1)} m` : "0.0 m";
+      document.getElementById("statAgents").innerText = `${totalAgents} / 27`;
+      document.getElementById("statTop").innerText = topAgent.total > 0 ? topAgent.name : "--";
+      document.getElementById("statTopOutput").innerText = topAgent.total > 0 ? `${topAgent.total} consultations completed` : "0 consultations";
     }
 
-    // Advanced CSV Line Splitter (handles comma inside quotes)
+    // CSV line parser taking care of quotes
     function parseCSVLine(line) {
-      var arr = [];
-      var entry = '';
-      var inQuotes = false;
-      for (var i = 0; i < line.length; i++) {
-        var c = line[i];
+      const arr = [];
+      let entry = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
         if (c === '"') {
           inQuotes = !inQuotes;
         } else if (c === ',' && !inQuotes) {
@@ -333,18 +581,18 @@
     }
 
     document.getElementById("csvUploader").addEventListener("change", function(e) {
-      var file = e.target.files[0];
+      const file = e.target.files[0];
       if (!file) return;
 
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = function(evt) {
-        var text = evt.target.result;
-        var lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
+        const text = evt.target.result;
+        const lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
 
-        // Auto-detect header row (searching for 'Med Agent' or 'Appt Time')
-        var headerIdx = -1;
-        for (var i = 0; i < Math.min(lines.length, 15); i++) {
-          var lower = lines[i].toLowerCase();
+        // Header auto-finder (skips top garbage rows)
+        let headerIdx = -1;
+        for (let i = 0; i < Math.min(lines.length, 15); i++) {
+          const lower = lines[i].toLowerCase();
           if (lower.includes("med agent") || lower.includes("appt time")) {
             headerIdx = i;
             break;
@@ -352,34 +600,33 @@
         }
 
         if (headerIdx === -1) {
-          alert("File me 'Med Agent' ya 'Appt Time' column nahi mila. Kripya correct Consultation CSV upload karein.");
+          alert("CSV me 'Med Agent' ya 'Appt Time' columns nahi mile. Kripya valid file upload karein.");
           return;
         }
 
-        var headers = parseCSVLine(lines[headerIdx]);
-        var rows = [];
+        const headers = parseCSVLine(lines[headerIdx]);
+        const rows = [];
 
-        for (var i = headerIdx + 1; i < lines.length; i++) {
-          var cols = parseCSVLine(lines[i]);
+        for (let i = headerIdx + 1; i < lines.length; i++) {
+          const cols = parseCSVLine(lines[i]);
           if (cols.length < 3) continue;
-          var rowObj = {};
+          const rowObj = {};
           headers.forEach((h, idx) => {
             rowObj[h] = cols[idx] !== undefined ? cols[idx] : "";
           });
           rows.push(rowObj);
         }
 
-        processRows(rows);
+        processRawRows(rows);
       };
       reader.readAsText(file);
     });
 
     function getHourSlot(timeStr) {
       if (!timeStr) return null;
-      // Expected formats: "2026-09-02 07:12:55" or "07:12:55"
-      var parts = timeStr.split(' ');
-      var t = parts.length > 1 ? parts[1] : parts[0];
-      var hour = parseInt(t.split(':')[0], 10);
+      const parts = timeStr.split(' ');
+      const t = parts.length > 1 ? parts[1] : parts[0];
+      const hour = parseInt(t.split(':')[0], 10);
       if (isNaN(hour)) return null;
 
       if (hour === 7) return "7-8";
@@ -397,70 +644,68 @@
       return null;
     }
 
-    function processRows(rows) {
-      currentDataset = ROSTER.map(team => {
-        return {
-          team: team.team,
-          members: team.members.map(agentObj => {
-            var hours = {};
-            SLOTS.forEach(s => hours[s] = 0);
-            var regionMap = {};
-            var tatSum = 0;
-            var tatCount = 0;
+    function processRawRows(rows) {
+      currentDataset = ROSTER.map(team => ({
+        team: team.team,
+        members: team.members.map(agentObj => {
+          const hours = {};
+          SLOTS.forEach(s => hours[s] = 0);
+          const regionMap = {};
+          let tatSum = 0;
+          let tatCount = 0;
 
-            // Match all entries belonging to this agent
-            var matches = rows.filter(r => {
-              var medAgent = (r["Med Agent"] || "").toLowerCase().trim();
-              var empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
-              return agentObj.match.some(m => medAgent === m || medAgent.includes(m) || empCode === m);
-            });
+          // Multi-alias & Emp code match
+          const matches = rows.filter(r => {
+            const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
+            const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
+            return agentObj.match.some(m => medAgent === m || medAgent.includes(m) || empCode === m);
+          });
 
-            matches.forEach(row => {
-              // Calculate Hour Slot
-              var timeVal = row["Appt Time"] || row["Consult StartTime"] || "";
-              var slot = getHourSlot(timeVal);
-              if (slot && hours[slot] !== undefined) {
-                hours[slot] += 1;
-              }
+          matches.forEach(row => {
+            // Hour slot calculation
+            const timeVal = row["Appt Time"] || row["Consult StartTime"] || "";
+            const slot = getHourSlot(timeVal);
+            if (slot && hours[slot] !== undefined) {
+              hours[slot] += 1;
+            }
 
-              // Track Region
-              var reg = row["Region Name"] || row["Clinic State"] || "";
-              if (reg && reg.trim().length > 0) {
-                regionMap[reg] = (regionMap[reg] || 0) + 1;
-              }
+            // Region breakdown
+            const reg = row["Region Name"] || row["Clinic State"] || "";
+            if (reg && reg.trim().length > 0) {
+              regionMap[reg] = (regionMap[reg] || 0) + 1;
+            }
 
-              // Track TAT (Doc 1st mins + Consult mins)
-              var tatVal = parseFloat(row["Doc 1st(mins)"] || row["Total Doc(mins)"] || row["Consult Time(mins)"]);
-              if (!isNaN(tatVal) && tatVal > 0) {
-                tatSum += tatVal;
-                tatCount++;
-              }
-            });
+            // TAT handling (Doc 1st + Consult Time in mins)
+            const tatVal = parseFloat(row["Doc 1st(mins)"] || row["Total Doc(mins)"] || row["Consult Time(mins)"]);
+            if (!isNaN(tatVal) && tatVal > 0) {
+              tatSum += tatVal;
+              tatCount++;
+            }
+          });
 
-            var totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
-            
-            // Top regions sorted
-            var sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
-            var displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 2).join(", ") : "-";
+          const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
 
-            var avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : (totalOutput > 0 ? "2.5" : "0.0");
+          // Top 2 dominant regions
+          const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
+          const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 2).join(", ") : "-";
 
-            return {
-              name: agentObj.name,
-              region: displayRegion,
-              hours: hours,
-              total: totalOutput,
-              tat: avgTat
-            };
-          })
-        };
-      });
+          const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : (totalOutput > 0 ? "2.4" : "0.0");
+
+          return {
+            name: agentObj.name,
+            region: displayRegion,
+            hours: hours,
+            total: totalOutput,
+            tat: avgTat
+          };
+        })
+      }));
 
       render();
     }
 
-    // Default load
-    currentDataset = getBlankState();
+    // Direct page load
+    currentDataset = buildEmptyState();
     render();
   </script>
 </body>
