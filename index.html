@@ -6,7 +6,7 @@
   <title>HOURLY KPI CONSULTATION DATA UNIT 2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-canvas: #f8fafc;
@@ -40,18 +40,18 @@
     }
 
     .container {
-      max-width: 1780px;
+      max-width: 1820px;
       margin: 0 auto;
     }
 
-    /* Top Command Header Bar - Navy Blur & Bold White Text */
+    /* Top Command Header Bar */
     .top-bar {
-      background: rgba(9, 19, 34, 0.88);
+      background: rgba(9, 19, 34, 0.90);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(56, 189, 248, 0.22);
+      border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: 16px;
-      padding: 22px 30px;
+      padding: 24px 32px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -62,7 +62,6 @@
       position: relative;
     }
 
-    /* Center Header Text Content */
     .header-center-content {
       flex: 1;
       text-align: center;
@@ -76,11 +75,11 @@
       background: rgba(244, 114, 182, 0.15);
       border: 1px solid rgba(244, 114, 182, 0.35);
       color: #f472b6;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 800;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.8px;
       margin-bottom: 8px;
       text-transform: uppercase;
     }
@@ -94,7 +93,7 @@
     }
 
     .main-heading {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 900;
       color: #ffffff;
       letter-spacing: -0.3px;
@@ -102,24 +101,22 @@
     }
 
     .sub-heading {
-      font-size: 14.5px;
+      font-size: 15px;
       color: #cbd5e1;
-      margin-top: 5px;
+      margin-top: 6px;
       font-weight: 700;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.3px;
     }
 
-    /* Right Section: Large Analog Watch + Stylish Upload Button */
     .header-right-tools {
       display: flex;
       align-items: center;
       gap: 18px;
     }
 
-    /* Beautiful Large Clock Icon */
     .luxury-watch {
-      width: 58px;
-      height: 58px;
+      width: 60px;
+      height: 60px;
       background: linear-gradient(145deg, #060c17 0%, #11203d 100%);
       border-radius: 50%;
       display: flex;
@@ -131,16 +128,15 @@
     }
 
     .luxury-watch svg {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
     }
 
-    /* Ultra-Stylish Upload Button */
     .btn-file-upload {
       background: linear-gradient(135deg, #0f274a 0%, #1e3a8a 100%);
       color: #ffffff;
       padding: 13px 26px;
-      font-size: 14.5px;
+      font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.4px;
       border-radius: 10px;
@@ -168,7 +164,7 @@
       color: #38bdf8;
     }
 
-    /* Dark Navy Blue KPI Boards with Bold White Fonts */
+    /* KPI Boards without bottom subtext */
     .kpi-board {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -180,10 +176,14 @@
       background: linear-gradient(145deg, #091426 0%, #0c1b33 100%);
       border: 1px solid var(--navy-card-border);
       border-radius: 14px;
-      padding: 20px 24px;
+      padding: 22px 24px;
       box-shadow: 0 8px 20px -4px rgba(7, 14, 28, 0.25);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 105px;
     }
 
     .kpi-card-navy::before {
@@ -201,27 +201,20 @@
     .card-amber::before { background: var(--accent-amber); box-shadow: 0 0 10px var(--accent-amber); }
 
     .kpi-title {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 800;
       color: #cbd5e1;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.9px;
     }
 
     .kpi-number {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 900;
       color: #ffffff;
       margin-top: 6px;
       letter-spacing: -0.5px;
-    }
-
-    .kpi-subtext {
-      font-size: 12.5px;
-      color: #94a3b8;
-      margin-top: 5px;
-      font-weight: 700;
     }
 
     /* Team Panels & Data Tables */
@@ -237,8 +230,8 @@
     .team-title-banner {
       background: linear-gradient(90deg, #070e1c 0%, #0c182d 100%);
       color: #ffffff;
-      padding: 13px 22px;
-      font-size: 16px;
+      padding: 14px 22px;
+      font-size: 17px;
       font-weight: 900;
       letter-spacing: 0.9px;
       display: flex;
@@ -249,7 +242,7 @@
 
     .team-badge {
       background: rgba(255, 255, 255, 0.16);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       padding: 4px 12px;
       border-radius: 5px;
@@ -264,26 +257,27 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14.5px;
       text-align: center;
     }
 
+    /* Large & Bold Table Headers */
     thead th {
       background-color: #070e1c !important;
       color: #ffffff !important;
       font-weight: 900;
-      font-size: 12.5px;
+      font-size: 14px;
       letter-spacing: 0.6px;
-      padding: 12px 6px;
+      padding: 14px 8px;
       border: 1px solid #1a273f;
       white-space: nowrap;
       text-transform: uppercase;
     }
 
+    /* Large & Bold Body Cells */
     tbody td {
-      padding: 11px 7px;
+      padding: 13px 8px;
       border: 1px solid #cbd5e1;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
@@ -298,57 +292,59 @@
       background-color: #fdf2f8;
     }
 
+    /* Centered Agent Name */
     .col-agent-name {
-      text-align: left;
-      padding-left: 20px;
+      text-align: center;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
       color: #070e1c;
-      font-size: 15px;
+      font-size: 16px;
       min-width: 220px;
     }
 
     .col-region-tag {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 800;
       color: #334155;
-      min-width: 150px;
+      min-width: 160px;
+      text-align: center;
     }
 
     .region-pill {
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 4px 10px;
-      border-radius: 5px;
+      padding: 5px 12px;
+      border-radius: 6px;
       display: inline-block;
     }
 
     .cell-val-active {
       font-weight: 900;
+      font-size: 16.5px;
       color: #070e1c;
       background-color: rgba(244, 114, 182, 0.08);
     }
 
     .cell-val-blank {
-      color: #cbd5e1;
-      font-weight: 600;
+      /* Completely blank */
     }
 
     /* Output Summary Mini Graph Bar */
     .col-total-summary {
       background-color: #eff6ff !important;
       font-weight: 900;
+      font-size: 17px;
       color: #1d4ed8;
       min-width: 140px;
-      padding: 8px 12px;
+      padding: 10px 14px;
     }
 
     .spark-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
 
     .spark-bar-bg {
@@ -368,6 +364,7 @@
     .col-tat-summary {
       background-color: #f0fdf4 !important;
       font-weight: 900;
+      font-size: 16px;
       color: #15803d;
       min-width: 110px;
     }
@@ -377,12 +374,10 @@
 
   <div class="container">
 
-    <!-- Top Command Header with Navy Blur & Bold White Text -->
+    <!-- Top Command Header Bar -->
     <header class="top-bar">
-      <!-- Hidden spacer to keep center content balanced -->
       <div style="width: 50px;" class="hidden-spacer"></div>
 
-      <!-- Center Title -->
       <div class="header-center-content">
         <div class="badge-pill">
           <span class="pulse-dot"></span> Realtime Unit-2 Operations Monitor
@@ -391,7 +386,6 @@
         <p class="sub-heading">27 Verified Agents • Hourly Output, Regional Distribution & Turn-Around Time Tracking</p>
       </div>
 
-      <!-- Right Side: Luxury Clock & Upload Button -->
       <div class="header-right-tools">
         <div class="luxury-watch" title="Live Operations Clock">
           <svg viewBox="0 0 100 100">
@@ -417,27 +411,23 @@
       </div>
     </header>
 
-    <!-- Dark Navy Blue KPI Board with Pure White Bold Text -->
+    <!-- Clean Dark Navy KPI Board (Subtext Removed) -->
     <section class="kpi-board">
       <div class="kpi-card-navy card-cyan">
         <div class="kpi-title">Total Consultations</div>
         <div id="statTotal" class="kpi-number">0</div>
-        <div class="kpi-subtext">Cumulative sessions completed</div>
       </div>
       <div class="kpi-card-navy card-emerald">
         <div class="kpi-title">Average Team TAT</div>
         <div id="statTat" class="kpi-number">0.0 m</div>
-        <div class="kpi-subtext">Mean turn-around handling time</div>
       </div>
       <div class="kpi-card-navy card-pink">
         <div class="kpi-title">Active Roster Agents</div>
         <div id="statAgents" class="kpi-number">27 / 27</div>
-        <div class="kpi-subtext">Deployed across 5 teams</div>
       </div>
       <div class="kpi-card-navy card-amber">
         <div class="kpi-title">Top Performer</div>
-        <div id="statTop" class="kpi-number" style="font-size: 22px; margin-top: 10px;">--</div>
-        <div id="statTopOutput" class="kpi-subtext">0 consultations</div>
+        <div id="statTop" class="kpi-number" style="font-size: 24px;">--</div>
       </div>
     </section>
 
@@ -447,7 +437,6 @@
   </div>
 
   <script>
-    // 27 Total Agents Roster mapped with strict CSV aliases & Emp Codes
     const ROSTER = [
       {
         team: "TEAM JITENDRA",
@@ -514,7 +503,7 @@
           SLOTS.forEach(s => hours[s] = 0);
           return {
             name: m.name,
-            region: "-",
+            region: "",
             hours: hours,
             total: 0,
             tat: "0.0"
@@ -535,7 +524,6 @@
       let maxIndividualTotal = 1;
       let topAgent = { name: "--", total: 0 };
 
-      // Get highest volume for spark bars
       currentDataset.forEach(team => {
         team.members.forEach(member => {
           if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
@@ -561,26 +549,25 @@
             topAgent = { name: member.name, total: member.total };
           }
 
-          // Slot cells: If 0, show clean dash '-'
+          // Slot cells: If 0, keep it completely blank (empty)
           const slotCells = SLOTS.map(s => {
             const val = member.hours[s] || 0;
             if (val > 0) {
               return `<td class="cell-val-active">${val}</td>`;
             } else {
-              return `<td class="cell-val-blank">-</td>`;
+              return `<td class="cell-val-blank"></td>`;
             }
           }).join('');
 
           const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
-          const displayTotal = member.total > 0 ? member.total : "-";
-          const displayTat = member.total > 0 ? `${member.tat}m` : "-";
+          const displayTotal = member.total > 0 ? member.total : "";
+          const displayTat = member.total > 0 ? `${member.tat}m` : "";
+          const displayRegion = member.region ? `<span class="region-pill">${member.region}</span>` : "";
 
           rowsHtml += `
             <tr>
               <td class="col-agent-name">${member.name}</td>
-              <td class="col-region-tag">
-                <span class="region-pill">${member.region || '-'}</span>
-              </td>
+              <td class="col-region-tag">${displayRegion}</td>
               ${slotCells}
               <td class="col-total-summary">
                 <div class="spark-wrap">
@@ -605,8 +592,8 @@
             <table>
               <thead>
                 <tr>
-                  <th style="text-align: left; padding-left: 20px; min-width: 220px;">AGENT NAME</th>
-                  <th style="min-width: 150px;">KEY REGIONS</th>
+                  <th style="min-width: 220px;">AGENT NAME</th>
+                  <th style="min-width: 160px;">KEY REGIONS</th>
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
                   <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
                   <th style="background-color: #070e1c !important; min-width: 140px;">TOTAL</th>
@@ -628,10 +615,8 @@
       document.getElementById("statTat").innerText = tatCount > 0 ? `${(sumTat / tatCount).toFixed(1)} m` : "0.0 m";
       document.getElementById("statAgents").innerText = `${totalAgents} / 27`;
       document.getElementById("statTop").innerText = topAgent.total > 0 ? topAgent.name : "--";
-      document.getElementById("statTopOutput").innerText = topAgent.total > 0 ? `${topAgent.total} consultations completed` : "0 consultations";
     }
 
-    // CSV Line Parser
     function parseCSVLine(line) {
       const arr = [];
       let entry = '';
@@ -660,7 +645,6 @@
         const text = evt.target.result;
         const lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
 
-        // Header auto-finder (skips first 3 lines metadata)
         let headerIdx = -1;
         for (let i = 0; i < Math.min(lines.length, 15); i++) {
           const lower = lines[i].toLowerCase();
@@ -725,7 +709,6 @@
           let tatSum = 0;
           let tatCount = 0;
 
-          // Multi-alias & Emp Code Match
           const matches = rows.filter(r => {
             const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
             const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
@@ -754,9 +737,9 @@
           const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
 
           const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
-          const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 2).join(", ") : "-";
+          const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 2).join(", ") : "";
 
-          const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : (totalOutput > 0 ? "2.4" : "0.0");
+          const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : (totalOutput > 0 ? "2.4" : "");
 
           return {
             name: agentObj.name,
@@ -771,7 +754,6 @@
       render();
     }
 
-    // Direct initial render
     currentDataset = buildEmptyState();
     render();
   </script>
