@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOURLY KPI CONSULTATION  UNIT II</title>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
@@ -126,20 +125,6 @@
       color: #38bdf8;
     }
 
-    /* Upload Status Badge */
-    #statusBadge {
-      display: none;
-      background: #0284c7;
-      color: #ffffff;
-      padding: 6px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-    }
-
     /* KPI Grid */
     .kpi-board {
       display: grid;
@@ -205,4 +190,877 @@
 
     .text-best-green {
       color: #34d399;
-      text-shadow: 0 0
+      text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+    }
+
+    .text-worst-red {
+      color: #fb7185;
+      text-shadow: 0 0 10px rgba(251, 113, 133, 0.4);
+    }
+
+    /* Team Panels & Data Tables */
+    .team-panel {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      margin-bottom: 26px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px -3px rgba(15, 23, 42, 0.07);
+    }
+
+    .team-title-banner {
+      background: linear-gradient(90deg, #070e1c 0%, #0c182d 100%);
+      color: #ffffff;
+      padding: 12px 22px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.9px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid #1e3a68;
+    }
+
+    .team-tat-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tat-pill-green {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      color: #34d399;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tat-pill-red {
+      background: rgba(244, 63, 94, 0.16);
+      border: 1px solid rgba(244, 63, 94, 0.5);
+      color: #fb7185;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .team-badge {
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 5px;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    thead th {
+      background-color: #070e1c !important;
+      color: #ffffff !important;
+      font-weight: 900;
+      font-size: 13.5px;
+      letter-spacing: 0.6px;
+      padding: 13px 8px;
+      border: 1px solid #1a273f;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    tbody td {
+      padding: 12px 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 15.5px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tbody tr:hover {
+      background-color: #fdf2f8;
+    }
+
+    .col-agent-name {
+      text-align: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      color: #070e1c;
+      font-size: 15.5px;
+      min-width: 220px;
+    }
+
+    .col-region-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: #334155;
+      min-width: 220px;
+      text-align: center;
+    }
+
+    .region-pill {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      line-height: 1.4;
+    }
+
+    .cell-val-active {
+      font-weight: 900;
+      font-size: 16px;
+      color: #070e1c;
+      background-color: rgba(244, 114, 182, 0.08);
+      cursor: pointer;
+    }
+
+    .cell-val-active:hover {
+      background-color: #f472b6 !important;
+      color: #ffffff !important;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(244, 114, 182, 0.4);
+    }
+
+    .col-total-summary {
+      background-color: #eff6ff !important;
+      font-weight: 900;
+      font-size: 16.5px;
+      color: #1d4ed8;
+      min-width: 135px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .spark-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .spark-bar-bg {
+      width: 100%;
+      height: 6px;
+      background-color: #cbd5e1;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .spark-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #60a5fa, #1d4ed8);
+      border-radius: 4px;
+    }
+
+    /* TAT Column with Arrow Indicator Badges */
+    .col-tat-summary {
+      background-color: #f0fdf4 !important;
+      font-weight: 900;
+      font-size: 16px;
+      color: #15803d;
+      min-width: 125px;
+    }
+
+    .tat-cell-flex {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .badge-arrow-green {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .badge-arrow-red {
+      background: #ffe4e6;
+      color: #e11d48;
+      border: 1px solid #fca5a5;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    /* Drilldown Table Section */
+    #drilldownSection {
+      display: none;
+      background: #ffffff;
+      border: 2px solid #0f274a;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 30px;
+      box-shadow: 0 14px 35px -5px rgba(15, 23, 42, 0.25);
+    }
+
+    .drill-header {
+      background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #38bdf8;
+    }
+
+    .drill-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .drill-badge {
+      background: #38bdf8;
+      color: #070e1c;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .btn-close-drill {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-close-drill:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .drill-table th {
+      background-color: #0f1e36 !important;
+      font-size: 12.5px;
+      padding: 11px 8px;
+    }
+
+    .drill-table td {
+      font-size: 14px;
+      padding: 10px 8px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Top Command Header Bar -->
+    <header class="top-bar">
+      <div style="width: 40px;" class="hidden-spacer"></div>
+
+      <div class="header-center-content">
+        <div class="luxury-watch-white" title="Live Operations Clock">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" stroke="#0f1e36" stroke-width="3.5" fill="#ffffff" />
+            <line x1="50" y1="9" x2="50" y2="16" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="50" y1="84" x2="50" y2="91" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="9" y1="50" x2="16" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="84" y1="50" x2="91" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="50" y1="50" x2="68" y2="38" stroke="#0f1e36" stroke-width="4" stroke-linecap="round" />
+            <line x1="50" y1="50" x2="50" y2="18" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="4.5" fill="#0f1e36" />
+          </svg>
+        </div>
+        <h1 class="main-heading">HOURLY KPI CONSULTATION  UNIT II</h1>
+      </div>
+
+      <div>
+        <label class="btn-file-upload">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+          <span>Upload CSV File</span>
+          <input type="file" id="csvUploader" accept=".csv" style="display: none;">
+        </label>
+      </div>
+    </header>
+
+    <!-- Top KPI Board -->
+    <section class="kpi-board">
+      <div class="kpi-card-navy card-cyan">
+        <div class="kpi-title">Total Consultations</div>
+        <div id="statTotal" class="kpi-number">0</div>
+      </div>
+      <div class="kpi-card-navy card-blue">
+        <div class="kpi-title">Average Team TAT</div>
+        <div id="statTat" class="kpi-number">0.0 m</div>
+      </div>
+      <div class="kpi-card-navy card-purple">
+        <div class="kpi-title">Active Agents</div>
+        <div id="statAgents" class="kpi-number">0 / 26</div>
+      </div>
+      <div class="kpi-card-navy card-green">
+        <div class="kpi-title" style="color: #6ee7b7;">Lowest TAT (Best)</div>
+        <div id="statLowestAgent" class="kpi-agent-name text-best-green">--</div>
+      </div>
+      <div class="kpi-card-navy card-red">
+        <div class="kpi-title" style="color: #fda4af;">Highest TAT (Slowest)</div>
+        <div id="statHighestAgent" class="kpi-agent-name text-worst-red">--</div>
+      </div>
+    </section>
+
+    <!-- Teamwise Data Tables Hook -->
+    <main id="dashboardHook"></main>
+
+    <!-- Interactive Drill-Down Section -->
+    <section id="drilldownSection">
+      <div class="drill-header">
+        <div class="drill-title">
+          <span id="drillTitleText">CASE BREAKDOWN</span>
+          <span id="drillCountBadge" class="drill-badge">0 CASES</span>
+        </div>
+        <button class="btn-close-drill" onclick="closeDrilldown()">✕ Close Breakdown</button>
+      </div>
+      <div class="table-container">
+        <table class="drill-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>EMR #</th>
+              <th>DOCTOR NAME</th>
+              <th>PHARMACIST / AGENT</th>
+              <th>REGION</th>
+              <th>BRANCH</th>
+              <th>TYPE</th>
+              <th style="background-color: #047857 !important;">TAT (MINS)</th>
+              <th>APPT TIME</th>
+              <th>FEEDBACK END TIME</th>
+            </tr>
+          </thead>
+          <tbody id="drillTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const ROSTER = [
+      {
+        team: "TEAM JITENDRA",
+        members: [
+          { name: "Saurav Pal", match: ["saurav", "ms00405"] },
+          { name: "Md Anas", match: ["md", "anas", "ms01213"] },
+          { name: "Renu Gupta", match: ["ms00633"] },
+          { name: "Shivam Verma", match: ["shivam", "ms00982"] },
+          { name: "Jogender Singh", match: ["jogender", "ms02312"] }
+        ]
+      },
+      {
+        team: "TEAM DEEPTI",
+        members: [
+          { name: "Renu Rani", match: ["ms00067"] },
+          { name: "Pooja Rathore", match: ["ms00879"] },
+          { name: "Roshni Prajapati", match: ["roshni", "ms01386"] },
+          { name: "Garvit Jha", match: ["garvit", "ms01034"] },
+          { name: "Rajni Saini", match: ["rajni"] },
+          { name: "Puja Chauhan", match: ["puja", "ms00470"] }
+        ]
+      },
+      {
+        team: "TEAM RAVI",
+        members: [
+          { name: "Jyoti Singh Unit 2", match: ["ms01006"] },
+          { name: "Rajendra Mourya", match: ["rajendra"] },
+          { name: "Apurv Acharya", match: ["apurv"] },
+          { name: "Amit Sharma", match: ["amit", "ms01219"] }
+        ]
+      },
+      {
+        team: "TEAM SHIVAM",
+        members: [
+          { name: "Nandani", match: ["nandani"] },
+          { name: "Kamni Sharma", match: ["kamni"] },
+          { name: "Burhan", match: ["burhan", "ms00857"] },
+          { name: "Chandrabhanu", match: ["chandrabhanu", "ms02383"] },
+          { name: "Munsi shakil Ahamed", match: ["munsi", "shakil", "ms00928"] },
+          { name: "Ashish Yadav", match: ["ashish"] }
+        ]
+      },
+      {
+        team: "TEAM ISHANT",
+        members: [
+          { name: "Ayushi Saxena", match: ["ayushi", "ms01370"] },
+          { name: "Harivansh Agarwal", match: ["harivansh", "ms00637"] },
+          { name: "Smruti Rani Sahoo", match: ["smruti"] },
+          { name: "Sushma Chaudhary", match: ["sushma"] },
+          { name: "Ashok Pawar", match: ["ashok"] }
+        ]
+      }
+    ];
+
+    const TOTAL_CAPACITY = 26;
+    const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
+    let currentDataset = [];
+    let agentCaseStore = {};
+
+    function buildEmptyState() {
+      agentCaseStore = {};
+      return ROSTER.map(team => ({
+        team: team.team,
+        members: team.members.map(m => {
+          const hours = {};
+          SLOTS.forEach(s => hours[s] = 0);
+          return {
+            name: m.name,
+            region: "",
+            hours: hours,
+            total: 0,
+            tat: "0.0",
+            tatSum: 0,
+            tatCount: 0
+          };
+        })
+      }));
+    }
+
+    function render() {
+      const hook = document.getElementById("dashboardHook");
+      if (!hook) return;
+      hook.innerHTML = "";
+
+      let grandTotal = 0;
+      let overallTatSum = 0;
+      let overallTatCases = 0;
+      let activeAgentsCount = 0;
+      let maxIndividualTotal = 1;
+
+      let globalMinAgent = { name: "--", tat: 9999 };
+      let globalMaxAgent = { name: "--", tat: -1 };
+
+      // Calculate global metrics & active agents
+      currentDataset.forEach(team => {
+        team.members.forEach(member => {
+          if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
+
+          if (member.total > 0) {
+            activeAgentsCount++;
+          }
+
+          if (member.tatCount > 0) {
+            overallTatSum += member.tatSum;
+            overallTatCases += member.tatCount;
+          }
+
+          const tatNum = parseFloat(member.tat) || 0;
+          if (tatNum > 0) {
+            if (tatNum < globalMinAgent.tat) globalMinAgent = { name: member.name, tat: tatNum };
+            if (tatNum > globalMaxAgent.tat) globalMaxAgent = { name: member.name, tat: tatNum };
+          }
+        });
+      });
+
+      currentDataset.forEach(team => {
+        const teamBox = document.createElement("div");
+        teamBox.className = "team-panel";
+
+        // Find team lowest & highest TAT
+        let teamMin = { name: "--", tat: 9999 };
+        let teamMax = { name: "--", tat: -1 };
+
+        team.members.forEach(m => {
+          const t = parseFloat(m.tat) || 0;
+          if (t > 0) {
+            if (t < teamMin.tat) teamMin = { name: m.name, tat: t };
+            if (t > teamMax.tat) teamMax = { name: m.name, tat: t };
+          }
+        });
+
+        // SORT AGENTS: Low TAT to High TAT (Agents with 0 TAT at the bottom)
+        const sortedMembers = [...team.members].sort((a, b) => {
+          const tatA = parseFloat(a.tat) || 0;
+          const tatB = parseFloat(b.tat) || 0;
+          if (tatA === 0 && tatB === 0) return 0;
+          if (tatA === 0) return 1;
+          if (tatB === 0) return -1;
+          return tatA - tatB;
+        });
+
+        let rowsHtml = "";
+        sortedMembers.forEach(member => {
+          grandTotal += member.total;
+
+          const slotCells = SLOTS.map(s => {
+            const val = member.hours[s] || 0;
+            if (val > 0) {
+              return `<td class="cell-val-active" title="Click to view ${val} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', '${s}')">${val}</td>`;
+            } else {
+              return `<td class="cell-val-blank"></td>`;
+            }
+          }).join('');
+
+          const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
+          const displayTotal = member.total > 0 ? member.total : "";
+          const memberTatVal = parseFloat(member.tat) || 0;
+          
+          // Generate Arrow Badges: Green Down Arrow for Min TAT, Red Up Arrow for Max TAT
+          let arrowHtml = "";
+          if (memberTatVal > 0) {
+            if (memberTatVal === teamMin.tat) {
+              arrowHtml = `<span class="badge-arrow-green" title="Lowest TAT in Team">↓</span>`;
+            } else if (memberTatVal === teamMax.tat) {
+              arrowHtml = `<span class="badge-arrow-red" title="Highest TAT in Team">↑</span>`;
+            }
+          }
+
+          const displayTat = member.total > 0 && member.tat ? `
+            <div class="tat-cell-flex">
+              ${arrowHtml}
+              <span>${member.tat}m</span>
+            </div>
+          ` : "";
+
+          const displayRegion = member.region ? `<span class="region-pill">${member.region}</span>` : "";
+
+          rowsHtml += `
+            <tr>
+              <td class="col-agent-name">${member.name}</td>
+              <td class="col-region-tag">${displayRegion}</td>
+              ${slotCells}
+              <td class="col-total-summary" title="Click to view all ${member.total} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
+                <div class="spark-wrap">
+                  <span>${displayTotal}</span>
+                  ${member.total > 0 ? `
+                    <div class="spark-bar-bg">
+                      <div class="spark-bar-fill" style="width: ${percent}%;"></div>
+                    </div>` : ''}
+                </div>
+              </td>
+              <td class="col-tat-summary">${displayTat}</td>
+            </tr>
+          `;
+        });
+
+        const teamTatHtml = teamMin.tat !== 9999 ? `
+          <div class="team-tat-stats">
+            <span class="tat-pill-green">★ Best: ${teamMin.name} (${teamMin.tat}m)</span>
+            <span class="tat-pill-red">⚠ Slowest: ${teamMax.name} (${teamMax.tat}m)</span>
+          </div>
+        ` : '';
+
+        teamBox.innerHTML = `
+          <div class="team-title-banner">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span>${team.team}</span>
+              <span class="team-badge">${team.members.length} AGENTS</span>
+            </div>
+            ${teamTatHtml}
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="min-width: 220px;">AGENT NAME</th>
+                  <th style="min-width: 220px;">KEY REGIONS (TOP 3)</th>
+                  <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
+                  <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
+                  <th style="background-color: #070e1c !important; min-width: 135px;">TOTAL</th>
+                  <th style="background-color: #070e1c !important; min-width: 125px;">AVG TAT</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        hook.appendChild(teamBox);
+      });
+
+      const overallAvgTat = overallTatCases > 0 ? (overallTatSum / overallTatCases).toFixed(1) : "0.0";
+
+      document.getElementById("statTotal").innerText = grandTotal.toLocaleString();
+      document.getElementById("statTat").innerText = `${overallAvgTat} m`;
+      document.getElementById("statAgents").innerText = `${activeAgentsCount} / ${TOTAL_CAPACITY}`;
+      
+      document.getElementById("statLowestAgent").innerText = globalMinAgent.tat !== 9999 ? `${globalMinAgent.name} (${globalMinAgent.tat}m)` : "--";
+      document.getElementById("statHighestAgent").innerText = globalMaxAgent.tat !== -1 ? `${globalMaxAgent.name} (${globalMaxAgent.tat}m)` : "--";
+    }
+
+    function openDrilldown(agentName, slot) {
+      const section = document.getElementById("drilldownSection");
+      const titleText = document.getElementById("drillTitleText");
+      const countBadge = document.getElementById("drillCountBadge");
+      const tbody = document.getElementById("drillTableBody");
+
+      if (!agentCaseStore[agentName]) {
+        alert("Is agent ka koi case record upload nahi hua hai.");
+        return;
+      }
+
+      let casesToShow = [];
+      if (slot === 'ALL') {
+        SLOTS.forEach(s => {
+          if (agentCaseStore[agentName][s]) {
+            casesToShow = casesToShow.concat(agentCaseStore[agentName][s]);
+          }
+        });
+        titleText.innerText = `${agentName.toUpperCase()} — ALL CONSULTATIONS (${casesToShow.length})`;
+      } else {
+        casesToShow = agentCaseStore[agentName][slot] || [];
+        titleText.innerText = `${agentName.toUpperCase()} — SLOT: ${slot} DETAILS`;
+      }
+
+      countBadge.innerText = `${casesToShow.length} CASES`;
+      tbody.innerHTML = "";
+
+      if (casesToShow.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="padding: 20px; color: #94a3b8;">Koi record nahi mila.</td></tr>`;
+      } else {
+        casesToShow.forEach((c, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="color: #64748b;">${idx + 1}</td>
+            <td style="font-weight: 800; color: #0284c7;">${c.emr || '-'}</td>
+            <td style="color: #0f172a; font-weight: 800;">${c.doctor || '-'}</td>
+            <td>${c.medAgent || '-'}</td>
+            <td><span class="region-pill">${c.region || '-'}</span></td>
+            <td>${c.branch || '-'}</td>
+            <td><span style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">${c.type || '-'}</span></td>
+            <td style="color: #059669; font-weight: 800;">${c.tat ? c.tat + ' m' : '-'}</td>
+            <td style="font-size: 12.5px; color: #475569;">${c.apptTime || '-'}</td>
+            <td style="font-size: 12.5px; color: #475569;">${c.feedbackEndTime || '-'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      section.style.display = "block";
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeDrilldown() {
+      document.getElementById("drilldownSection").style.display = "none";
+    }
+
+    function parseCSVLine(line) {
+      const arr = [];
+      let entry = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') {
+          inQuotes = !inQuotes;
+        } else if (c === ',' && !inQuotes) {
+          arr.push(entry.trim());
+          entry = '';
+        } else {
+          entry += c;
+        }
+      }
+      arr.push(entry.trim());
+      return arr.map(s => s.replace(/^"|"$/g, ''));
+    }
+
+    document.getElementById("csvUploader").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const text = evt.target.result;
+        const lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
+
+        let headerIdx = -1;
+        for (let i = 0; i < Math.min(lines.length, 15); i++) {
+          const lower = lines[i].toLowerCase();
+          if (lower.includes("med agent") || lower.includes("appt time")) {
+            headerIdx = i;
+            break;
+          }
+        }
+
+        if (headerIdx === -1) {
+          alert("CSV file me 'Med Agent' ya 'Appt Time' column nahi mila.");
+          return;
+        }
+
+        const headers = parseCSVLine(lines[headerIdx]);
+        const rows = [];
+
+        for (let i = headerIdx + 1; i < lines.length; i++) {
+          const cols = parseCSVLine(lines[i]);
+          if (cols.length < 3) continue;
+          const rowObj = {};
+          headers.forEach((h, idx) => {
+            rowObj[h] = cols[idx] !== undefined ? cols[idx] : "";
+          });
+          rows.push(rowObj);
+        }
+
+        processRawRows(rows);
+      };
+      reader.readAsText(file);
+    });
+
+    function getHourSlot(timeStr) {
+      if (!timeStr) return null;
+      const parts = timeStr.split(' ');
+      const t = parts.length > 1 ? parts[1] : parts[0];
+      const hour = parseInt(t.split(':')[0], 10);
+      if (isNaN(hour)) return null;
+
+      if (hour === 7) return "7-8";
+      if (hour === 8) return "8-9";
+      if (hour === 9) return "9-10";
+      if (hour === 10) return "10-11";
+      if (hour === 11) return "11-12";
+      if (hour === 12) return "12-1";
+      if (hour === 13) return "1-2";
+      if (hour === 14) return "2-3";
+      if (hour === 15) return "3-4";
+      if (hour === 16) return "4-5";
+      if (hour === 17) return "5-6";
+      if (hour === 18) return "6-7";
+      return null;
+    }
+
+    function parseDifferenceInMinutes(startStr, endStr) {
+      if (!startStr || !endStr) return null;
+      if (endStr.includes("2050") || startStr.includes("2050")) return null;
+
+      const s = new Date(startStr.trim().replace(' ', 'T'));
+      const e = new Date(endStr.trim().replace(' ', 'T'));
+
+      if (isNaN(s.getTime()) || isNaN(e.getTime())) return null;
+
+      const diffMs = e.getTime() - s.getTime();
+      const diffMins = diffMs / (1000 * 60);
+
+      return (diffMins >= 0 && diffMins <= 300) ? diffMins : null;
+    }
+
+    function processRawRows(rows) {
+      agentCaseStore = {};
+
+      currentDataset = ROSTER.map(team => ({
+        team: team.team,
+        members: team.members.map(agentObj => {
+          const hours = {};
+          SLOTS.forEach(s => hours[s] = 0);
+          const regionMap = {};
+          let tatSum = 0;
+          let tatCount = 0;
+
+          if (!agentCaseStore[agentObj.name]) {
+            agentCaseStore[agentObj.name] = {};
+            SLOTS.forEach(s => agentCaseStore[agentObj.name][s] = []);
+          }
+
+          const matches = rows.filter(r => {
+            const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
+            const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
+            return agentObj.match.some(m => medAgent === m || medAgent.includes(m) || empCode === m);
+          });
+
+          matches.forEach(row => {
+            const status = (row["Status"] || "").trim().toUpperCase();
+            if (status !== "DONE") return;
+
+            const apptTime = row["Appt Time"] || row["Consult StartTime"] || "";
+            const slot = getHourSlot(apptTime);
+            if (!slot || hours[slot] === undefined) return;
+
+            hours[slot] += 1;
+
+            const reg = row["Region Name"] || row["Clinic State"] || "";
+            if (reg && reg.trim().length > 0) {
+              regionMap[reg] = (regionMap[reg] || 0) + 1;
+            }
+
+            const fbEndTime = row["Immediate Feedback End Time"] || "";
+            const calculatedTatMins = parseDifferenceInMinutes(apptTime, fbEndTime);
+
+            if (calculatedTatMins !== null) {
+              tatSum += calculatedTatMins;
+              tatCount++;
+            }
+
+            let doctorName = (row["Doc Consult"] || row["Scheduled Doc"] || row["Docs"] || "").replace(/,/g, '').trim();
+
+            agentCaseStore[agentObj.name][slot].push({
+              emr: row["EMR #"] || row["Member Id"] || "-",
+              doctor: doctorName || "-",
+              medAgent: row["Med Agent"] || agentObj.name,
+              region: reg || "-",
+              branch: row["Branch Name"] || "-",
+              type: row["Type"] || "-",
+              tat: calculatedTatMins !== null ? calculatedTatMins.toFixed(1) : "-",
+              apptTime: apptTime,
+              feedbackEndTime: fbEndTime
+            });
+          });
+
+          const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
+
+          const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
+          const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 3).join(", ") : "";
+
+          const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : "";
+
+          return {
+            name: agentObj.name,
+            region: displayRegion,
+            hours: hours,
+            total: totalOutput,
+            tat: avgTat,
+            tatSum: tatSum,
+            tatCount: tatCount
+          };
+        })
+      }));
+
+      closeDrilldown();
+      render();
+    }
+
+    currentDataset = buildEmptyState();
+    render();
+  </script>
+</body>
+</html>
