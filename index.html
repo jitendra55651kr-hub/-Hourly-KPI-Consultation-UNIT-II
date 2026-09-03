@@ -4,238 +4,384 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOURLY KPI CONSULTATION DATA UNIT 2</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            cyber: {
-              bg: '#090d16',
-              surface: '#0f172a',
-              card: '#131e36',
-              border: '#1e293b',
-              neon: '#06b6d4',
-              accent: '#3b82f6',
-              emerald: '#10b981',
-              rose: '#f43f5e'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { background-color: #080c14; }
-    .glass-panel {
-      background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(56, 189, 248, 0.12);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .neon-glow {
-      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      padding: 20px;
     }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #090d16; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+    .container {
+      max-width: 1750px;
+      margin: 0 auto;
+    }
+
+    /* Top Banner */
+    .top-header {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+
+    .main-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f1e36;
+      letter-spacing: 0.5px;
+    }
+
+    .sub-title {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .btn-upload {
+      background-color: #0f1e36;
+      color: #ffffff;
+      border: 1px solid #0f1e36;
+      padding: 9px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-upload:hover {
+      background-color: #1e3a68;
+    }
+
+    /* Summary Bar */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 14px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f1e36;
+      margin-top: 4px;
+    }
+
+    /* Team Section Block */
+    .team-block {
+      background: #ffffff;
+      border: 1px solid #94a3b8;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .team-banner {
+      background-color: #0f1e36;
+      color: #ffffff;
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    /* Data Table */
+    .table-wrapper {
+      overflow-x: auto;
+      background: #ffffff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #0f1e36;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 10px 6px;
+      border: 1px solid #233554;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 8px 6px;
+      border: 1px solid #cbd5e1;
+      color: #1e293b;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tbody tr:hover {
+      background-color: #e2e8f0;
+    }
+
+    .agent-name-cell {
+      text-align: left;
+      padding-left: 14px;
+      font-weight: 700;
+      color: #0f1e36;
+      min-width: 180px;
+    }
+
+    .region-cell {
+      font-size: 11px;
+      color: #334155;
+      font-weight: 600;
+      min-width: 120px;
+    }
+
+    .total-cell {
+      background-color: #eff6ff !important;
+      font-weight: 800;
+      color: #1d4ed8;
+    }
+
+    .tat-cell {
+      background-color: #f0fdf4 !important;
+      font-weight: 700;
+      color: #15803d;
+    }
+
+    .val-highlight {
+      font-weight: 700;
+      color: #0f1e36;
+    }
+
+    .val-zero {
+      color: #94a3b8;
+    }
   </style>
 </head>
-<body class="text-slate-200 min-h-screen font-sans antialiased p-4 lg:p-6">
+<body>
 
-  <!-- Main Container -->
-  <div class="max-w-[1680px] mx-auto space-y-6">
+  <div class="container">
 
-    <!-- Header Section -->
-    <header class="glass-panel rounded-2xl p-6 relative overflow-hidden neon-glow flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="space-y-1 text-center md:text-left">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-400 text-xs font-mono uppercase tracking-widest">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Realtime Operations Monitor
-        </div>
-        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyan-400">
-          HOURLY KPI CONSULTATION DATA UNIT 2
-        </h1>
-        <p class="text-xs md:text-sm text-slate-400 font-mono">27 Active Roster Agents • 5 Tactical Operational Clusters</p>
+    <header class="top-header">
+      <div>
+        <h1 class="main-title">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
+        <p class="sub-title">27 Target Agents • Hourly Output, Region & TAT Monitoring</p>
       </div>
-
-      <!-- File Upload & Controls -->
-      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
-        <label class="cursor-pointer group flex items-center gap-3 px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium shadow-lg shadow-cyan-900/30 transition-all border border-cyan-400/20 active:scale-95">
-          <svg class="w-5 h-5 text-cyan-200 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-          </svg>
-          <span class="text-sm">Upload CSV / Excel</span>
-          <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden">
+      <div>
+        <label class="btn-upload">
+          <span>Upload CSV / Excel</span>
+          <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" style="display: none;">
         </label>
-        <button onclick="resetToSample()" class="px-4 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-xs font-mono text-slate-300 border border-slate-700 transition">
-          Reload Demo
-        </button>
       </div>
     </header>
 
-    <!-- Top Metric Widgets -->
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="glass-panel p-4 rounded-xl relative overflow-hidden">
-        <div class="text-slate-400 text-xs uppercase tracking-wider font-mono">Total Consultations</div>
-        <div id="statTotalConsult" class="text-3xl font-black text-cyan-400 mt-1 font-mono tracking-tight">0</div>
-        <div class="text-[11px] text-slate-500 mt-1">Sum of all hourly output</div>
+    <section class="summary-grid">
+      <div class="summary-card">
+        <div class="card-label">Total Unit Consultations</div>
+        <div id="statTotal" class="card-val">0</div>
       </div>
-      <div class="glass-panel p-4 rounded-xl relative overflow-hidden">
-        <div class="text-slate-400 text-xs uppercase tracking-wider font-mono">Avg Handle TAT</div>
-        <div id="statAvgTAT" class="text-3xl font-black text-emerald-400 mt-1 font-mono tracking-tight">0.0m</div>
-        <div class="text-[11px] text-slate-500 mt-1">Weighted turn-around time</div>
+      <div class="summary-card">
+        <div class="card-label">Unit Avg TAT (Hours/Day)</div>
+        <div id="statAvgTAT" class="card-val">0.0h</div>
       </div>
-      <div class="glass-panel p-4 rounded-xl relative overflow-hidden">
-        <div class="text-slate-400 text-xs uppercase tracking-wider font-mono">Active Duty Roster</div>
-        <div id="statActiveAgents" class="text-3xl font-black text-indigo-400 mt-1 font-mono tracking-tight">27 / 27</div>
-        <div class="text-[11px] text-slate-500 mt-1">Agents verified in registry</div>
+      <div class="summary-card">
+        <div class="card-label">Active Agents Tracked</div>
+        <div id="statAgents" class="card-val">27 / 27</div>
       </div>
-      <div class="glass-panel p-4 rounded-xl relative overflow-hidden">
-        <div class="text-slate-400 text-xs uppercase tracking-wider font-mono">Top Performer</div>
-        <div id="statTopAgent" class="text-xl font-bold text-amber-300 truncate mt-2 font-mono">--</div>
-        <div id="statTopCount" class="text-[11px] text-slate-500 font-mono">0 consultations</div>
+      <div class="summary-card">
+        <div class="card-label">Top Performer Agent</div>
+        <div id="statTopAgent" class="card-val" style="font-size: 17px; margin-top:8px;">--</div>
       </div>
     </section>
 
-    <!-- Filter & Search Toolbar -->
-    <div class="glass-panel p-3 rounded-xl flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2 flex-wrap">
-        <button onclick="setTeamFilter('ALL')" class="team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition bg-cyan-500/20 text-cyan-300 border border-cyan-500/40" data-team="ALL">ALL TEAMS</button>
-        <button onclick="setTeamFilter('TEAM JITENDRA')" class="team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-slate-200 transition" data-team="TEAM JITENDRA">JITENDRA (5)</button>
-        <button onclick="setTeamFilter('TEAM DEEPTI')" class="team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-slate-200 transition" data-team="TEAM DEEPTI">DEEPTI (6)</button>
-        <button onclick="setTeamFilter('TEAM RAVI')" class="team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-slate-200 transition" data-team="TEAM RAVI">RAVI (5)</button>
-        <button onclick="setTeamFilter('TEAM SHIVAM')" class="team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-slate-200 transition" data-team="TEAM SHIVAM">SHIVAM (6)</button>
-        <button onclick="setTeamFilter('TEAM ISHANT')" class="team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-slate-200 transition" data-team="TEAM ISHANT">ISHANT (5)</button>
-      </div>
-      <div class="w-full sm:w-72 relative">
-        <input type="text" id="agentSearch" placeholder="Search agent or region..." oninput="renderData()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono">
-      </div>
-    </div>
-
-    <!-- Main Data Table Container -->
-    <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse text-xs">
-          <thead>
-            <tr class="bg-slate-900/90 border-b border-slate-800 text-[11px] font-mono uppercase tracking-wider text-slate-400">
-              <th class="p-3.5 pl-5">Agent & Team</th>
-              <th class="p-3.5">Key Regions</th>
-              <th class="p-3 text-center bg-slate-900/40">7-8</th>
-              <th class="p-3 text-center bg-slate-900/40">8-9</th>
-              <th class="p-3 text-center bg-slate-900/40">9-10</th>
-              <th class="p-3 text-center bg-slate-900/40">10-11</th>
-              <th class="p-3 text-center bg-slate-900/40">11-12</th>
-              <th class="p-3 text-center bg-slate-900/40">12-1</th>
-              <th class="p-3 text-center bg-slate-900/40">1-2</th>
-              <th class="p-3 text-center bg-slate-900/40">2-3</th>
-              <th class="p-3 text-center bg-slate-900/40">3-4</th>
-              <th class="p-3 text-center bg-slate-900/40">4-5</th>
-              <th class="p-3 text-center bg-slate-900/40">5-6</th>
-              <th class="p-3 text-center bg-slate-900/40">6-7</th>
-              <th class="p-3.5 text-center font-bold text-cyan-400 bg-cyan-950/20">Total</th>
-              <th class="p-3.5 text-center font-bold text-emerald-400 bg-emerald-950/20">Avg TAT</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody" class="divide-y divide-slate-800/60 font-mono">
-            <!-- Dynamic Rows -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <main id="teamsContainer">
+      </main>
 
   </div>
 
   <script>
-    // 27-Agent Official Roster Definition
-    const MASTER_ROSTER = [
-      { team: "TEAM JITENDRA", agent: "Saurav Pal" },
-      { team: "TEAM JITENDRA", agent: "Md Anas" },
-      { team: "TEAM JITENDRA", agent: "Renu Gupta" },
-      { team: "TEAM JITENDRA", agent: "Shivam Verma" },
-      { team: "TEAM JITENDRA", agent: "Jogender Singh" },
-
-      { team: "TEAM DEEPTI", agent: "Renu Rani" },
-      { team: "TEAM DEEPTI", agent: "Pooja Rathore" },
-      { team: "TEAM DEEPTI", agent: "Roshni Prajapati" },
-      { team: "TEAM DEEPTI", agent: "Garvit Jha" },
-      { team: "TEAM DEEPTI", agent: "Rajni Saini" },
-      { team: "TEAM DEEPTI", agent: "Puja Chauhan" },
-
-      { team: "TEAM RAVI", agent: "Jyoti Singh Unit 2" },
-      { team: "TEAM RAVI", agent: "Rajendra Mourya" },
-      { team: "TEAM RAVI", agent: "Apurv Acharya" },
-      { team: "TEAM RAVI", agent: "Amit Sharma" },
-      { team: "TEAM RAVI", agent: "Atul Kumar" },
-
-      { team: "TEAM SHIVAM", agent: "Nandani" },
-      { team: "TEAM SHIVAM", agent: "Kamni Sharma" },
-      { team: "TEAM SHIVAM", agent: "Burhan" },
-      { team: "TEAM SHIVAM", agent: "Chandrabhanu" },
-      { team: "TEAM SHIVAM", agent: "Munsi shakil Ahamed" },
-      { team: "TEAM SHIVAM", agent: "Ashish Yadav" },
-
-      { team: "TEAM ISHANT", agent: "Ayushi Saxena" },
-      { team: "TEAM ISHANT", agent: "Harivansh Agarwal" },
-      { team: "TEAM ISHANT", agent: "Smruti Rani Sahoo" },
-      { team: "TEAM ISHANT", agent: "Sushma Chaudhary" },
-      { team: "TEAM ISHANT", agent: "Ashok Pawar" }
+    // Master Team Structure as per your roster list
+    const ROSTER_CONFIG = [
+      {
+        teamName: "TEAM JITENDRA",
+        agents: ["Saurav Pal", "Md Anas", "Renu Gupta", "Shivam Verma", "Jogender Singh"]
+      },
+      {
+        teamName: "TEAM DEEPTI",
+        agents: ["Renu Rani", "Pooja Rathore", "Roshni Prajapati", "Garvit Jha", "Rajni Saini", "Puja Chauhan"]
+      },
+      {
+        teamName: "TEAM RAVI",
+        agents: ["Jyoti Singh Unit 2", "Rajendra Mourya", "Apurv Acharya", "Amit Sharma", "Atul Kumar"]
+      },
+      {
+        teamName: "TEAM SHIVAM",
+        agents: ["Nandani", "Kamni Sharma", "Burhan", "Chandrabhanu", "Munsi shakil Ahamed", "Ashish Yadav"]
+      },
+      {
+        teamName: "TEAM ISHANT",
+        agents: ["Ayushi Saxena", "Harivansh Agarwal", "Smruti Rani Sahoo", "Sushma Chaudhary", "Ashok Pawar"]
+      }
     ];
 
     const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
-    let currentData = [];
-    let selectedTeam = 'ALL';
+    let dashboardState = [];
 
-    function generateRealisticSample() {
-      const regionsList = [["Bihar", "UP"], ["Delhi-NCR"], ["Rajasthan", "MP"], ["WB", "Odisha"], ["Maharashtra"]];
-      return MASTER_ROSTER.map((item, idx) => {
-        const hourly = {};
-        let total = 0;
-        SLOTS.forEach(slot => {
-          const val = Math.floor(Math.random() * 8) + 1;
-          hourly[slot] = val;
-          total += val;
-        });
-        const tat = (Math.random() * 4 + 3.2).toFixed(1); // 3.2 - 7.2 mins
-        const regions = regionsList[idx % regionsList.length];
+    // Helper to clean names for matching
+    function clean(str) {
+      return (str || '').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
+    // Default Initial Data (Light and realistic)
+    function generateInitialData() {
+      const sampleRegions = ["North", "UP / Bihar", "West", "East / Odisha", "Central MP"];
+      return ROSTER_CONFIG.map(team => {
         return {
-          ...item,
-          hourly,
-          total,
-          tat: parseFloat(tat),
-          regions: regions.join(", ")
+          teamName: team.teamName,
+          members: team.agents.map((agentName, idx) => {
+            let hourly = {};
+            let total = 0;
+            SLOTS.forEach(slot => {
+              const val = Math.floor(Math.random() * 6);
+              hourly[slot] = val;
+              total += val;
+            });
+            return {
+              name: agentName,
+              region: sampleRegions[(idx + team.teamName.length) % sampleRegions.length],
+              hourly: hourly,
+              total: total,
+              tat: (Math.random() * 2 + 7.5).toFixed(1) // Average 7.5 - 9.5 hours
+            };
+          })
         };
       });
     }
 
-    function init() {
-      currentData = generateRealisticSample();
-      renderData();
-    }
+    // Render Function
+    function renderDashboard() {
+      const container = document.getElementById('teamsContainer');
+      container.innerHTML = '';
 
-    function setTeamFilter(team) {
-      selectedTeam = team;
-      document.querySelectorAll('.team-tab').forEach(btn => {
-        if (btn.getAttribute('data-team') === team) {
-          btn.className = "team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
-        } else {
-          btn.className = "team-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-slate-200 transition";
-        }
+      let overallConsultations = 0;
+      let totalTatSum = 0;
+      let totalAgentCount = 0;
+      let bestAgent = { name: '--', total: 0 };
+
+      dashboardState.forEach(team => {
+        const teamBlock = document.createElement('div');
+        teamBlock.className = 'team-block';
+
+        let rowsHtml = '';
+        team.members.forEach(member => {
+          overallConsultations += member.total;
+          totalTatSum += parseFloat(member.tat) || 0;
+          totalAgentCount++;
+
+          if (member.total > bestAgent.total) {
+            bestAgent = { name: member.name, total: member.total };
+          }
+
+          let slotsHtml = SLOTS.map(slot => {
+            const count = member.hourly[slot] || 0;
+            const styleClass = count > 0 ? 'val-highlight' : 'val-zero';
+            return `<td class="${styleClass}">${count}</td>`;
+          }).join('');
+
+          rowsHtml += `
+            <tr>
+              <td class="agent-name-cell">${member.name}</td>
+              <td class="region-cell">${member.region || 'General'}</td>
+              ${slotsHtml}
+              <td class="total-cell">${member.total}</td>
+              <td class="tat-cell">${member.tat} hrs</td>
+            </tr>
+          `;
+        });
+
+        teamBlock.innerHTML = `
+          <div class="team-banner">${team.teamName}</div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th style="min-width: 180px; text-align: left; padding-left: 14px;">AGENT NAME</th>
+                  <th style="min-width: 120px;">REGION</th>
+                  <th>7-8</th>
+                  <th>8-9</th>
+                  <th>9-10</th>
+                  <th>10-11</th>
+                  <th>11-12</th>
+                  <th>12-1</th>
+                  <th>1-2</th>
+                  <th>2-3</th>
+                  <th>3-4</th>
+                  <th>4-5</th>
+                  <th>5-6</th>
+                  <th>6-7</th>
+                  <th style="background-color: #1e3a68;">TOTAL</th>
+                  <th style="background-color: #1e3a68;">DAILY TAT</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+        container.appendChild(teamBlock);
       });
-      renderData();
+
+      // Update Summary Cards
+      document.getElementById('statTotal').innerText = overallConsultations.toLocaleString();
+      document.getElementById('statAvgTAT').innerText = totalAgentCount > 0 ? (totalTatSum / totalAgentCount).toFixed(1) + 'h' : '0.0h';
+      document.getElementById('statAgents').innerText = `${totalAgentCount} / 27`;
+      document.getElementById('statTopAgent').innerText = `${bestAgent.name} (${bestAgent.total})`;
     }
 
-    function normalizeString(str) {
-      return (str || '').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
-    }
-
-    // Process uploaded CSV / XLSX
+    // CSV/Excel Upload Handler
     document.getElementById('fileInput').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -245,154 +391,15 @@
         try {
           const data = new Uint8Array(evt.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
-          const sheetName = workbook.SheetNames[0];
-          const rawRows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet);
 
-          if (!rawRows || rawRows.length === 0) {
-            alert("No data found in uploaded file!");
+          if (!rows || rows.length === 0) {
+            alert("Sheet me koi data nahi mila!");
             return;
           }
 
-          processCustomData(rawRows);
+          parseFileContent(rows);
         } catch (err) {
           console.error(err);
-          alert("File parse error: Verify CSV/XLSX structure.");
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    });
-
-    function processCustomData(rows) {
-      // Map rows against roster
-      const mapped = MASTER_ROSTER.map(rosterAgent => {
-        const normRoster = normalizeString(rosterAgent.agent);
-
-        // Find matches in uploaded rows
-        const matches = rows.filter(r => {
-          const agentKey = Object.keys(r).find(k => /agent|name|pharmacist|user/i.test(k));
-          return agentKey && normalizeString(r[agentKey]).includes(normRoster);
-        });
-
-        const hourly = {};
-        SLOTS.forEach(s => hourly[s] = 0);
-        let tatSum = 0;
-        let tatCount = 0;
-        let regSet = new Set();
-
-        if (matches.length > 0) {
-          matches.forEach(m => {
-            // Check if tabular slot columns exist (e.g. column '7-8')
-            SLOTS.forEach(s => {
-              const matchedKey = Object.keys(m).find(k => k.toLowerCase().replace(/\s+/g, '') === s.toLowerCase());
-              if (matchedKey && !isNaN(Number(m[matchedKey]))) {
-                hourly[s] += Number(m[matchedKey]);
-              }
-            });
-
-            // If transactional row with 'Hour' column
-            const hourKey = Object.keys(m).find(k => /hour|slot|time/i.test(k));
-            if (hourKey) {
-              const val = (m[hourKey] || '').toString();
-              SLOTS.forEach(s => {
-                if (val.includes(s.split('-')[0])) hourly[s] += 1;
-              });
-            }
-
-            // Region detection
-            const regKey = Object.keys(m).find(k => /region|state|circle/i.test(k));
-            if (regKey && m[regKey]) regSet.add(m[regKey]);
-
-            // TAT detection
-            const tatKey = Object.keys(m).find(k => /tat|turnaround|duration|handling/i.test(k));
-            if (tatKey && !isNaN(parseFloat(m[tatKey]))) {
-              tatSum += parseFloat(m[tatKey]);
-              tatCount++;
-            }
-          });
-        }
-
-        const total = Object.values(hourly).reduce((a, b) => a + b, 0);
-        const tat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : (Math.random() * 2 + 4).toFixed(1);
-
-        return {
-          ...rosterAgent,
-          hourly,
-          total,
-          tat: parseFloat(tat),
-          regions: regSet.size > 0 ? Array.from(regSet).join(", ") : "Universal / North"
-        };
-      });
-
-      currentData = mapped;
-      renderData();
-    }
-
-    function resetToSample() {
-      currentData = generateRealisticSample();
-      renderData();
-    }
-
-    function renderData() {
-      const search = document.getElementById('agentSearch').value.toLowerCase();
-      const filtered = currentData.filter(row => {
-        const teamMatch = selectedTeam === 'ALL' || row.team === selectedTeam;
-        const searchMatch = row.agent.toLowerCase().includes(search) || row.regions.toLowerCase().includes(search);
-        return teamMatch && searchMatch;
-      });
-
-      // Update Aggregates
-      const totalCons = filtered.reduce((acc, r) => acc + r.total, 0);
-      const avgTatVal = filtered.length ? (filtered.reduce((acc, r) => acc + r.tat, 0) / filtered.length).toFixed(1) : 0;
-      
-      let topAgent = { agent: "None", total: 0 };
-      if (filtered.length) {
-        topAgent = [...filtered].sort((a, b) => b.total - a.total)[0];
-      }
-
-      document.getElementById('statTotalConsult').textContent = totalCons.toLocaleString();
-      document.getElementById('statAvgTAT').textContent = `${avgTatVal}m`;
-      document.getElementById('statActiveAgents').textContent = `${filtered.length} / 27`;
-      document.getElementById('statTopAgent').textContent = topAgent.agent;
-      document.getElementById('statTopCount').textContent = `${topAgent.total} consultations`;
-
-      // Build Table Rows
-      const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '';
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="16" class="p-8 text-center text-slate-500 font-mono">No matching agent records found.</td></tr>`;
-        return;
-      }
-
-      filtered.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-800/40 transition group";
-
-        let slotCells = SLOTS.map(slot => {
-          const val = row.hourly[slot] || 0;
-          let color = "text-slate-500";
-          if (val > 5) color = "text-cyan-300 font-bold bg-cyan-950/30";
-          else if (val > 0) color = "text-slate-300";
-          return `<td class="p-2.5 text-center ${color} border-l border-r border-slate-800/40">${val}</td>`;
-        }).join('');
-
-        tr.innerHTML = `
-          <td class="p-3 pl-5 border-r border-slate-800/40">
-            <div class="font-sans font-semibold text-slate-100">${row.agent}</div>
-            <div class="text-[10px] text-cyan-400/80 font-mono font-medium tracking-wider">${row.team}</div>
-          </td>
-          <td class="p-3 border-r border-slate-800/40">
-            <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">${row.regions || 'General'}</span>
-          </td>
-          ${slotCells}
-          <td class="p-3 text-center font-bold text-cyan-400 bg-cyan-950/20 text-sm border-l border-slate-800/40">${row.total}</td>
-          <td class="p-3 text-center font-semibold text-emerald-400 bg-emerald-950/20 border-l border-slate-800/40">${row.tat}m</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    window.onload = init;
-  </script>
-</body>
-</html>
+          alert("File read
