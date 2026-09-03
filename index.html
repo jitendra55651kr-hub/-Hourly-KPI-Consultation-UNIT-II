@@ -4,91 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOURLY KPI CONSULTATION DATA UNIT 2</title>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: #f1f5f9;
-      color: #1e293b;
+      background-color: #f8fafc;
+      color: #0f172a;
       padding: 20px;
     }
 
     .container {
-      max-width: 1750px;
+      max-width: 1700px;
       margin: 0 auto;
     }
 
-    /* Top Banner */
-    .top-header {
+    /* Top Control Banner */
+    .header-card {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 16px 24px;
+      border-radius: 6px;
+      padding: 16px 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      gap: 15px;
       margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
-    .main-title {
+    .title-area h1 {
       font-size: 20px;
       font-weight: 800;
-      color: #0f1e36;
+      color: #0c1a30;
       letter-spacing: 0.5px;
     }
 
-    .sub-title {
+    .title-area p {
       font-size: 13px;
       color: #64748b;
       margin-top: 4px;
       font-weight: 600;
     }
 
-    .btn-upload {
-      background-color: #0f1e36;
+    .upload-btn {
+      background-color: #0c1a30;
       color: #ffffff;
-      border: 1px solid #0f1e36;
       padding: 9px 18px;
-      border-radius: 6px;
-      cursor: pointer;
       font-size: 13px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-block;
+      transition: background 0.2s;
     }
 
-    .btn-upload:hover {
-      background-color: #1e3a68;
+    .upload-btn:hover {
+      background-color: #1e355b;
     }
 
-    /* Summary Bar */
-    .summary-grid {
+    /* Summary KPI Bar */
+    .kpi-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
+      gap: 14px;
       margin-bottom: 24px;
     }
 
-    .summary-card {
+    .kpi-card {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 14px 18px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
 
-    .card-label {
+    .kpi-label {
       font-size: 11px;
       font-weight: 700;
       color: #64748b;
@@ -96,37 +92,45 @@
       letter-spacing: 0.5px;
     }
 
-    .card-val {
+    .kpi-value {
       font-size: 22px;
       font-weight: 800;
-      color: #0f1e36;
+      color: #0c1a30;
       margin-top: 4px;
     }
 
-    /* Team Section Block */
-    .team-block {
+    /* Team Block Layout */
+    .team-section {
       background: #ffffff;
       border: 1px solid #94a3b8;
-      border-radius: 8px;
-      overflow: hidden;
+      border-radius: 4px;
       margin-bottom: 24px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 
-    .team-banner {
-      background-color: #0f1e36;
+    .team-header-bar {
+      background-color: #0c1a30;
       color: #ffffff;
-      padding: 10px 18px;
-      font-size: 15px;
+      padding: 9px 16px;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: 0.8px;
-      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    /* Data Table */
-    .table-wrapper {
+    .team-badge {
+      background: rgba(255, 255, 255, 0.15);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    /* Table Styling */
+    .table-container {
       overflow-x: auto;
-      background: #ffffff;
     }
 
     table {
@@ -136,19 +140,22 @@
       text-align: center;
     }
 
-    th {
-      background-color: #0f1e36;
+    thead tr {
+      background-color: #0c1a30;
       color: #ffffff;
+    }
+
+    th {
+      padding: 8px 4px;
       font-weight: 700;
       font-size: 11px;
       text-transform: uppercase;
-      padding: 10px 6px;
-      border: 1px solid #233554;
+      border: 1px solid #233758;
       white-space: nowrap;
     }
 
     td {
-      padding: 8px 6px;
+      padding: 7px 4px;
       border: 1px solid #cbd5e1;
       color: #1e293b;
       font-weight: 500;
@@ -163,39 +170,38 @@
       background-color: #e2e8f0;
     }
 
-    .agent-name-cell {
+    .col-agent {
       text-align: left;
       padding-left: 14px;
       font-weight: 700;
-      color: #0f1e36;
-      min-width: 180px;
+      color: #0c1a30;
+      min-width: 170px;
     }
 
-    .region-cell {
-      font-size: 11px;
-      color: #334155;
+    .col-region {
+      min-width: 110px;
       font-weight: 600;
-      min-width: 120px;
+      color: #334155;
     }
 
-    .total-cell {
+    .col-total {
       background-color: #eff6ff !important;
       font-weight: 800;
       color: #1d4ed8;
     }
 
-    .tat-cell {
+    .col-tat {
       background-color: #f0fdf4 !important;
       font-weight: 700;
       color: #15803d;
     }
 
-    .val-highlight {
+    .slot-val {
       font-weight: 700;
-      color: #0f1e36;
+      color: #0c1a30;
     }
 
-    .val-zero {
+    .slot-zero {
       color: #94a3b8;
     }
   </style>
@@ -204,202 +210,287 @@
 
   <div class="container">
 
-    <header class="top-header">
-      <div>
-        <h1 class="main-title">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
-        <p class="sub-title">27 Target Agents • Hourly Output, Region & TAT Monitoring</p>
+    <!-- Top Controls -->
+    <header class="header-card">
+      <div class="title-area">
+        <h1>HOURLY KPI CONSULTATION DATA UNIT 2</h1>
+        <p>27 Tracked Agents • Hourly Consultations, Region Wise & TAT Metrics</p>
       </div>
       <div>
-        <label class="btn-upload">
-          <span>Upload CSV / Excel</span>
-          <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" style="display: none;">
+        <label class="upload-btn">
+          Upload CSV File
+          <input type="file" id="csvUploader" accept=".csv" style="display: none;">
         </label>
       </div>
     </header>
 
-    <section class="summary-grid">
-      <div class="summary-card">
-        <div class="card-label">Total Unit Consultations</div>
-        <div id="statTotal" class="card-val">0</div>
+    <!-- Top KPI Row -->
+    <section class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Consultations</div>
+        <div id="statTotal" class="kpi-value">0</div>
       </div>
-      <div class="summary-card">
-        <div class="card-label">Unit Avg TAT (Hours/Day)</div>
-        <div id="statAvgTAT" class="card-val">0.0h</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Average Unit TAT</div>
+        <div id="statTat" class="kpi-value">0.0 hrs</div>
       </div>
-      <div class="summary-card">
-        <div class="card-label">Active Agents Tracked</div>
-        <div id="statAgents" class="card-val">27 / 27</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Active Agents</div>
+        <div id="statAgents" class="kpi-value">27 / 27</div>
       </div>
-      <div class="summary-card">
-        <div class="card-label">Top Performer Agent</div>
-        <div id="statTopAgent" class="card-val" style="font-size: 17px; margin-top:8px;">--</div>
+      <div class="kpi-card">
+        <div class="kpi-label">Top Agent</div>
+        <div id="statTop" class="kpi-value" style="font-size: 16px; margin-top: 6px;">--</div>
       </div>
     </section>
 
-    <main id="teamsContainer">
-      </main>
+    <!-- Teamwise Tables Hook -->
+    <main id="dashboardHook"></main>
 
   </div>
 
   <script>
-    // Master Team Structure as per your roster list
-    const ROSTER_CONFIG = [
+    // Master Roster of 27 Agents
+    var ROSTER = [
       {
-        teamName: "TEAM JITENDRA",
-        agents: ["Saurav Pal", "Md Anas", "Renu Gupta", "Shivam Verma", "Jogender Singh"]
+        team: "TEAM JITENDRA",
+        members: ["Saurav Pal", "Md Anas", "Renu Gupta", "Shivam Verma", "Jogender Singh"]
       },
       {
-        teamName: "TEAM DEEPTI",
-        agents: ["Renu Rani", "Pooja Rathore", "Roshni Prajapati", "Garvit Jha", "Rajni Saini", "Puja Chauhan"]
+        team: "TEAM DEEPTI",
+        members: ["Renu Rani", "Pooja Rathore", "Roshni Prajapati", "Garvit Jha", "Rajni Saini", "Puja Chauhan"]
       },
       {
-        teamName: "TEAM RAVI",
-        agents: ["Jyoti Singh Unit 2", "Rajendra Mourya", "Apurv Acharya", "Amit Sharma", "Atul Kumar"]
+        team: "TEAM RAVI",
+        members: ["Jyoti Singh Unit 2", "Rajendra Mourya", "Apurv Acharya", "Amit Sharma", "Atul Kumar"]
       },
       {
-        teamName: "TEAM SHIVAM",
-        agents: ["Nandani", "Kamni Sharma", "Burhan", "Chandrabhanu", "Munsi shakil Ahamed", "Ashish Yadav"]
+        team: "TEAM SHIVAM",
+        members: ["Nandani", "Kamni Sharma", "Burhan", "Chandrabhanu", "Munsi shakil Ahamed", "Ashish Yadav"]
       },
       {
-        teamName: "TEAM ISHANT",
-        agents: ["Ayushi Saxena", "Harivansh Agarwal", "Smruti Rani Sahoo", "Sushma Chaudhary", "Ashok Pawar"]
+        team: "TEAM ISHANT",
+        members: ["Ayushi Saxena", "Harivansh Agarwal", "Smruti Rani Sahoo", "Sushma Chaudhary", "Ashok Pawar"]
       }
     ];
 
-    const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
-    let dashboardState = [];
+    var SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
+    var currentDataset = [];
 
-    // Helper to clean names for matching
-    function clean(str) {
-      return (str || '').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
+    function normalize(text) {
+      return (text || "").toString().toLowerCase().replace(/[^a-z0-9]/g, "");
     }
 
-    // Default Initial Data (Light and realistic)
-    function generateInitialData() {
-      const sampleRegions = ["North", "UP / Bihar", "West", "East / Odisha", "Central MP"];
-      return ROSTER_CONFIG.map(team => {
-        return {
-          teamName: team.teamName,
-          members: team.agents.map((agentName, idx) => {
-            let hourly = {};
-            let total = 0;
-            SLOTS.forEach(slot => {
-              const val = Math.floor(Math.random() * 6);
-              hourly[slot] = val;
-              total += val;
-            });
-            return {
-              name: agentName,
-              region: sampleRegions[(idx + team.teamName.length) % sampleRegions.length],
-              hourly: hourly,
-              total: total,
-              tat: (Math.random() * 2 + 7.5).toFixed(1) // Average 7.5 - 9.5 hours
-            };
-          })
-        };
-      });
+    // Default 0-state generation
+    function getBlankState() {
+      var state = [];
+      for (var t = 0; t < ROSTER.length; t++) {
+        var teamObj = { team: ROSTER[t].team, members: [] };
+        for (var a = 0; a < ROSTER[t].members.length; a++) {
+          var hours = {};
+          for (var s = 0; s < SLOTS.length; s++) hours[SLOTS[s]] = 0;
+          teamObj.members.push({
+            name: ROSTER[t].members[a],
+            region: "-",
+            hours: hours,
+            total: 0,
+            tat: "0.0"
+          });
+        }
+        state.push(teamObj);
+      }
+      return state;
     }
 
     // Render Function
-    function renderDashboard() {
-      const container = document.getElementById('teamsContainer');
-      container.innerHTML = '';
+    function render() {
+      var hook = document.getElementById("dashboardHook");
+      if (!hook) return;
+      hook.innerHTML = "";
 
-      let overallConsultations = 0;
-      let totalTatSum = 0;
-      let totalAgentCount = 0;
-      let bestAgent = { name: '--', total: 0 };
+      var grandTotal = 0;
+      var sumTat = 0;
+      var tatCount = 0;
+      var totalAgents = 0;
+      var topAgent = { name: "--", total: 0 };
 
-      dashboardState.forEach(team => {
-        const teamBlock = document.createElement('div');
-        teamBlock.className = 'team-block';
+      for (var t = 0; t < currentDataset.length; t++) {
+        var team = currentDataset[t];
+        var teamBox = document.createElement("div");
+        teamBox.className = "team-section";
 
-        let rowsHtml = '';
-        team.members.forEach(member => {
-          overallConsultations += member.total;
-          totalTatSum += parseFloat(member.tat) || 0;
-          totalAgentCount++;
+        var rowsHtml = "";
+        for (var m = 0; m < team.members.length; m++) {
+          var member = team.members[m];
+          grandTotal += member.total;
+          totalAgents++;
 
-          if (member.total > bestAgent.total) {
-            bestAgent = { name: member.name, total: member.total };
+          var tatNum = parseFloat(member.tat) || 0;
+          if (tatNum > 0) {
+            sumTat += tatNum;
+            tatCount++;
           }
 
-          let slotsHtml = SLOTS.map(slot => {
-            const count = member.hourly[slot] || 0;
-            const styleClass = count > 0 ? 'val-highlight' : 'val-zero';
-            return `<td class="${styleClass}">${count}</td>`;
-          }).join('');
+          if (member.total > topAgent.total) {
+            topAgent = { name: member.name, total: member.total };
+          }
 
-          rowsHtml += `
-            <tr>
-              <td class="agent-name-cell">${member.name}</td>
-              <td class="region-cell">${member.region || 'General'}</td>
-              ${slotsHtml}
-              <td class="total-cell">${member.total}</td>
-              <td class="tat-cell">${member.tat} hrs</td>
-            </tr>
-          `;
-        });
+          var slotCells = "";
+          for (var s = 0; s < SLOTS.length; s++) {
+            var val = member.hours[SLOTS[s]] || 0;
+            var cls = val > 0 ? "slot-val" : "slot-zero";
+            slotCells += "<td class='" + cls + "'>" + val + "</td>";
+          }
 
-        teamBlock.innerHTML = `
-          <div class="team-banner">${team.teamName}</div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th style="min-width: 180px; text-align: left; padding-left: 14px;">AGENT NAME</th>
-                  <th style="min-width: 120px;">REGION</th>
-                  <th>7-8</th>
-                  <th>8-9</th>
-                  <th>9-10</th>
-                  <th>10-11</th>
-                  <th>11-12</th>
-                  <th>12-1</th>
-                  <th>1-2</th>
-                  <th>2-3</th>
-                  <th>3-4</th>
-                  <th>4-5</th>
-                  <th>5-6</th>
-                  <th>6-7</th>
-                  <th style="background-color: #1e3a68;">TOTAL</th>
-                  <th style="background-color: #1e3a68;">DAILY TAT</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${rowsHtml}
-              </tbody>
-            </table>
-          </div>
-        `;
-        container.appendChild(teamBlock);
-      });
+          rowsHtml += "<tr>" +
+            "<td class='col-agent'>" + member.name + "</td>" +
+            "<td class='col-region'>" + member.region + "</td>" +
+            slotCells +
+            "<td class='col-total'>" + member.total + "</td>" +
+            "<td class='col-tat'>" + member.tat + " hrs</td>" +
+          "</tr>";
+        }
+
+        teamBox.innerHTML = 
+          "<div class='team-header-bar'>" +
+            "<span>" + team.team + "</span>" +
+            "<span class='team-badge'>" + team.members.length + " AGENTS</span>" +
+          "</div>" +
+          "<div class='table-container'>" +
+            "<table>" +
+              "<thead>" +
+                "<tr>" +
+                  "<th style='text-align:left; padding-left:14px; min-width:170px;'>AGENT NAME</th>" +
+                  "<th style='min-width:110px;'>REGION</th>" +
+                  "<th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>" +
+                  "<th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>" +
+                  "<th style='background-color:#162b4c;'>TOTAL</th>" +
+                  "<th style='background-color:#162b4c;'>DAILY TAT</th>" +
+                "</tr>" +
+              "</thead>" +
+              "<tbody>" + rowsHtml + "</tbody>" +
+            "</table>" +
+          "</div>";
+
+        hook.appendChild(teamBox);
+      }
 
       // Update Summary Cards
-      document.getElementById('statTotal').innerText = overallConsultations.toLocaleString();
-      document.getElementById('statAvgTAT').innerText = totalAgentCount > 0 ? (totalTatSum / totalAgentCount).toFixed(1) + 'h' : '0.0h';
-      document.getElementById('statAgents').innerText = `${totalAgentCount} / 27`;
-      document.getElementById('statTopAgent').innerText = `${bestAgent.name} (${bestAgent.total})`;
+      document.getElementById("statTotal").innerText = grandTotal.toLocaleString();
+      document.getElementById("statTat").innerText = tatCount > 0 ? (sumTat / tatCount).toFixed(1) + " hrs" : "0.0 hrs";
+      document.getElementById("statAgents").innerText = totalAgents + " / 27";
+      document.getElementById("statTop").innerText = topAgent.total > 0 ? topAgent.name + " (" + topAgent.total + ")" : "--";
     }
 
-    // CSV/Excel Upload Handler
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-      const file = e.target.files[0];
+    // CSV File Reader
+    document.getElementById("csvUploader").addEventListener("change", function(e) {
+      var file = e.target.files[0];
       if (!file) return;
 
-      const reader = new FileReader();
+      var reader = new FileReader();
       reader.onload = function(evt) {
-        try {
-          const data = new Uint8Array(evt.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          const rows = XLSX.utils.sheet_to_json(firstSheet);
+        var text = evt.target.result;
+        var lines = text.split(/\r\n|\n/).filter(function(line) { return line.trim().length > 0; });
+        if (lines.length < 2) {
+          alert("CSV file me koi data nahi mila!");
+          return;
+        }
 
-          if (!rows || rows.length === 0) {
-            alert("Sheet me koi data nahi mila!");
-            return;
+        var headers = lines[0].split(",").map(function(h) { return h.trim().replace(/^"|"$/g, ""); });
+        var rows = [];
+
+        for (var i = 1; i < lines.length; i++) {
+          var cols = lines[i].split(",").map(function(c) { return c.trim().replace(/^"|"$/g, ""); });
+          var rowObj = {};
+          for (var h = 0; h < headers.length; h++) {
+            rowObj[headers[h]] = cols[h] !== undefined ? cols[h] : "";
+          }
+          rows.push(rowObj);
+        }
+
+        processUploadedData(rows);
+      };
+      reader.readAsText(file);
+    });
+
+    // Auto calculate and match data
+    function processUploadedData(rows) {
+      var newState = [];
+
+      for (var t = 0; t < ROSTER.length; t++) {
+        var teamObj = { team: ROSTER[t].team, members: [] };
+
+        for (var m = 0; m < ROSTER[t].members.length; m++) {
+          var agentName = ROSTER[t].members[m];
+          var normAgent = normalize(agentName);
+
+          var agentRows = rows.filter(function(r) {
+            var nameKey = Object.keys(r).find(function(k) { return /agent|name|user/i.test(k); });
+            return nameKey && normalize(r[nameKey]).indexOf(normAgent) !== -1;
+          });
+
+          var hours = {};
+          for (var s = 0; s < SLOTS.length; s++) hours[SLOTS[s]] = 0;
+          var region = "-";
+          var tatTotal = 0;
+          var tatRecords = 0;
+
+          if (agentRows.length > 0) {
+            agentRows.forEach(function(row) {
+              // 1. Check direct slot columns
+              for (var s = 0; s < SLOTS.length; s++) {
+                var slotKey = Object.keys(row).find(function(k) { return normalize(k) === normalize(SLOTS[s]); });
+                if (slotKey && !isNaN(Number(row[slotKey]))) {
+                  hours[SLOTS[s]] += Number(row[slotKey]);
+                }
+              }
+
+              // 2. Check row timestamp slot
+              var timeKey = Object.keys(row).find(function(k) { return /time|hour|slot/i.test(k); });
+              if (timeKey) {
+                var val = String(row[timeKey]);
+                for (var s = 0; s < SLOTS.length; s++) {
+                  if (val.indexOf(SLOTS[s].split("-")[0]) !== -1) {
+                    hours[SLOTS[s]] += 1;
+                  }
+                }
+              }
+
+              // 3. Region column
+              var regKey = Object.keys(row).find(function(k) { return /region|zone|state|circle/i.test(k); });
+              if (regKey && row[regKey]) region = row[regKey];
+
+              // 4. TAT / Hours spent column
+              var tatKey = Object.keys(row).find(function(k) { return /tat|hour|duration|login/i.test(k); });
+              if (tatKey && !isNaN(parseFloat(row[tatKey]))) {
+                tatTotal += parseFloat(row[tatKey]);
+                tatRecords++;
+              }
+            });
           }
 
-          parseFileContent(rows);
-        } catch (err) {
-          console.error(err);
-          alert("File read
+          var totalSum = 0;
+          for (var s = 0; s < SLOTS.length; s++) totalSum += hours[SLOTS[s]];
+          var avgTat = tatRecords > 0 ? (tatTotal / tatRecords).toFixed(1) : (totalSum > 0 ? "8.0" : "0.0");
+
+          teamObj.members.push({
+            name: agentName,
+            region: region,
+            hours: hours,
+            total: totalSum,
+            tat: avgTat
+          });
+        }
+        newState.push(teamObj);
+      }
+
+      currentDataset = newState;
+      render();
+    }
+
+    // Direct render on page load
+    currentDataset = getBlankState();
+    render();
+  </script>
+</body>
+</html>
