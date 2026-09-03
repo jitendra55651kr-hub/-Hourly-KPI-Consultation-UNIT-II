@@ -860,7 +860,7 @@
               <th style="width: 80px;">SESSION</th>
               <th style="min-width: 170px;">CONSULTATION END TIME (BREAK START)</th>
               <th style="min-width: 170px;">NEXT APPT TIME (BREAK END)</th>
-              <th style="min-width: 150px; background-color: #991b1b !important;">GAYAB RAHA (DURATION)</th>
+              <th style="min-width: 150px; background-color: #991b1b !important;">TOTAL BREAK</th>
               <th style="min-width: 220px;">CASE CONTEXT (PREVIOUS → NEXT)</th>
             </tr>
           </thead>
@@ -1202,7 +1202,7 @@
 
             if (!isNaN(curEnd) && !isNaN(nxtStart)) {
               const gapMins = (nxtStart - curEnd) / (1000 * 60);
-              // Threshold: 15 min se zyada kitni der tak gayab raha
+              // Threshold: 15 min se zyada kitni der tak break liya
               if (gapMins > 15 && gapMins <= 360) {
                 totalBreakMins += gapMins;
                 breakList.push({
@@ -1541,7 +1541,6 @@
 
             const fbEndTime = row["Immediate Feedback End Time"] || "";
             
-            // Capture actual Consultation End Time from CSV columns
             const consultEndTime = row["Consult EndTime"] || row["Doc Consult EndTime"] || row["Consultation End Time"] || row["Immediate Feedback End Time"] || "";
 
             const calculatedTatMins = parseDifferenceInMinutes(apptTime, fbEndTime);
