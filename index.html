@@ -378,12 +378,42 @@
       border-radius: 4px;
     }
 
+    /* TAT Column with Arrow Indicator Badges */
     .col-tat-summary {
       background-color: #f0fdf4 !important;
       font-weight: 900;
       font-size: 16px;
       color: #15803d;
-      min-width: 110px;
+      min-width: 125px;
+    }
+
+    .tat-cell-flex {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .badge-arrow-green {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .badge-arrow-red {
+      background: #ffe4e6;
+      color: #e11d48;
+      border: 1px solid #fca5a5;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
     }
 
     /* Drilldown Table Section */
@@ -501,7 +531,7 @@
       </div>
       <div class="kpi-card-navy card-purple">
         <div class="kpi-title">Active Agents</div>
-        <div id="statAgents" class="kpi-number">0 / 27</div>
+        <div id="statAgents" class="kpi-number">0 / 26</div>
       </div>
       <div class="kpi-card-navy card-green">
         <div class="kpi-title" style="color: #6ee7b7;">Lowest TAT (Best)</div>
@@ -577,8 +607,7 @@
           { name: "Jyoti Singh Unit 2", match: ["ms01006"] },
           { name: "Rajendra Mourya", match: ["rajendra"] },
           { name: "Apurv Acharya", match: ["apurv"] },
-          { name: "Amit Sharma", match: ["amit", "ms01219"] },
-          { name: "Atul Kumar", match: ["atul"] }
+          { name: "Amit Sharma", match: ["amit", "ms01219"] }
         ]
       },
       {
@@ -604,7 +633,7 @@
       }
     ];
 
-    const TOTAL_CAPACITY = 27;
+    const TOTAL_CAPACITY = 26;
     const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
     let currentDataset = [];
     let agentCaseStore = {};
@@ -643,17 +672,15 @@
       let globalMinAgent = { name: "--", tat: 9999 };
       let globalMaxAgent = { name: "--", tat: -1 };
 
-      // Calculate totals, active count & overall TAT
+      // Calculate global metrics & active agents
       currentDataset.forEach(team => {
         team.members.forEach(member => {
           if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
 
-          // Agent is ACTIVE only if they have >= 1 completed case
           if (member.total > 0) {
             activeAgentsCount++;
           }
 
-          // Accumulate for overall team weighted average TAT
           if (member.tatCount > 0) {
             overallTatSum += member.tatSum;
             overallTatCases += member.tatCount;
@@ -671,6 +698,7 @@
         const teamBox = document.createElement("div");
         teamBox.className = "team-panel";
 
+        // Find team lowest & highest TAT
         let teamMin = { name: "--", tat: 9999 };
         let teamMax = { name: "--", tat: -1 };
 
@@ -682,8 +710,18 @@
           }
         });
 
+        // SORT AGENTS: Low TAT to High TAT (Agents with 0 TAT at the bottom)
+        const sortedMembers = [...team.members].sort((a, b) => {
+          const tatA = parseFloat(a.tat) || 0;
+          const tatB = parseFloat(b.tat) || 0;
+          if (tatA === 0 && tatB === 0) return 0;
+          if (tatA === 0) return 1;
+          if (tatB === 0) return -1;
+          return tatA - tatB;
+        });
+
         let rowsHtml = "";
-        team.members.forEach(member => {
+        sortedMembers.forEach(member => {
           grandTotal += member.total;
 
           const slotCells = SLOTS.map(s => {
@@ -697,7 +735,25 @@
 
           const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
           const displayTotal = member.total > 0 ? member.total : "";
-          const displayTat = member.total > 0 && member.tat ? `${member.tat}m` : "";
+          const memberTatVal = parseFloat(member.tat) || 0;
+          
+          // Generate Arrow Badges: Green Down Arrow for Min TAT, Red Up Arrow for Max TAT
+          let arrowHtml = "";
+          if (memberTatVal > 0) {
+            if (memberTatVal === teamMin.tat) {
+              arrowHtml = `<span class="badge-arrow-green" title="Lowest TAT in Team">↓</span>`;
+            } else if (memberTatVal === teamMax.tat) {
+              arrowHtml = `<span class="badge-arrow-red" title="Highest TAT in Team">↑</span>`;
+            }
+          }
+
+          const displayTat = member.total > 0 && member.tat ? `
+            <div class="tat-cell-flex">
+              ${arrowHtml}
+              <span>${member.tat}m</span>
+            </div>
+          ` : "";
+
           const displayRegion = member.region ? `<span class="region-pill">${member.region}</span>` : "";
 
           rowsHtml += `
@@ -743,7 +799,7 @@
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
                   <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
                   <th style="background-color: #070e1c !important; min-width: 135px;">TOTAL</th>
-                  <th style="background-color: #070e1c !important; min-width: 110px;">AVG TAT</th>
+                  <th style="background-color: #070e1c !important; min-width: 125px;">AVG TAT</th>
                 </tr>
               </thead>
               <tbody>
@@ -756,10 +812,8 @@
         hook.appendChild(teamBox);
       });
 
-      // Overall Unit 2 exact average TAT
       const overallAvgTat = overallTatCases > 0 ? (overallTatSum / overallTatCases).toFixed(1) : "0.0";
 
-      // Update KPI Board
       document.getElementById("statTotal").innerText = grandTotal.toLocaleString();
       document.getElementById("statTat").innerText = `${overallAvgTat} m`;
       document.getElementById("statAgents").innerText = `${activeAgentsCount} / ${TOTAL_CAPACITY}`;
@@ -984,7 +1038,6 @@
 
           const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
 
-          // Top 3 dominant regions by volume
           const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
           const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 3).join(", ") : "";
 
