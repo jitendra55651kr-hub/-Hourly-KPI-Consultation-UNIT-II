@@ -327,7 +327,6 @@
       transform: scale(1.02);
     }
 
-    /* Shift Badge Styling */
     .col-shift-tag {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 13.5px;
@@ -737,10 +736,10 @@
       {
         team: "TEAM RAVI",
         members: [
-          { name: "Jyoti Singh Unit 2", shift: "--", match: ["ms01006"] },
-          { name: "Rajendra Mourya", shift: "--", match: ["rajendra"] },
-          { name: "Apurv Acharya", shift: "--", match: ["apurv"] },
-          { name: "Amit Sharma", shift: "--", match: ["amit", "ms01219"] }
+          { name: "Jyoti Singh Unit 2", shift: "7:00 AM - 4:00 PM", match: ["ms01006"] },
+          { name: "Rajendra Mourya", shift: "7:00 AM - 4:00 PM", match: ["rajendra"] },
+          { name: "Apurv Acharya", shift: "7:30 AM - 4:30 PM", match: ["apurv"] },
+          { name: "Amit Sharma", shift: "9:00 AM - 6:00 PM", match: ["amit", "ms01219"] }
         ]
       },
       {
@@ -977,7 +976,6 @@
         return;
       }
 
-      // Find shift of this agent
       let agentShift = "--";
       ROSTER.forEach(t => {
         const found = t.members.find(m => m.name === agentName);
