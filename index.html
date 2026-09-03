@@ -309,14 +309,24 @@
       background-color: #fdf2f8;
     }
 
-    /* Agent Name Font Bada Kiya Gaya */
+    /* Agent Name Clickable Styling */
     .col-agent-name {
       text-align: center;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 900;
-      color: #070e1c;
+      color: #0f172a;
       font-size: 18px;
       min-width: 220px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .col-agent-name:hover {
+      color: #0284c7;
+      background-color: #f0f9ff;
+      text-decoration: underline;
+      transform: scale(1.02);
     }
 
     .col-region-tag {
@@ -383,7 +393,7 @@
       border-radius: 4px;
     }
 
-    /* TAT Column & Font Bada Kiya Gaya */
+    /* TAT Column */
     .col-tat-summary {
       background-color: #f0fdf4 !important;
       font-weight: 900;
@@ -436,14 +446,19 @@
       background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);
       color: #ffffff;
       padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       border-bottom: 2px solid #38bdf8;
     }
 
+    .drill-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
     .drill-title {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 900;
       letter-spacing: 0.5px;
       display: flex;
@@ -451,29 +466,48 @@
       gap: 12px;
     }
 
-    .drill-badge {
-      background: #38bdf8;
-      color: #070e1c;
-      font-size: 13px;
-      font-weight: 900;
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-
     .btn-close-drill {
       background: rgba(255, 255, 255, 0.15);
       color: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .btn-close-drill:hover {
       background: #ef4444;
       border-color: #ef4444;
+    }
+
+    /* Agent Details Summary Pills in Breakdown */
+    .drill-details-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .drill-info-chip {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .drill-info-chip strong {
+      color: #38bdf8;
     }
 
     .drill-table th {
@@ -558,11 +592,15 @@
     <!-- Interactive Drill-Down Section -->
     <section id="drilldownSection">
       <div class="drill-header">
-        <div class="drill-title">
-          <span id="drillTitleText">CASE BREAKDOWN</span>
-          <span id="drillCountBadge" class="drill-badge">0 CASES</span>
+        <div class="drill-header-top">
+          <div class="drill-title">
+            <span id="drillTitleText">AGENT CASE DETAILS</span>
+          </div>
+          <button class="btn-close-drill" onclick="closeDrilldown()">✕ Close Details</button>
         </div>
-        <button class="btn-close-drill" onclick="closeDrilldown()">✕ Close Breakdown</button>
+
+        <!-- Dynamic Agent Metadata Bar (Cases, Regions, TAT) -->
+        <div class="drill-details-bar" id="drillAgentDetailsBar"></div>
       </div>
       <div class="table-container">
         <table class="drill-table">
@@ -734,7 +772,7 @@
           const slotCells = SLOTS.map(s => {
             const val = member.hours[s] || 0;
             if (val > 0) {
-              return `<td class="cell-val-active" title="Click to view ${val} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', '${s}')">${val}</td>`;
+              return `<td class="cell-val-active" title="Click to view ${val} cases in slot ${s}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', '${s}')">${val}</td>`;
             } else {
               return `<td class="cell-val-blank"></td>`;
             }
@@ -744,7 +782,7 @@
           const displayTotal = member.total > 0 ? member.total : "";
           const memberTatVal = parseFloat(member.tat) || 0;
           
-          // Arrow Logic: Lowest TAT (Best) -> UP (↑), Highest TAT (Slowest) -> DOWN (↓)
+          // Lowest TAT -> Up (↑), Highest TAT -> Down (↓)
           let arrowHtml = "";
           if (memberTatVal > 0) {
             if (memberTatVal === teamMin.tat) {
@@ -765,7 +803,9 @@
 
           rowsHtml += `
             <tr>
-              <td class="col-agent-name">${member.name}</td>
+              <td class="col-agent-name" title="Click to view full details for ${member.name}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
+                ${member.name}
+              </td>
               <td class="col-region-tag">${displayRegion}</td>
               ${slotCells}
               <td class="col-total-summary" title="Click to view all ${member.total} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
@@ -832,7 +872,7 @@
     function openDrilldown(agentName, slot) {
       const section = document.getElementById("drilldownSection");
       const titleText = document.getElementById("drillTitleText");
-      const countBadge = document.getElementById("drillCountBadge");
+      const detailsBar = document.getElementById("drillAgentDetailsBar");
       const tbody = document.getElementById("drillTableBody");
 
       if (!agentCaseStore[agentName]) {
@@ -847,13 +887,41 @@
             casesToShow = casesToShow.concat(agentCaseStore[agentName][s]);
           }
         });
-        titleText.innerText = `${agentName.toUpperCase()} — ALL CONSULTATIONS (${casesToShow.length})`;
+        titleText.innerText = `${agentName.toUpperCase()} — COMPLETE PROFILE BREAKDOWN`;
       } else {
         casesToShow = agentCaseStore[agentName][slot] || [];
-        titleText.innerText = `${agentName.toUpperCase()} — SLOT: ${slot} DETAILS`;
+        titleText.innerText = `${agentName.toUpperCase()} — SLOT: ${slot} BREAKDOWN`;
       }
 
-      countBadge.innerText = `${casesToShow.length} CASES`;
+      // Region aggregation & TAT calculation for this selection
+      const regionCounts = {};
+      let tatSum = 0;
+      let tatCount = 0;
+
+      casesToShow.forEach(c => {
+        if (c.region && c.region !== '-') {
+          regionCounts[c.region] = (regionCounts[c.region] || 0) + 1;
+        }
+        const parsedTat = parseFloat(c.tat);
+        if (!isNaN(parsedTat)) {
+          tatSum += parsedTat;
+          tatCount++;
+        }
+      });
+
+      const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) + ' m' : '--';
+      const sortedRegions = Object.entries(regionCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([reg, count]) => `${reg} (${count})`)
+        .join(', ');
+
+      detailsBar.innerHTML = `
+        <div class="drill-info-chip">Agent: <strong>${agentName}</strong></div>
+        <div class="drill-info-chip">Total Cases: <strong>${casesToShow.length}</strong></div>
+        <div class="drill-info-chip">Average TAT: <strong>${avgTat}</strong></div>
+        <div class="drill-info-chip">Regions: <strong>${sortedRegions || 'None'}</strong></div>
+      `;
+
       tbody.innerHTML = "";
 
       if (casesToShow.length === 0) {
@@ -869,7 +937,7 @@
             <td><span class="region-pill">${c.region || '-'}</span></td>
             <td>${c.branch || '-'}</td>
             <td><span style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">${c.type || '-'}</span></td>
-            <td style="color: #059669; font-weight: 800;">${c.tat ? c.tat + ' m' : '-'}</td>
+            <td style="color: #059669; font-weight: 800;">${c.tat && c.tat !== '-' ? c.tat + ' m' : '-'}</td>
             <td style="font-size: 12.5px; color: #475569;">${c.apptTime || '-'}</td>
             <td style="font-size: 12.5px; color: #475569;">${c.feedbackEndTime || '-'}</td>
           `;
