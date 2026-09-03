@@ -9,14 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-main: #f1f5f9;
-      --card-bg: #ffffff;
-      --border-color: #cbd5e1;
-      --navy-dark: #0f172a;
-      --navy-header: #1e293b;
+      --bg-main: #f8fafc;
+      --navy-dark: #091322;
+      --navy-header: #0f1e36;
       --cyan-accent: #0284c7;
       --emerald-accent: #059669;
       --amber-accent: #d97706;
+      --pink-glow: rgba(244, 114, 182, 0.18);
     }
 
     * {
@@ -27,7 +26,12 @@
     }
 
     body {
-      background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%);
+      background-color: var(--bg-main);
+      /* Stylish ambient soft pink/rose glow from the top-center */
+      background-image: 
+        radial-gradient(circle at 50% 60px, rgba(244, 114, 182, 0.16) 0%, rgba(251, 207, 232, 0.08) 45%, transparent 75%),
+        linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      background-attachment: fixed;
       color: #0f172a;
       padding: 24px;
       min-height: 100vh;
@@ -38,18 +42,16 @@
       margin: 0 auto;
     }
 
-    /* Top Command Header */
+    /* Centered Top Command Header */
     .top-bar {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 20px 28px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.05);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 14px;
+      padding: 24px 30px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(244, 114, 182, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
       margin-bottom: 24px;
     }
 
@@ -57,43 +59,76 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #e0f2fe;
-      color: #0369a1;
+      background: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      color: #db2777;
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
       text-transform: uppercase;
     }
 
     .pulse-dot {
       width: 7px;
       height: 7px;
-      background-color: #0284c7;
+      background-color: #db2777;
       border-radius: 50%;
-      box-shadow: 0 0 8px #0284c7;
+      box-shadow: 0 0 8px #db2777;
+    }
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .clock-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #0f1e36 0%, #1e293b 100%);
+      color: #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
+    }
+
+    .clock-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
     }
 
     .main-heading {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 800;
-      color: #0f172a;
-      letter-spacing: -0.3px;
+      color: #0c1a30;
+      letter-spacing: -0.2px;
     }
 
     .sub-heading {
-      font-size: 13.5px;
+      font-size: 14px;
       color: #64748b;
-      margin-top: 4px;
+      margin-top: 6px;
       font-weight: 500;
     }
 
+    .upload-action-wrap {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
     .btn-file-upload {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background: linear-gradient(135deg, #091322 0%, #172554 100%);
       color: #ffffff;
-      padding: 12px 24px;
+      padding: 11px 26px;
       font-size: 14px;
       font-weight: 700;
       border-radius: 8px;
@@ -101,15 +136,15 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
       transition: all 0.2s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .btn-file-upload:hover {
       transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.22);
-      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+      background: linear-gradient(135deg, #172554 0%, #1e3a8a 100%);
     }
 
     /* Executive KPI Widgets */
@@ -125,7 +160,7 @@
       border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 18px 22px;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+      box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.04);
       position: relative;
       overflow: hidden;
     }
@@ -141,8 +176,8 @@
 
     .card-cyan::after { background: #0284c7; }
     .card-emerald::after { background: #059669; }
+    .card-pink::after { background: #db2777; }
     .card-amber::after { background: #d97706; }
-    .card-indigo::after { background: #6366f1; }
 
     .kpi-title {
       font-size: 12px;
@@ -170,41 +205,36 @@
     /* Team Layout Cards */
     .team-panel {
       background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
+      border: 1px solid #94a3b8;
+      border-radius: 8px;
       margin-bottom: 26px;
       overflow: hidden;
-      box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.06);
     }
 
     .team-title-banner {
-      background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+      background: linear-gradient(90deg, #091322 0%, #0f1e36 100%);
       color: #ffffff;
-      padding: 12px 20px;
+      padding: 11px 20px;
       font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .team-meta {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+      border-bottom: 2px solid #1e3a68;
     }
 
     .team-badge {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.15);
       font-size: 12px;
       font-weight: 600;
       padding: 3px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      letter-spacing: 0.4px;
     }
 
-    /* High-Impact Table */
+    /* Table & Deep Dark Headers */
     .table-container {
       overflow-x: auto;
     }
@@ -212,24 +242,25 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 13.5px;
       text-align: center;
     }
 
     thead th {
-      background-color: #1e293b;
-      color: #f1f5f9;
-      font-weight: 700;
-      font-size: 12.5px;
-      letter-spacing: 0.4px;
-      padding: 12px 8px;
-      border: 1px solid #334155;
+      background-color: #091322 !important;
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      padding: 11px 6px;
+      border: 1px solid #1e293b;
       white-space: nowrap;
+      text-transform: uppercase;
     }
 
     tbody td {
-      padding: 10px 8px;
-      border: 1px solid #e2e8f0;
+      padding: 9px 6px;
+      border: 1px solid #cbd5e1;
       font-size: 13.5px;
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
@@ -241,7 +272,7 @@
     }
 
     tbody tr:hover {
-      background-color: #e0f2fe;
+      background-color: #fdf2f8; /* Soft subtle pink hover */
     }
 
     .col-agent-name {
@@ -249,7 +280,7 @@
       padding-left: 18px;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 700;
-      color: #0f172a;
+      color: #091322;
       font-size: 14px;
       min-width: 210px;
     }
@@ -258,7 +289,7 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 12px;
       font-weight: 600;
-      color: #475569;
+      color: #334155;
       min-width: 140px;
     }
 
@@ -272,8 +303,8 @@
 
     .cell-val-active {
       font-weight: 700;
-      color: #0369a1;
-      background-color: rgba(2, 132, 199, 0.05);
+      color: #091322;
+      background-color: rgba(244, 114, 182, 0.06);
     }
 
     .cell-val-blank {
@@ -281,11 +312,11 @@
       font-weight: 400;
     }
 
-    /* Total Output with Mini Bar */
+    /* Output Summary Mini Graph Bar */
     .col-total-summary {
-      background-color: #f0f9ff !important;
+      background-color: #eff6ff !important;
       font-weight: 800;
-      color: #0369a1;
+      color: #1d4ed8;
       min-width: 130px;
       padding: 8px 12px;
     }
@@ -307,15 +338,15 @@
 
     .spark-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #0284c7);
+      background: linear-gradient(90deg, #60a5fa, #2563eb);
       border-radius: 3px;
     }
 
     .col-tat-summary {
-      background-color: #ecfdf5 !important;
+      background-color: #f0fdf4 !important;
       font-weight: 700;
-      color: #047857;
-      min-width: 100px;
+      color: #15803d;
+      min-width: 105px;
     }
   </style>
 </head>
@@ -323,16 +354,23 @@
 
   <div class="container">
 
-    <!-- Top Command Header -->
     <header class="top-bar">
       <div>
         <div class="badge-pill">
-          <span class="pulse-dot"></span> Unit-2 Operations Intelligence
+          <span class="pulse-dot"></span> Realtime Unit-2 Operations Monitor
         </div>
-        <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
-        <p class="sub-heading">27 Roster Agents • Hourly Output Spectrum, Region Distribution & Turn-Around Times</p>
+        <div class="title-wrapper">
+          <div class="clock-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
+        </div>
+        <p class="sub-heading">27 Verified Agents • Hourly Output, Regional Distribution & Turn-Around Time Tracking</p>
       </div>
-      <div>
+
+      <div class="upload-action-wrap">
         <label class="btn-file-upload">
           <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
@@ -343,22 +381,21 @@
       </div>
     </header>
 
-    <!-- Executive Metric Cards -->
     <section class="kpi-board">
       <div class="kpi-card card-cyan">
         <div class="kpi-title">Total Consultations</div>
         <div id="statTotal" class="kpi-number">0</div>
-        <div class="kpi-subtext">Sum of completed sessions</div>
+        <div class="kpi-subtext">Cumulative sessions completed</div>
       </div>
       <div class="kpi-card card-emerald">
         <div class="kpi-title">Average Team TAT</div>
         <div id="statTat" class="kpi-number">0.0 m</div>
-        <div class="kpi-subtext">Mean turn-around handling</div>
+        <div class="kpi-subtext">Mean turn-around handling time</div>
       </div>
-      <div class="kpi-card card-indigo">
+      <div class="kpi-card card-pink">
         <div class="kpi-title">Active Roster Agents</div>
         <div id="statAgents" class="kpi-number">27 / 27</div>
-        <div class="kpi-subtext">Verified operational capacity</div>
+        <div class="kpi-subtext">Deployed across 5 teams</div>
       </div>
       <div class="kpi-card card-amber">
         <div class="kpi-title">Top Performer</div>
@@ -367,7 +404,6 @@
       </div>
     </section>
 
-    <!-- Teamwise Data Containers -->
     <main id="dashboardHook"></main>
 
   </div>
@@ -497,7 +533,7 @@
             }
           }).join('');
 
-          // Calculate visual mini-bar percentage
+          // Progress bar percentage calculation
           const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
           const displayTotal = member.total > 0 ? member.total : "-";
           const displayTat = member.total > 0 ? `${member.tat}m` : "-";
@@ -526,9 +562,7 @@
         teamBox.innerHTML = `
           <div class="team-title-banner">
             <span>${team.team}</span>
-            <div class="team-meta">
-              <span class="team-badge">${team.members.length} AGENTS</span>
-            </div>
+            <span class="team-badge">${team.members.length} AGENTS</span>
           </div>
           <div class="table-container">
             <table>
@@ -538,8 +572,8 @@
                   <th style="min-width: 140px;">KEY REGIONS</th>
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
                   <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
-                  <th style="background-color: #0369a1; min-width: 130px;">TOTAL OUTPUT</th>
-                  <th style="background-color: #047857; min-width: 100px;">AVG TAT</th>
+                  <th style="background-color: #091322 !important; min-width: 130px;">TOTAL</th>
+                  <th style="background-color: #091322 !important; min-width: 105px;">AVG TAT</th>
                 </tr>
               </thead>
               <tbody>
@@ -552,7 +586,7 @@
         hook.appendChild(teamBox);
       });
 
-      // Update KPI Cards
+      // Update KPI Board
       document.getElementById("statTotal").innerText = grandTotal.toLocaleString();
       document.getElementById("statTat").innerText = tatCount > 0 ? `${(sumTat / tatCount).toFixed(1)} m` : "0.0 m";
       document.getElementById("statAgents").innerText = `${totalAgents} / 27`;
@@ -560,7 +594,7 @@
       document.getElementById("statTopOutput").innerText = topAgent.total > 0 ? `${topAgent.total} consultations completed` : "0 consultations";
     }
 
-    // CSV line parser taking care of quotes
+    // CSV line parser handling embedded commas
     function parseCSVLine(line) {
       const arr = [];
       let entry = '';
@@ -704,7 +738,7 @@
       render();
     }
 
-    // Direct page load
+    // Direct initialization
     currentDataset = buildEmptyState();
     render();
   </script>
