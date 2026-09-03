@@ -327,22 +327,45 @@
       transform: scale(1.02);
     }
 
+    /* Shift Badge Styling */
+    .col-shift-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 800;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .shift-pill {
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+      color: #0369a1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
     .col-region-tag {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 13.5px;
       font-weight: 800;
       color: #334155;
-      min-width: 220px;
+      min-width: 200px;
       text-align: center;
     }
 
     .region-pill {
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 6px;
       display: inline-block;
       line-height: 1.4;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
     }
 
     .cell-val-active {
@@ -442,7 +465,7 @@
     .drill-header {
       background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);
       color: #ffffff;
-      padding: 16px 24px;
+      padding: 18px 26px;
       border-bottom: 2px solid #38bdf8;
     }
 
@@ -455,22 +478,23 @@
     }
 
     .drill-title {
-      font-size: 19px;
+      font-size: 22px;
       font-weight: 900;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
       display: flex;
       align-items: center;
       gap: 12px;
+      text-transform: uppercase;
     }
 
     .btn-close-drill {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.18);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 7px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 900;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -483,57 +507,103 @@
     .drill-details-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .drill-info-chip {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 7px 16px;
       border-radius: 8px;
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #e2e8f0;
+      font-size: 15.5px;
+      font-weight: 900;
+      color: #f1f5f9;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .drill-info-chip strong {
       color: #38bdf8;
+      font-size: 16px;
     }
 
     .drill-table th {
-      background-color: #0f1e36 !important;
-      font-size: 13.5px;
-      padding: 12px 8px;
+      background-color: #071326 !important;
+      color: #ffffff !important;
+      font-size: 16px !important;
+      font-weight: 900 !important;
+      padding: 14px 10px !important;
+      letter-spacing: 0.6px;
+      border: 1px solid #1a273f;
     }
 
     .drill-table td {
-      font-size: 14px;
-      padding: 10px 8px;
-      font-weight: 700;
+      font-size: 16.5px !important;
+      padding: 13px 10px !important;
+      font-weight: 800 !important;
+      font-family: 'JetBrains Mono', monospace;
+      color: #0f172a;
     }
 
-    /* Formatted Time Display (Date light, Time 16px Bold) */
+    .drill-col-emr {
+      font-weight: 900 !important;
+      color: #0284c7 !important;
+      font-size: 17px !important;
+    }
+
+    .drill-col-doctor {
+      color: #070e1c !important;
+      font-weight: 900 !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    .drill-col-agent {
+      color: #1e293b !important;
+      font-weight: 800 !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    .drill-col-branch {
+      color: #334155 !important;
+      font-weight: 800 !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    .drill-col-type {
+      background: #e2e8f0;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-weight: 900 !important;
+      color: #0f172a !important;
+      font-size: 15px !important;
+      display: inline-block;
+    }
+
+    .drill-col-tat {
+      color: #059669 !important;
+      font-weight: 900 !important;
+      font-size: 18px !important;
+    }
+
     .time-container {
       display: inline-flex;
       align-items: baseline;
-      gap: 6px;
+      gap: 7px;
       font-family: 'JetBrains Mono', monospace;
     }
 
     .time-date-part {
-      font-size: 12.5px;
+      font-size: 13px;
       color: #64748b;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .time-bold-part {
-      font-size: 16px !important;
+      font-size: 17px !important;
       font-weight: 900 !important;
       color: #070e1c !important;
       letter-spacing: 0.3px;
@@ -630,8 +700,8 @@
               <th>BRANCH</th>
               <th>TYPE</th>
               <th style="background-color: #047857 !important;">TAT (MINS)</th>
-              <th style="min-width: 170px;">APPT TIME</th>
-              <th style="min-width: 170px;">FEEDBACK END TIME</th>
+              <th style="min-width: 175px;">APPT TIME</th>
+              <th style="min-width: 175px;">FEEDBACK END TIME</th>
             </tr>
           </thead>
           <tbody id="drillTableBody"></tbody>
@@ -646,53 +716,53 @@
       {
         team: "TEAM JITENDRA",
         members: [
-          { name: "Saurav Pal", match: ["saurav", "ms00405"] },
-          { name: "Md Anas", match: ["md", "anas", "ms01213"] },
-          { name: "Renu Gupta", match: ["ms00633"] },
-          { name: "Shivam Verma", match: ["shivam", "ms00982"] },
-          { name: "Jogender Singh", match: ["jogender", "ms02312"] }
+          { name: "Saurav Pal", shift: "7:00 AM - 4:00 PM", match: ["saurav", "ms00405"] },
+          { name: "Md Anas", shift: "7:30 AM - 4:30 PM", match: ["md", "anas", "ms01213"] },
+          { name: "Renu Gupta", shift: "8:00 AM - 5:00 PM", match: ["ms00633"] },
+          { name: "Shivam Verma", shift: "9:00 AM - 6:00 PM", match: ["shivam", "ms00982"] },
+          { name: "Jogender Singh", shift: "9:00 AM - 6:00 PM", match: ["jogender", "ms02312"] }
         ]
       },
       {
         team: "TEAM DEEPTI",
         members: [
-          { name: "Renu Rani", match: ["ms00067"] },
-          { name: "Pooja Rathore", match: ["ms00879"] },
-          { name: "Roshni Prajapati", match: ["roshni", "ms01386"] },
-          { name: "Garvit Jha", match: ["garvit", "ms01034"] },
-          { name: "Rajni Saini", match: ["rajni"] },
-          { name: "Puja Chauhan", match: ["puja", "ms00470"] }
+          { name: "Renu Rani", shift: "8:00 AM - 5:00 PM", match: ["ms00067"] },
+          { name: "Pooja Rathore", shift: "8:00 AM - 5:00 PM", match: ["ms00879"] },
+          { name: "Roshni Prajapati", shift: "7:00 AM - 4:00 PM", match: ["roshni", "ms01386"] },
+          { name: "Garvit Jha", shift: "7:00 AM - 4:00 PM", match: ["garvit", "ms01034"] },
+          { name: "Rajni Saini", shift: "8:00 AM - 5:00 PM", match: ["rajni"] },
+          { name: "Puja Chauhan", shift: "9:00 AM - 6:00 PM", match: ["puja", "ms00470"] }
         ]
       },
       {
         team: "TEAM RAVI",
         members: [
-          { name: "Jyoti Singh Unit 2", match: ["ms01006"] },
-          { name: "Rajendra Mourya", match: ["rajendra"] },
-          { name: "Apurv Acharya", match: ["apurv"] },
-          { name: "Amit Sharma", match: ["amit", "ms01219"] }
+          { name: "Jyoti Singh Unit 2", shift: "--", match: ["ms01006"] },
+          { name: "Rajendra Mourya", shift: "--", match: ["rajendra"] },
+          { name: "Apurv Acharya", shift: "--", match: ["apurv"] },
+          { name: "Amit Sharma", shift: "--", match: ["amit", "ms01219"] }
         ]
       },
       {
         team: "TEAM SHIVAM",
         members: [
-          { name: "Nandani", match: ["nandani"] },
-          { name: "Kamni Sharma", match: ["kamni"] },
-          { name: "Burhan", match: ["burhan", "ms00857"] },
-          { name: "Chandrabhanu", match: ["chandrabhanu", "ms02383"] },
-          { name: "Munsi shakil Ahamed", match: ["munsi", "shakil", "ms00928"] },
-          { name: "Ashish Yadav", match: ["ashish"] }
+          { name: "Nandani", shift: "7:00 AM - 4:00 PM", match: ["nandani"] },
+          { name: "Kamni Sharma", shift: "7:00 AM - 4:00 PM", match: ["kamni"] },
+          { name: "Burhan", shift: "9:00 AM - 6:00 PM", match: ["burhan", "ms00857"] },
+          { name: "Chandrabhanu", shift: "8:00 AM - 5:00 PM", match: ["chandrabhanu", "ms02383"] },
+          { name: "Munsi shakil Ahamed", shift: "8:00 AM - 5:00 PM", match: ["munsi", "shakil", "ms00928"] },
+          { name: "Ashish Yadav", shift: "9:00 AM - 6:00 PM", match: ["ashish"] }
         ]
       },
       {
         team: "TEAM ISHANT",
         members: [
-          { name: "Ayushi Saxena", match: ["ayushi", "ms01370"] },
-          { name: "Harivansh Agarwal", match: ["harivansh", "ms00637"] },
-          { name: "Smruti Rani Sahoo", match: ["smruti"] },
-          { name: "Sushma Chaudhary", match: ["sushma"] },
-          { name: "Ashok Pawar", match: ["ashok"] },
-          { name: "Isha Mehta", match: ["isha", "mehta"] }
+          { name: "Ayushi Saxena", shift: "7:00 AM - 4:00 PM", match: ["ayushi", "ms01370"] },
+          { name: "Harivansh Agarwal", shift: "7:00 AM - 4:00 PM", match: ["harivansh", "ms00637"] },
+          { name: "Smruti Rani Sahoo", shift: "9:00 AM - 6:00 PM", match: ["smruti"] },
+          { name: "Sushma Chaudhary", shift: "9:00 AM - 6:00 PM", match: ["sushma"] },
+          { name: "Ashok Pawar", shift: "9:00 AM - 6:00 PM", match: ["ashok"] },
+          { name: "Isha Mehta", shift: "7:00 AM - 4:00 PM", match: ["isha", "mehta"] }
         ]
       }
     ];
@@ -711,6 +781,7 @@
           SLOTS.forEach(s => hours[s] = 0);
           return {
             name: m.name,
+            shift: m.shift || "--",
             region: "",
             hours: hours,
             total: 0,
@@ -821,6 +892,7 @@
               <td class="col-agent-name" title="Click to view full details for ${member.name}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
                 ${member.name}
               </td>
+              <td class="col-shift-tag"><span class="shift-pill">${member.shift}</span></td>
               <td class="col-region-tag">${displayRegion}</td>
               ${slotCells}
               <td class="col-total-summary" title="Click to view all ${member.total} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
@@ -857,7 +929,8 @@
               <thead>
                 <tr>
                   <th style="min-width: 220px;">AGENT NAME</th>
-                  <th style="min-width: 220px;">KEY REGIONS (TOP 3)</th>
+                  <th style="min-width: 140px;">SHIFT</th>
+                  <th style="min-width: 200px;">KEY REGIONS (TOP 3)</th>
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
                   <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
                   <th style="background-color: #070e1c !important; min-width: 135px;">TOTAL</th>
@@ -884,7 +957,6 @@
       document.getElementById("statHighestAgent").innerText = globalMaxAgent.tat !== -1 ? `${globalMaxAgent.name} (${globalMaxAgent.tat}m)` : "--";
     }
 
-    // Helper: Split Date & Time string, format Time into 16px Bold
     function formatDateTimeBold(str) {
       if (!str || str === '-') return '-';
       const parts = str.trim().split(' ');
@@ -904,6 +976,13 @@
         alert("Is agent ka koi case record upload nahi hua hai.");
         return;
       }
+
+      // Find shift of this agent
+      let agentShift = "--";
+      ROSTER.forEach(t => {
+        const found = t.members.find(m => m.name === agentName);
+        if (found) agentShift = found.shift || "--";
+      });
 
       let casesToShow = [];
       if (slot === 'ALL') {
@@ -941,6 +1020,7 @@
 
       detailsBar.innerHTML = `
         <div class="drill-info-chip">Agent: <strong>${agentName}</strong></div>
+        <div class="drill-info-chip">Shift: <strong>${agentShift}</strong></div>
         <div class="drill-info-chip">Total Cases: <strong>${casesToShow.length}</strong></div>
         <div class="drill-info-chip">Average TAT: <strong>${avgTat}</strong></div>
         <div class="drill-info-chip">Regions: <strong>${sortedRegions || 'None'}</strong></div>
@@ -949,19 +1029,19 @@
       tbody.innerHTML = "";
 
       if (casesToShow.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="padding: 20px; color: #94a3b8;">Koi record nahi mila.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #94a3b8; font-size: 16px; font-weight: 800;">Koi record nahi mila.</td></tr>`;
       } else {
         casesToShow.forEach((c, idx) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td style="color: #64748b;">${idx + 1}</td>
-            <td style="font-weight: 800; color: #0284c7;">${c.emr || '-'}</td>
-            <td style="color: #0f172a; font-weight: 800;">${c.doctor || '-'}</td>
-            <td>${c.medAgent || '-'}</td>
+            <td style="color: #64748b; font-weight: 900;">${idx + 1}</td>
+            <td class="drill-col-emr">${c.emr || '-'}</td>
+            <td class="drill-col-doctor">${c.doctor || '-'}</td>
+            <td class="drill-col-agent">${c.medAgent || '-'}</td>
             <td><span class="region-pill">${c.region || '-'}</span></td>
-            <td>${c.branch || '-'}</td>
-            <td><span style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">${c.type || '-'}</span></td>
-            <td style="color: #059669; font-weight: 800;">${c.tat && c.tat !== '-' ? c.tat + ' m' : '-'}</td>
+            <td class="drill-col-branch">${c.branch || '-'}</td>
+            <td><span class="drill-col-type">${c.type || '-'}</span></td>
+            <td class="drill-col-tat">${c.tat && c.tat !== '-' ? c.tat + ' m' : '-'}</td>
             <td>${formatDateTimeBold(c.apptTime)}</td>
             <td>${formatDateTimeBold(c.feedbackEndTime)}</td>
           `;
@@ -1144,6 +1224,7 @@
 
           return {
             name: agentObj.name,
+            shift: agentObj.shift || "--",
             region: displayRegion,
             hours: hours,
             total: totalOutput,
