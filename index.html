@@ -44,7 +44,7 @@
       margin: 0 auto;
     }
 
-    /* Top Command Header Bar - Navy Blur */
+    /* Top Command Header Bar */
     .top-bar {
       background: rgba(9, 19, 34, 0.90);
       backdrop-filter: blur(16px);
@@ -62,7 +62,6 @@
       position: relative;
     }
 
-    /* Center Header with White Dial / Navy Needle Watch */
     .header-center-content {
       flex: 1;
       display: flex;
@@ -72,7 +71,7 @@
       min-width: 320px;
     }
 
-    /* Watch: Pure White Dial, Navy Needles and Symbols */
+    /* Watch: Pure White Dial, Navy Needles */
     .luxury-watch-white {
       width: 52px;
       height: 52px;
@@ -99,7 +98,6 @@
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
-    /* Upload Button */
     .btn-file-upload {
       background: linear-gradient(135deg, #0f274a 0%, #1e3a8a 100%);
       color: #ffffff;
@@ -132,7 +130,7 @@
       color: #38bdf8;
     }
 
-    /* Clean Dark Navy KPI Boards */
+    /* Clean Dark Navy KPI Board */
     .kpi-board {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -247,7 +245,7 @@
       font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
-      transition: background 0.15s;
+      transition: all 0.15s ease;
     }
 
     tbody tr:nth-child(even) {
@@ -284,15 +282,26 @@
       display: inline-block;
     }
 
+    /* Clickable interactive cells */
     .cell-val-active {
       font-weight: 900;
       font-size: 16.5px;
       color: #070e1c;
       background-color: rgba(244, 114, 182, 0.08);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .cell-val-active:hover {
+      background-color: #f472b6 !important;
+      color: #ffffff !important;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(244, 114, 182, 0.4);
+      z-index: 10;
     }
 
     .cell-val-blank {
-      /* Completely blank */
+      /* Clean blank cell */
     }
 
     .col-total-summary {
@@ -302,6 +311,11 @@
       color: #1d4ed8;
       min-width: 140px;
       padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .col-total-summary:hover {
+      background-color: #dbeafe !important;
     }
 
     .spark-wrap {
@@ -332,6 +346,80 @@
       color: #15803d;
       min-width: 110px;
     }
+
+    /* Drill-down Detail Modal / Section */
+    #drilldownSection {
+      display: none;
+      background: #ffffff;
+      border: 2px solid #0f274a;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 30px;
+      box-shadow: 0 14px 35px -5px rgba(15, 23, 42, 0.25);
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drill-header {
+      background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #38bdf8;
+    }
+
+    .drill-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .drill-badge {
+      background: #38bdf8;
+      color: #070e1c;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .btn-close-drill {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-close-drill:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .drill-table th {
+      background-color: #0f1e36 !important;
+      font-size: 12.5px;
+      padding: 11px 8px;
+    }
+
+    .drill-table td {
+      font-size: 14px;
+      padding: 10px 8px;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -340,32 +428,24 @@
 
     <!-- Top Command Header Bar -->
     <header class="top-bar">
-      <!-- Hidden spacer for symmetry -->
       <div style="width: 40px;" class="hidden-spacer"></div>
 
-      <!-- Center Title with Adjacent White Dial & Navy Needle Watch -->
       <div class="header-center-content">
         <div class="luxury-watch-white" title="Live Operations Clock">
           <svg viewBox="0 0 100 100">
-            <!-- Outer Navy Border Ring -->
             <circle cx="50" cy="50" r="46" stroke="#0f1e36" stroke-width="3.5" fill="#ffffff" />
-            <!-- Hour Markers -->
             <line x1="50" y1="9" x2="50" y2="16" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
             <line x1="50" y1="84" x2="50" y2="91" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
             <line x1="9" y1="50" x2="16" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
             <line x1="84" y1="50" x2="91" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
-            <!-- Hour Needle -->
             <line x1="50" y1="50" x2="68" y2="38" stroke="#0f1e36" stroke-width="4" stroke-linecap="round" />
-            <!-- Minute Needle -->
             <line x1="50" y1="50" x2="50" y2="18" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round" />
-            <!-- Center Pivot -->
             <circle cx="50" cy="50" r="4.5" fill="#0f1e36" />
           </svg>
         </div>
         <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
       </div>
 
-      <!-- Upload Button -->
       <div>
         <label class="btn-file-upload">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -397,8 +477,40 @@
       </div>
     </section>
 
-    <!-- Teamwise Data Containers -->
+    <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
+
+    <!-- Interactive Drill-Down Section -->
+    <section id="drilldownSection">
+      <div class="drill-header">
+        <div class="drill-title">
+          <span id="drillTitleText">CASE BREAKDOWN</span>
+          <span id="drillCountBadge" class="drill-badge">0 CASES</span>
+        </div>
+        <button class="btn-close-drill" onclick="closeDrilldown()">✕ Close Breakdown</button>
+      </div>
+      <div class="table-container">
+        <table class="drill-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>EMR #</th>
+              <th>DOCTOR NAME</th>
+              <th>PHARMACIST / AGENT</th>
+              <th>REGION</th>
+              <th>BRANCH</th>
+              <th>TYPE</th>
+              <th style="background-color: #047857 !important;">TAT (MINS)</th>
+              <th>APPT TIME</th>
+              <th>FEEDBACK END TIME</th>
+            </tr>
+          </thead>
+          <tbody id="drillTableBody">
+            <!-- Injected on click -->
+          </tbody>
+        </table>
+      </div>
+    </section>
 
   </div>
 
@@ -460,8 +572,10 @@
 
     const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
     let currentDataset = [];
+    let agentCaseStore = {}; // Global store for click drilldown: agentCaseStore[agentName][slot] = [cases]
 
     function buildEmptyState() {
+      agentCaseStore = {};
       return ROSTER.map(team => ({
         team: team.team,
         members: team.members.map(m => {
@@ -515,11 +629,11 @@
             topAgent = { name: member.name, total: member.total };
           }
 
-          // Slot cells: If 0, keep it completely blank
+          // Slot cells: If > 0, make clickable
           const slotCells = SLOTS.map(s => {
             const val = member.hours[s] || 0;
             if (val > 0) {
-              return `<td class="cell-val-active">${val}</td>`;
+              return `<td class="cell-val-active" title="Click to view ${val} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', '${s}')">${val}</td>`;
             } else {
               return `<td class="cell-val-blank"></td>`;
             }
@@ -535,7 +649,7 @@
               <td class="col-agent-name">${member.name}</td>
               <td class="col-region-tag">${displayRegion}</td>
               ${slotCells}
-              <td class="col-total-summary">
+              <td class="col-total-summary" title="Click to view all ${member.total} cases" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
                 <div class="spark-wrap">
                   <span>${displayTotal}</span>
                   ${member.total > 0 ? `
@@ -576,11 +690,68 @@
         hook.appendChild(teamBox);
       });
 
-      // Update KPI Board
+      // Update Top KPI Board
       document.getElementById("statTotal").innerText = grandTotal.toLocaleString();
       document.getElementById("statTat").innerText = tatCount > 0 ? `${(sumTat / tatCount).toFixed(1)} m` : "0.0 m";
       document.getElementById("statAgents").innerText = `${totalAgents} / 27`;
       document.getElementById("statTop").innerText = topAgent.total > 0 ? topAgent.name : "--";
+    }
+
+    // Interactive Drilldown Handler
+    function openDrilldown(agentName, slot) {
+      const section = document.getElementById("drilldownSection");
+      const titleText = document.getElementById("drillTitleText");
+      const countBadge = document.getElementById("drillCountBadge");
+      const tbody = document.getElementById("drillTableBody");
+
+      if (!agentCaseStore[agentName]) {
+        alert("Is agent ka koi case record upload nahi hua hai.");
+        return;
+      }
+
+      let casesToShow = [];
+      if (slot === 'ALL') {
+        SLOTS.forEach(s => {
+          if (agentCaseStore[agentName][s]) {
+            casesToShow = casesToShow.concat(agentCaseStore[agentName][s]);
+          }
+        });
+        titleText.innerText = `${agentName.toUpperCase()} — ALL CONSULTATIONS (${casesToShow.length})`;
+      } else {
+        casesToShow = agentCaseStore[agentName][slot] || [];
+        titleText.innerText = `${agentName.toUpperCase()} — SLOT: ${slot} DETAILS`;
+      }
+
+      countBadge.innerText = `${casesToShow.length} CASES`;
+      tbody.innerHTML = "";
+
+      if (casesToShow.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="padding: 20px; color: #94a3b8;">Koi record nahi mila.</td></tr>`;
+      } else {
+        casesToShow.forEach((c, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="color: #64748b;">${idx + 1}</td>
+            <td style="font-weight: 800; color: #0284c7;">${c.emr || '-'}</td>
+            <td style="color: #0f172a; font-weight: 800;">${c.doctor || '-'}</td>
+            <td>${c.medAgent || '-'}</td>
+            <td><span class="region-pill">${c.region || '-'}</span></td>
+            <td>${c.branch || '-'}</td>
+            <td><span style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">${c.type || '-'}</span></td>
+            <td style="color: #059669; font-weight: 800;">${c.tat ? c.tat + ' m' : '-'}</td>
+            <td style="font-size: 12.5px; color: #475569;">${c.apptTime || '-'}</td>
+            <td style="font-size: 12.5px; color: #475569;">${c.feedbackEndTime || '-'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      section.style.display = "block";
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeDrilldown() {
+      document.getElementById("drilldownSection").style.display = "none";
     }
 
     function parseCSVLine(line) {
@@ -665,13 +836,10 @@
       return null;
     }
 
-    // Exact Date Difference Parser in Minutes
     function parseDifferenceInMinutes(startStr, endStr) {
       if (!startStr || !endStr) return null;
-      // Exclude invalid future 2050 dates
       if (endStr.includes("2050") || startStr.includes("2050")) return null;
 
-      // Parse string: e.g. "2026-09-02 07:15:17" -> ISO "2026-09-02T07:15:17"
       const s = new Date(startStr.trim().replace(' ', 'T'));
       const e = new Date(endStr.trim().replace(' ', 'T'));
 
@@ -680,11 +848,12 @@
       const diffMs = e.getTime() - s.getTime();
       const diffMins = diffMs / (1000 * 60);
 
-      // Sanity check: valid positive TAT
       return (diffMins >= 0 && diffMins <= 300) ? diffMins : null;
     }
 
     function processRawRows(rows) {
+      agentCaseStore = {}; // Reset case storage
+
       currentDataset = ROSTER.map(team => ({
         team: team.team,
         members: team.members.map(agentObj => {
@@ -694,7 +863,12 @@
           let tatSum = 0;
           let tatCount = 0;
 
-          // Filter rows strictly matching agent
+          if (!agentCaseStore[agentObj.name]) {
+            agentCaseStore[agentObj.name] = {};
+            SLOTS.forEach(s => agentCaseStore[agentObj.name][s] = []);
+          }
+
+          // Filter matching agent rows
           const matches = rows.filter(r => {
             const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
             const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
@@ -703,22 +877,19 @@
 
           matches.forEach(row => {
             const status = (row["Status"] || "").trim().toUpperCase();
-            
-            // Only consider DONE consultations
             if (status !== "DONE") return;
 
             const apptTime = row["Appt Time"] || row["Consult StartTime"] || "";
             const slot = getHourSlot(apptTime);
-            if (slot && hours[slot] !== undefined) {
-              hours[slot] += 1;
-            }
+            if (!slot || hours[slot] === undefined) return;
+
+            hours[slot] += 1;
 
             const reg = row["Region Name"] || row["Clinic State"] || "";
             if (reg && reg.trim().length > 0) {
               regionMap[reg] = (regionMap[reg] || 0) + 1;
             }
 
-            // TAT Calculation: Immediate Feedback End Time - Appt Time (Ignoring 2050)
             const fbEndTime = row["Immediate Feedback End Time"] || "";
             const calculatedTatMins = parseDifferenceInMinutes(apptTime, fbEndTime);
 
@@ -726,6 +897,22 @@
               tatSum += calculatedTatMins;
               tatCount++;
             }
+
+            // Extract Doctor Name
+            let doctorName = (row["Doc Consult"] || row["Scheduled Doc"] || row["Docs"] || "").replace(/,/g, '').trim();
+
+            // Store full case details for click drilldown
+            agentCaseStore[agentObj.name][slot].push({
+              emr: row["EMR #"] || row["Member Id"] || "-",
+              doctor: doctorName || "-",
+              medAgent: row["Med Agent"] || agentObj.name,
+              region: reg || "-",
+              branch: row["Branch Name"] || "-",
+              type: row["Type"] || "-",
+              tat: calculatedTatMins !== null ? calculatedTatMins.toFixed(1) : "-",
+              apptTime: apptTime,
+              feedbackEndTime: fbEndTime
+            });
           });
 
           const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
@@ -745,6 +932,7 @@
         })
       }));
 
+      closeDrilldown();
       render();
     }
 
