@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --bg-canvas: #f8fafc;
@@ -49,7 +47,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(248, 250, 252, 0.94);
+      background: rgba(248, 250, 252, 0.92);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       padding-top: 10px;
@@ -60,7 +58,7 @@
 
     /* Top Command Header Bar */
     .top-bar {
-      background: rgba(9, 19, 34, 0.94);
+      background: rgba(9, 19, 34, 0.92);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(56, 189, 248, 0.25);
@@ -218,10 +216,10 @@
     .team-panel {
       background: #ffffff;
       border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      margin-bottom: 30px;
+      border-radius: 10px;
+      margin-bottom: 26px;
       overflow: hidden;
-      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+      box-shadow: 0 6px 18px -3px rgba(15, 23, 42, 0.07);
     }
 
     .team-title-banner {
@@ -279,26 +277,6 @@
       border-radius: 5px;
       letter-spacing: 0.5px;
       border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    .btn-toggle-chart {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
-    }
-
-    .btn-toggle-chart:hover {
-      background: rgba(56, 189, 248, 0.3);
-      color: #ffffff;
     }
 
     .table-container {
@@ -414,6 +392,7 @@
       border-radius: 4px;
     }
 
+    /* TAT Column with Arrow Indicator Badges */
     .col-tat-summary {
       background-color: #f0fdf4 !important;
       font-weight: 900;
@@ -449,48 +428,6 @@
       font-size: 12px;
       font-weight: 900;
       line-height: 1;
-    }
-
-    /* High-Tech Team Chart Container */
-    .team-chart-wrapper {
-      background: radial-gradient(circle at 50% 20%, #0c1c38 0%, #060c18 100%);
-      padding: 20px 24px 16px 24px;
-      border-top: 2px solid #132440;
-      position: relative;
-    }
-
-    .chart-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
-    .chart-heading-text {
-      color: #f8fafc;
-      font-size: 13.5px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .chart-heading-text::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #38bdf8;
-      box-shadow: 0 0 10px #38bdf8;
-    }
-
-    .chart-canvas-box {
-      position: relative;
-      width: 100%;
-      height: 240px;
     }
 
     /* Drilldown Table Section */
@@ -625,7 +562,7 @@
 
     </div>
 
-    <!-- Teamwise Data Tables + Curved High-Tech Charts Hook -->
+    <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
 
     <!-- Interactive Drill-Down Section -->
@@ -718,20 +655,8 @@
 
     const TOTAL_CAPACITY = 27;
     const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
-    
-    // High-tech Neon Curve Color Palette
-    const NEON_COLORS = [
-      { border: "#38bdf8", fill: "rgba(56, 189, 248, 0.12)" },   // Cyan
-      { border: "#f43f5e", fill: "rgba(244, 63, 94, 0.12)" },    // Rose Neon
-      { border: "#10b981", fill: "rgba(16, 185, 129, 0.12)" },   // Emerald
-      { border: "#fbbf24", fill: "rgba(251, 191, 36, 0.12)" },   // Warm Amber
-      { border: "#c084fc", fill: "rgba(192, 132, 252, 0.12)" },  // Purple
-      { border: "#22d3ee", fill: "rgba(34, 211, 238, 0.12)" }    // Ice Blue
-    ];
-
     let currentDataset = [];
     let agentCaseStore = {};
-    let activeCharts = {};
 
     function buildEmptyState() {
       agentCaseStore = {};
@@ -753,22 +678,10 @@
       }));
     }
 
-    function toggleTeamChart(teamIdx) {
-      const box = document.getElementById(`chartBox-${teamIdx}`);
-      if (!box) return;
-      box.style.display = (box.style.display === "none") ? "block" : "none";
-    }
-
     function render() {
       const hook = document.getElementById("dashboardHook");
       if (!hook) return;
       hook.innerHTML = "";
-
-      // Clear existing chart instances before rebuilding DOM
-      Object.values(activeCharts).forEach(c => {
-        if (c && typeof c.destroy === "function") c.destroy();
-      });
-      activeCharts = {};
 
       let grandTotal = 0;
       let overallTatSum = 0;
@@ -779,6 +692,7 @@
       let globalMinAgent = { name: "--", tat: 9999 };
       let globalMaxAgent = { name: "--", tat: -1 };
 
+      // Calculate global metrics & active agents
       currentDataset.forEach(team => {
         team.members.forEach(member => {
           if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
@@ -800,10 +714,11 @@
         });
       });
 
-      currentDataset.forEach((team, teamIdx) => {
+      currentDataset.forEach(team => {
         const teamBox = document.createElement("div");
         teamBox.className = "team-panel";
 
+        // Find team lowest & highest TAT
         let teamMin = { name: "--", tat: 9999 };
         let teamMax = { name: "--", tat: -1 };
 
@@ -815,7 +730,7 @@
           }
         });
 
-        // SORT AGENTS: Lowest TAT to Highest
+        // SORT AGENTS: Low TAT to High TAT (Agents with 0 TAT at the bottom)
         const sortedMembers = [...team.members].sort((a, b) => {
           const tatA = parseFloat(a.tat) || 0;
           const tatB = parseFloat(b.tat) || 0;
@@ -842,6 +757,7 @@
           const displayTotal = member.total > 0 ? member.total : "";
           const memberTatVal = parseFloat(member.tat) || 0;
           
+          // Generate Arrow Badges: Green Down Arrow for Min TAT, Red Up Arrow for Max TAT
           let arrowHtml = "";
           if (memberTatVal > 0) {
             if (memberTatVal === teamMin.tat) {
@@ -891,10 +807,6 @@
             <div style="display:flex; align-items:center; gap:12px;">
               <span>${team.team}</span>
               <span class="team-badge">${team.members.length} AGENTS</span>
-              <button class="btn-toggle-chart" onclick="toggleTeamChart(${teamIdx})">
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                Toggle Trend Line Chart
-              </button>
             </div>
             ${teamTatHtml}
           </div>
@@ -915,25 +827,9 @@
               </tbody>
             </table>
           </div>
-
-          <!-- High-Tech Neon Curve Chart -->
-          <div id="chartBox-${teamIdx}" class="team-chart-wrapper">
-            <div class="chart-header-row">
-              <div class="chart-heading-text">${team.team} — HOURLY CONSULTATION CURVES</div>
-              <span style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Realtime Spline Projection</span>
-            </div>
-            <div class="chart-canvas-box">
-              <canvas id="canvasChart-${teamIdx}"></canvas>
-            </div>
-          </div>
         `;
 
         hook.appendChild(teamBox);
-
-        // Render Chart.js High-Tech Curved Visual for this Team
-        setTimeout(() => {
-          initHighTechChart(teamIdx, sortedMembers);
-        }, 10);
       });
 
       const overallAvgTat = overallTatCases > 0 ? (overallTatSum / overallTatCases).toFixed(1) : "0.0";
@@ -944,104 +840,6 @@
       
       document.getElementById("statLowestAgent").innerText = globalMinAgent.tat !== 9999 ? `${globalMinAgent.name} (${globalMinAgent.tat}m)` : "--";
       document.getElementById("statHighestAgent").innerText = globalMaxAgent.tat !== -1 ? `${globalMaxAgent.name} (${globalMaxAgent.tat}m)` : "--";
-    }
-
-    function initHighTechChart(teamIdx, members) {
-      const canvas = document.getElementById(`canvasChart-${teamIdx}`);
-      if (!canvas) return;
-
-      const datasets = members.map((m, idx) => {
-        const color = NEON_COLORS[idx % NEON_COLORS.length];
-        const dataArr = SLOTS.map(s => m.hours[s] || 0);
-
-        return {
-          label: m.name,
-          data: dataArr,
-          borderColor: color.border,
-          backgroundColor: color.fill,
-          borderWidth: 2.6,
-          tension: 0.45, // Smooth high-tech curved lines
-          fill: true,
-          pointRadius: 4,
-          pointHoverRadius: 7,
-          pointBackgroundColor: "#0c182d",
-          pointBorderColor: color.border,
-          pointBorderWidth: 2.2,
-          pointHoverBackgroundColor: color.border,
-          pointHoverBorderColor: "#ffffff"
-        };
-      });
-
-      const ctx = canvas.getContext('2d');
-      activeCharts[teamIdx] = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: SLOTS,
-          datasets: datasets
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: {
-            mode: 'index',
-            intersect: false,
-          },
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: {
-                color: '#cbd5e1',
-                boxWidth: 12,
-                boxHeight: 12,
-                usePointStyle: true,
-                pointStyle: 'circle',
-                font: {
-                  family: 'Plus Jakarta Sans',
-                  weight: '700',
-                  size: 11
-                }
-              }
-            },
-            tooltip: {
-              backgroundColor: 'rgba(7, 14, 28, 0.95)',
-              titleColor: '#38bdf8',
-              bodyColor: '#f8fafc',
-              borderColor: 'rgba(56, 189, 248, 0.3)',
-              borderWidth: 1,
-              padding: 12,
-              cornerRadius: 8,
-              boxPadding: 6,
-              titleFont: { family: 'Plus Jakarta Sans', weight: '800', size: 13 },
-              bodyFont: { family: 'JetBrains Mono', weight: '700', size: 12 }
-            }
-          },
-          scales: {
-            x: {
-              grid: {
-                color: 'rgba(255, 255, 255, 0.05)',
-                drawBorder: false
-              },
-              ticks: {
-                color: '#64748b',
-                font: { family: 'JetBrains Mono', weight: '700', size: 11.5 }
-              }
-            },
-            y: {
-              beginAtZero: true,
-              suggestedMax: 6,
-              grid: {
-                color: 'rgba(255, 255, 255, 0.06)',
-                drawBorder: false
-              },
-              ticks: {
-                color: '#64748b',
-                stepSize: 1,
-                font: { family: 'JetBrains Mono', weight: '700', size: 11.5 }
-              }
-            }
-          }
-        }
-      });
     }
 
     function openDrilldown(agentName, slot) {
