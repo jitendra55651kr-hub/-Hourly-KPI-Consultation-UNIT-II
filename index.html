@@ -42,17 +42,8 @@
       margin: 0 auto;
     }
 
-    /* Sticky Wrapper for Header and KPI Board */
+    /* Normal Section (Freeze/Sticky removed) */
     .sticky-top-section {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(248, 250, 252, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding-top: 10px;
-      padding-bottom: 6px;
-      margin-top: -10px;
       margin-bottom: 22px;
     }
 
@@ -502,7 +493,7 @@
 
   <div class="container">
 
-    <!-- Frozen Sticky Top Section (Header + KPI Cards) -->
+    <!-- Regular Top Section (No Sticky / No Freeze) -->
     <div class="sticky-top-section">
 
       <!-- Top Command Header Bar -->
@@ -692,7 +683,6 @@
       let globalMinAgent = { name: "--", tat: 9999 };
       let globalMaxAgent = { name: "--", tat: -1 };
 
-      // Calculate global metrics & active agents
       currentDataset.forEach(team => {
         team.members.forEach(member => {
           if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
@@ -718,7 +708,6 @@
         const teamBox = document.createElement("div");
         teamBox.className = "team-panel";
 
-        // Find team lowest & highest TAT
         let teamMin = { name: "--", tat: 9999 };
         let teamMax = { name: "--", tat: -1 };
 
@@ -730,7 +719,6 @@
           }
         });
 
-        // SORT AGENTS: Low TAT to High TAT (Agents with 0 TAT at the bottom)
         const sortedMembers = [...team.members].sort((a, b) => {
           const tatA = parseFloat(a.tat) || 0;
           const tatB = parseFloat(b.tat) || 0;
@@ -757,7 +745,6 @@
           const displayTotal = member.total > 0 ? member.total : "";
           const memberTatVal = parseFloat(member.tat) || 0;
           
-          // Generate Arrow Badges: Green Down Arrow for Min TAT, Red Up Arrow for Max TAT
           let arrowHtml = "";
           if (memberTatVal > 0) {
             if (memberTatVal === teamMin.tat) {
