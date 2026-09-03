@@ -44,14 +44,14 @@
       margin: 0 auto;
     }
 
-    /* Top Command Header Bar */
+    /* Top Command Header Bar - Navy Blur */
     .top-bar {
       background: rgba(9, 19, 34, 0.90);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: 16px;
-      padding: 24px 32px;
+      padding: 20px 32px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -62,80 +62,48 @@
       position: relative;
     }
 
+    /* Center Header with White Dial / Navy Needle Watch */
     .header-center-content {
       flex: 1;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
       min-width: 320px;
     }
 
-    .badge-pill {
-      display: inline-flex;
+    /* Watch: Pure White Dial, Navy Needles and Symbols */
+    .luxury-watch-white {
+      width: 52px;
+      height: 52px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(244, 114, 182, 0.15);
-      border: 1px solid rgba(244, 114, 182, 0.35);
-      color: #f472b6;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 4px 14px;
-      border-radius: 999px;
-      letter-spacing: 0.8px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 0 3px #0f274a;
+      position: relative;
+      flex-shrink: 0;
     }
 
-    .pulse-dot {
-      width: 7px;
-      height: 7px;
-      background-color: #f472b6;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #f472b6;
+    .luxury-watch-white svg {
+      width: 44px;
+      height: 44px;
     }
 
     .main-heading {
-      font-size: 30px;
+      font-size: 29px;
       font-weight: 900;
       color: #ffffff;
       letter-spacing: -0.3px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
-    .sub-heading {
-      font-size: 15px;
-      color: #cbd5e1;
-      margin-top: 6px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-
-    .header-right-tools {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .luxury-watch {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(145deg, #060c17 0%, #11203d 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(244, 114, 182, 0.45);
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .luxury-watch svg {
-      width: 36px;
-      height: 36px;
-    }
-
+    /* Upload Button */
     .btn-file-upload {
       background: linear-gradient(135deg, #0f274a 0%, #1e3a8a 100%);
       color: #ffffff;
-      padding: 13px 26px;
+      padding: 12px 26px;
       font-size: 15px;
       font-weight: 800;
       letter-spacing: 0.4px;
@@ -164,7 +132,7 @@
       color: #38bdf8;
     }
 
-    /* KPI Boards without bottom subtext */
+    /* Clean Dark Navy KPI Boards */
     .kpi-board {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -260,7 +228,6 @@
       text-align: center;
     }
 
-    /* Large & Bold Table Headers */
     thead th {
       background-color: #070e1c !important;
       color: #ffffff !important;
@@ -273,7 +240,6 @@
       text-transform: uppercase;
     }
 
-    /* Large & Bold Body Cells */
     tbody td {
       padding: 13px 8px;
       border: 1px solid #cbd5e1;
@@ -292,7 +258,6 @@
       background-color: #fdf2f8;
     }
 
-    /* Centered Agent Name */
     .col-agent-name {
       text-align: center;
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -330,7 +295,6 @@
       /* Completely blank */
     }
 
-    /* Output Summary Mini Graph Bar */
     .col-total-summary {
       background-color: #eff6ff !important;
       font-weight: 900;
@@ -376,31 +340,33 @@
 
     <!-- Top Command Header Bar -->
     <header class="top-bar">
-      <div style="width: 50px;" class="hidden-spacer"></div>
+      <!-- Hidden spacer for symmetry -->
+      <div style="width: 40px;" class="hidden-spacer"></div>
 
+      <!-- Center Title with Adjacent White Dial & Navy Needle Watch -->
       <div class="header-center-content">
-        <div class="badge-pill">
-          <span class="pulse-dot"></span> Realtime Unit-2 Operations Monitor
-        </div>
-        <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
-        <p class="sub-heading">27 Verified Agents • Hourly Output, Regional Distribution & Turn-Around Time Tracking</p>
-      </div>
-
-      <div class="header-right-tools">
-        <div class="luxury-watch" title="Live Operations Clock">
+        <div class="luxury-watch-white" title="Live Operations Clock">
           <svg viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="44" stroke="#f472b6" stroke-width="4" fill="none" />
-            <circle cx="50" cy="50" r="39" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none" />
-            <line x1="50" y1="12" x2="50" y2="18" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
-            <line x1="50" y1="82" x2="50" y2="88" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
-            <line x1="12" y1="50" x2="18" y2="50" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
-            <line x1="82" y1="50" x2="88" y2="50" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
-            <line x1="50" y1="50" x2="66" y2="40" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
-            <line x1="50" y1="50" x2="50" y2="22" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
-            <circle cx="50" cy="50" r="4" fill="#f472b6" />
+            <!-- Outer Navy Border Ring -->
+            <circle cx="50" cy="50" r="46" stroke="#0f1e36" stroke-width="3.5" fill="#ffffff" />
+            <!-- Hour Markers -->
+            <line x1="50" y1="9" x2="50" y2="16" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="50" y1="84" x2="50" y2="91" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="9" y1="50" x2="16" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <line x1="84" y1="50" x2="91" y2="50" stroke="#0f1e36" stroke-width="3" stroke-linecap="round" />
+            <!-- Hour Needle -->
+            <line x1="50" y1="50" x2="68" y2="38" stroke="#0f1e36" stroke-width="4" stroke-linecap="round" />
+            <!-- Minute Needle -->
+            <line x1="50" y1="50" x2="50" y2="18" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round" />
+            <!-- Center Pivot -->
+            <circle cx="50" cy="50" r="4.5" fill="#0f1e36" />
           </svg>
         </div>
+        <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
+      </div>
 
+      <!-- Upload Button -->
+      <div>
         <label class="btn-file-upload">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
@@ -411,7 +377,7 @@
       </div>
     </header>
 
-    <!-- Clean Dark Navy KPI Board (Subtext Removed) -->
+    <!-- Clean Dark Navy KPI Board -->
     <section class="kpi-board">
       <div class="kpi-card-navy card-cyan">
         <div class="kpi-title">Total Consultations</div>
@@ -549,7 +515,7 @@
             topAgent = { name: member.name, total: member.total };
           }
 
-          // Slot cells: If 0, keep it completely blank (empty)
+          // Slot cells: If 0, keep it completely blank
           const slotCells = SLOTS.map(s => {
             const val = member.hours[s] || 0;
             if (val > 0) {
@@ -561,7 +527,7 @@
 
           const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
           const displayTotal = member.total > 0 ? member.total : "";
-          const displayTat = member.total > 0 ? `${member.tat}m` : "";
+          const displayTat = member.total > 0 && member.tat ? `${member.tat}m` : "";
           const displayRegion = member.region ? `<span class="region-pill">${member.region}</span>` : "";
 
           rowsHtml += `
@@ -699,6 +665,25 @@
       return null;
     }
 
+    // Exact Date Difference Parser in Minutes
+    function parseDifferenceInMinutes(startStr, endStr) {
+      if (!startStr || !endStr) return null;
+      // Exclude invalid future 2050 dates
+      if (endStr.includes("2050") || startStr.includes("2050")) return null;
+
+      // Parse string: e.g. "2026-09-02 07:15:17" -> ISO "2026-09-02T07:15:17"
+      const s = new Date(startStr.trim().replace(' ', 'T'));
+      const e = new Date(endStr.trim().replace(' ', 'T'));
+
+      if (isNaN(s.getTime()) || isNaN(e.getTime())) return null;
+
+      const diffMs = e.getTime() - s.getTime();
+      const diffMins = diffMs / (1000 * 60);
+
+      // Sanity check: valid positive TAT
+      return (diffMins >= 0 && diffMins <= 300) ? diffMins : null;
+    }
+
     function processRawRows(rows) {
       currentDataset = ROSTER.map(team => ({
         team: team.team,
@@ -709,6 +694,7 @@
           let tatSum = 0;
           let tatCount = 0;
 
+          // Filter rows strictly matching agent
           const matches = rows.filter(r => {
             const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
             const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
@@ -716,8 +702,13 @@
           });
 
           matches.forEach(row => {
-            const timeVal = row["Appt Time"] || row["Consult StartTime"] || "";
-            const slot = getHourSlot(timeVal);
+            const status = (row["Status"] || "").trim().toUpperCase();
+            
+            // Only consider DONE consultations
+            if (status !== "DONE") return;
+
+            const apptTime = row["Appt Time"] || row["Consult StartTime"] || "";
+            const slot = getHourSlot(apptTime);
             if (slot && hours[slot] !== undefined) {
               hours[slot] += 1;
             }
@@ -727,9 +718,12 @@
               regionMap[reg] = (regionMap[reg] || 0) + 1;
             }
 
-            const tatVal = parseFloat(row["Doc 1st(mins)"] || row["Total Doc(mins)"] || row["Consult Time(mins)"]);
-            if (!isNaN(tatVal) && tatVal > 0) {
-              tatSum += tatVal;
+            // TAT Calculation: Immediate Feedback End Time - Appt Time (Ignoring 2050)
+            const fbEndTime = row["Immediate Feedback End Time"] || "";
+            const calculatedTatMins = parseDifferenceInMinutes(apptTime, fbEndTime);
+
+            if (calculatedTatMins !== null) {
+              tatSum += calculatedTatMins;
               tatCount++;
             }
           });
@@ -739,7 +733,7 @@
           const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
           const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 2).join(", ") : "";
 
-          const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : (totalOutput > 0 ? "2.4" : "");
+          const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) : "";
 
           return {
             name: agentObj.name,
