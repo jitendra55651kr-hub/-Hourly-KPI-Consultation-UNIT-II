@@ -309,7 +309,6 @@
       background-color: #fdf2f8;
     }
 
-    /* Agent Name Clickable Styling */
     .col-agent-name {
       text-align: center;
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -319,7 +318,6 @@
       min-width: 220px;
       cursor: pointer;
       transition: all 0.2s ease;
-      position: relative;
     }
 
     .col-agent-name:hover {
@@ -393,7 +391,6 @@
       border-radius: 4px;
     }
 
-    /* TAT Column */
     .col-tat-summary {
       background-color: #f0fdf4 !important;
       font-weight: 900;
@@ -483,7 +480,6 @@
       border-color: #ef4444;
     }
 
-    /* Agent Details Summary Pills in Breakdown */
     .drill-details-bar {
       display: flex;
       flex-wrap: wrap;
@@ -520,6 +516,27 @@
       font-size: 14px;
       padding: 10px 8px;
       font-weight: 700;
+    }
+
+    /* Formatted Time Display (Date light, Time 16px Bold) */
+    .time-container {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .time-date-part {
+      font-size: 12.5px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .time-bold-part {
+      font-size: 16px !important;
+      font-weight: 900 !important;
+      color: #070e1c !important;
+      letter-spacing: 0.3px;
     }
   </style>
 </head>
@@ -599,7 +616,6 @@
           <button class="btn-close-drill" onclick="closeDrilldown()">✕ Close Details</button>
         </div>
 
-        <!-- Dynamic Agent Metadata Bar (Cases, Regions, TAT) -->
         <div class="drill-details-bar" id="drillAgentDetailsBar"></div>
       </div>
       <div class="table-container">
@@ -614,8 +630,8 @@
               <th>BRANCH</th>
               <th>TYPE</th>
               <th style="background-color: #047857 !important;">TAT (MINS)</th>
-              <th>APPT TIME</th>
-              <th>FEEDBACK END TIME</th>
+              <th style="min-width: 170px;">APPT TIME</th>
+              <th style="min-width: 170px;">FEEDBACK END TIME</th>
             </tr>
           </thead>
           <tbody id="drillTableBody"></tbody>
@@ -782,7 +798,6 @@
           const displayTotal = member.total > 0 ? member.total : "";
           const memberTatVal = parseFloat(member.tat) || 0;
           
-          // Lowest TAT -> Up (↑), Highest TAT -> Down (↓)
           let arrowHtml = "";
           if (memberTatVal > 0) {
             if (memberTatVal === teamMin.tat) {
@@ -869,6 +884,16 @@
       document.getElementById("statHighestAgent").innerText = globalMaxAgent.tat !== -1 ? `${globalMaxAgent.name} (${globalMaxAgent.tat}m)` : "--";
     }
 
+    // Helper: Split Date & Time string, format Time into 16px Bold
+    function formatDateTimeBold(str) {
+      if (!str || str === '-') return '-';
+      const parts = str.trim().split(' ');
+      if (parts.length >= 2) {
+        return `<div class="time-container"><span class="time-date-part">${parts[0]}</span><span class="time-bold-part">${parts[1]}</span></div>`;
+      }
+      return `<span class="time-bold-part">${str}</span>`;
+    }
+
     function openDrilldown(agentName, slot) {
       const section = document.getElementById("drilldownSection");
       const titleText = document.getElementById("drillTitleText");
@@ -893,7 +918,6 @@
         titleText.innerText = `${agentName.toUpperCase()} — SLOT: ${slot} BREAKDOWN`;
       }
 
-      // Region aggregation & TAT calculation for this selection
       const regionCounts = {};
       let tatSum = 0;
       let tatCount = 0;
@@ -938,8 +962,8 @@
             <td>${c.branch || '-'}</td>
             <td><span style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">${c.type || '-'}</span></td>
             <td style="color: #059669; font-weight: 800;">${c.tat && c.tat !== '-' ? c.tat + ' m' : '-'}</td>
-            <td style="font-size: 12.5px; color: #475569;">${c.apptTime || '-'}</td>
-            <td style="font-size: 12.5px; color: #475569;">${c.feedbackEndTime || '-'}</td>
+            <td>${formatDateTimeBold(c.apptTime)}</td>
+            <td>${formatDateTimeBold(c.feedbackEndTime)}</td>
           `;
           tbody.appendChild(tr);
         });
