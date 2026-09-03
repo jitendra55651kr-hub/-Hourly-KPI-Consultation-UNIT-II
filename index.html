@@ -6,16 +6,19 @@
   <title>HOURLY KPI CONSULTATION DATA UNIT 2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-main: #f8fafc;
-      --navy-dark: #091322;
-      --navy-header: #0f1e36;
-      --cyan-accent: #0284c7;
-      --emerald-accent: #059669;
-      --amber-accent: #d97706;
-      --pink-glow: rgba(244, 114, 182, 0.18);
+      --bg-canvas: #f8fafc;
+      --navy-deep: #070e1c;
+      --navy-card: #0c182d;
+      --navy-card-border: #1e2f4d;
+      --navy-header: #091322;
+      --pink-glow: rgba(244, 114, 182, 0.22);
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-pink: #f472b6;
+      --accent-amber: #fbbf24;
     }
 
     * {
@@ -26,10 +29,9 @@
     }
 
     body {
-      background-color: var(--bg-main);
-      /* Stylish ambient soft pink/rose glow from the top-center */
+      background-color: var(--bg-canvas);
       background-image: 
-        radial-gradient(circle at 50% 60px, rgba(244, 114, 182, 0.16) 0%, rgba(251, 207, 232, 0.08) 45%, transparent 75%),
+        radial-gradient(circle at 50% 50px, var(--pink-glow) 0%, rgba(251, 207, 232, 0.1) 40%, transparent 75%),
         linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
       background-attachment: fixed;
       color: #0f172a;
@@ -42,17 +44,28 @@
       margin: 0 auto;
     }
 
-    /* Centered Top Command Header */
+    /* Top Command Header Bar */
     .top-bar {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      border-radius: 14px;
-      padding: 24px 30px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 10px 25px -5px rgba(244, 114, 182, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 20px 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 10px 30px -5px rgba(244, 114, 182, 0.18), 0 4px 14px -2px rgba(15, 23, 42, 0.05);
       margin-bottom: 24px;
+      position: relative;
+    }
+
+    /* Center Header Text Content */
+    .header-center-content {
+      flex: 1;
+      text-align: center;
+      min-width: 320px;
     }
 
     .badge-pill {
@@ -62,8 +75,8 @@
       background: #fdf2f8;
       border: 1px solid #fbcfe8;
       color: #db2777;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 11.5px;
+      font-weight: 800;
       padding: 4px 12px;
       border-radius: 999px;
       letter-spacing: 0.6px;
@@ -79,146 +92,152 @@
       box-shadow: 0 0 8px #db2777;
     }
 
-    .title-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 2px;
-    }
-
-    .clock-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #0f1e36 0%, #1e293b 100%);
-      color: #f472b6;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
-    }
-
-    .clock-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke-width: 2.2;
-    }
-
     .main-heading {
-      font-size: 26px;
-      font-weight: 800;
-      color: #0c1a30;
-      letter-spacing: -0.2px;
+      font-size: 28px;
+      font-weight: 900;
+      color: #070e1c;
+      letter-spacing: -0.4px;
     }
 
     .sub-heading {
-      font-size: 14px;
+      font-size: 14.5px;
       color: #64748b;
-      margin-top: 6px;
-      font-weight: 500;
-    }
-
-    .upload-action-wrap {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .btn-file-upload {
-      background: linear-gradient(135deg, #091322 0%, #172554 100%);
-      color: #ffffff;
-      padding: 11px 26px;
-      font-size: 14px;
+      margin-top: 5px;
       font-weight: 700;
-      border-radius: 8px;
+    }
+
+    /* Right Section: Large Analog Watch + Stylish Upload Button */
+    .header-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* Beautiful Large Clock Icon */
+    .luxury-watch {
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(145deg, #091322 0%, #172554 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(7, 14, 28, 0.35), 0 0 0 3px rgba(244, 114, 182, 0.3);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .luxury-watch svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    /* Ultra-Stylish Upload Button */
+    .btn-file-upload {
+      background: linear-gradient(135deg, #070e1c 0%, #0f274a 100%);
+      color: #ffffff;
+      padding: 13px 26px;
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      border-radius: 10px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
-      transition: all 0.2s ease;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid #38bdf8;
+      box-shadow: 0 4px 16px rgba(7, 14, 28, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transition: all 0.25s ease;
+      white-space: nowrap;
     }
 
     .btn-file-upload:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
-      background: linear-gradient(135deg, #172554 0%, #1e3a8a 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(56, 189, 248, 0.35);
+      background: linear-gradient(135deg, #0f274a 0%, #1e3a8a 100%);
+      border-color: #7dd3fc;
     }
 
-    /* Executive KPI Widgets */
+    .btn-file-upload svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.4;
+      color: #38bdf8;
+    }
+
+    /* Dark Navy Blue KPI Boards with Bold White Fonts */
     .kpi-board {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 18px;
       margin-bottom: 28px;
     }
 
-    .kpi-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 18px 22px;
-      box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+    .kpi-card-navy {
+      background: linear-gradient(145deg, #091426 0%, #0c1b33 100%);
+      border: 1px solid var(--navy-card-border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      box-shadow: 0 8px 20px -4px rgba(7, 14, 28, 0.25);
       position: relative;
       overflow: hidden;
     }
 
-    .kpi-card::after {
+    .kpi-card-navy::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 4px;
+      width: 5px;
       height: 100%;
     }
 
-    .card-cyan::after { background: #0284c7; }
-    .card-emerald::after { background: #059669; }
-    .card-pink::after { background: #db2777; }
-    .card-amber::after { background: #d97706; }
+    .card-cyan::before { background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
+    .card-emerald::before { background: var(--accent-emerald); box-shadow: 0 0 10px var(--accent-emerald); }
+    .card-pink::before { background: var(--accent-pink); box-shadow: 0 0 10px var(--accent-pink); }
+    .card-amber::before { background: var(--accent-amber); box-shadow: 0 0 10px var(--accent-amber); }
 
     .kpi-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #64748b;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #cbd5e1;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.8px;
     }
 
     .kpi-number {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 28px;
-      font-weight: 800;
-      color: #0f172a;
+      font-size: 32px;
+      font-weight: 900;
+      color: #ffffff;
       margin-top: 6px;
+      letter-spacing: -0.5px;
     }
 
     .kpi-subtext {
-      font-size: 12px;
+      font-size: 12.5px;
       color: #94a3b8;
-      margin-top: 4px;
-      font-weight: 500;
+      margin-top: 5px;
+      font-weight: 700;
     }
 
-    /* Team Layout Cards */
+    /* Team Panels & Data Tables */
     .team-panel {
       background: #ffffff;
-      border: 1px solid #94a3b8;
-      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
       margin-bottom: 26px;
       overflow: hidden;
-      box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 6px 18px -3px rgba(15, 23, 42, 0.07);
     }
 
     .team-title-banner {
-      background: linear-gradient(90deg, #091322 0%, #0f1e36 100%);
+      background: linear-gradient(90deg, #070e1c 0%, #0c182d 100%);
       color: #ffffff;
-      padding: 11px 20px;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
+      padding: 13px 22px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.9px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -226,15 +245,15 @@
     }
 
     .team-badge {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.16);
       font-size: 12px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 4px;
-      letter-spacing: 0.4px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 5px;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
-    /* Table & Deep Dark Headers */
     .table-container {
       overflow-x: auto;
     }
@@ -242,26 +261,27 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13.5px;
+      font-size: 14.5px;
       text-align: center;
     }
 
     thead th {
-      background-color: #091322 !important;
+      background-color: #070e1c !important;
       color: #ffffff !important;
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      padding: 11px 6px;
-      border: 1px solid #1e293b;
+      font-weight: 900;
+      font-size: 12.5px;
+      letter-spacing: 0.6px;
+      padding: 12px 6px;
+      border: 1px solid #1a273f;
       white-space: nowrap;
       text-transform: uppercase;
     }
 
     tbody td {
-      padding: 9px 6px;
+      padding: 11px 7px;
       border: 1px solid #cbd5e1;
-      font-size: 13.5px;
+      font-size: 15px;
+      font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
       transition: background 0.15s;
@@ -272,52 +292,52 @@
     }
 
     tbody tr:hover {
-      background-color: #fdf2f8; /* Soft subtle pink hover */
+      background-color: #fdf2f8;
     }
 
     .col-agent-name {
       text-align: left;
-      padding-left: 18px;
+      padding-left: 20px;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700;
-      color: #091322;
-      font-size: 14px;
-      min-width: 210px;
+      font-weight: 800;
+      color: #070e1c;
+      font-size: 15px;
+      min-width: 220px;
     }
 
     .col-region-tag {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 800;
       color: #334155;
-      min-width: 140px;
+      min-width: 150px;
     }
 
     .region-pill {
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 3px 8px;
-      border-radius: 4px;
+      padding: 4px 10px;
+      border-radius: 5px;
       display: inline-block;
     }
 
     .cell-val-active {
-      font-weight: 700;
-      color: #091322;
-      background-color: rgba(244, 114, 182, 0.06);
+      font-weight: 900;
+      color: #070e1c;
+      background-color: rgba(244, 114, 182, 0.08);
     }
 
     .cell-val-blank {
       color: #cbd5e1;
-      font-weight: 400;
+      font-weight: 600;
     }
 
     /* Output Summary Mini Graph Bar */
     .col-total-summary {
       background-color: #eff6ff !important;
-      font-weight: 800;
+      font-weight: 900;
       color: #1d4ed8;
-      min-width: 130px;
+      min-width: 140px;
       padding: 8px 12px;
     }
 
@@ -325,28 +345,28 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
     }
 
     .spark-bar-bg {
       width: 100%;
-      height: 5px;
+      height: 6px;
       background-color: #cbd5e1;
-      border-radius: 3px;
+      border-radius: 4px;
       overflow: hidden;
     }
 
     .spark-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #60a5fa, #2563eb);
-      border-radius: 3px;
+      background: linear-gradient(90deg, #60a5fa, #1d4ed8);
+      border-radius: 4px;
     }
 
     .col-tat-summary {
       background-color: #f0fdf4 !important;
-      font-weight: 700;
+      font-weight: 900;
       color: #15803d;
-      min-width: 105px;
+      min-width: 110px;
     }
   </style>
 </head>
@@ -354,26 +374,45 @@
 
   <div class="container">
 
+    <!-- Top Command Header with Center Title and Right Clock/Upload -->
     <header class="top-bar">
-      <div>
+      <!-- Hidden Left spacer to keep center text truly centered -->
+      <div style="width: 50px;" class="hidden-spacer"></div>
+
+      <!-- Center Title -->
+      <div class="header-center-content">
         <div class="badge-pill">
           <span class="pulse-dot"></span> Realtime Unit-2 Operations Monitor
         </div>
-        <div class="title-wrapper">
-          <div class="clock-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
-        </div>
+        <h1 class="main-heading">HOURLY KPI CONSULTATION DATA UNIT 2</h1>
         <p class="sub-heading">27 Verified Agents • Hourly Output, Regional Distribution & Turn-Around Time Tracking</p>
       </div>
 
-      <div class="upload-action-wrap">
+      <!-- Right Side: Beautiful Clock & Upload Button -->
+      <div class="header-right-tools">
+        <div class="luxury-watch" title="Live Operations Clock">
+          <svg viewBox="0 0 100 100">
+            <!-- Clock Circle Border -->
+            <circle cx="50" cy="50" r="44" stroke="#f472b6" stroke-width="4" fill="none" />
+            <!-- Inner Ring -->
+            <circle cx="50" cy="50" r="39" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none" />
+            <!-- Hour Markers -->
+            <line x1="50" y1="12" x2="50" y2="18" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+            <line x1="50" y1="82" x2="50" y2="88" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+            <line x1="12" y1="50" x2="18" y2="50" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+            <line x1="82" y1="50" x2="88" y2="50" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+            <!-- Hour Hand -->
+            <line x1="50" y1="50" x2="66" y2="40" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+            <!-- Minute Hand -->
+            <line x1="50" y1="50" x2="50" y2="22" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+            <!-- Center Pivot -->
+            <circle cx="50" cy="50" r="4" fill="#f472b6" />
+          </svg>
+        </div>
+
         <label class="btn-file-upload">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
           </svg>
           <span>Upload CSV File</span>
           <input type="file" id="csvUploader" accept=".csv" style="display: none;">
@@ -381,29 +420,31 @@
       </div>
     </header>
 
+    <!-- Dark Navy Blue KPI Board with Pure White Bold Text -->
     <section class="kpi-board">
-      <div class="kpi-card card-cyan">
+      <div class="kpi-card-navy card-cyan">
         <div class="kpi-title">Total Consultations</div>
         <div id="statTotal" class="kpi-number">0</div>
         <div class="kpi-subtext">Cumulative sessions completed</div>
       </div>
-      <div class="kpi-card card-emerald">
+      <div class="kpi-card-navy card-emerald">
         <div class="kpi-title">Average Team TAT</div>
         <div id="statTat" class="kpi-number">0.0 m</div>
         <div class="kpi-subtext">Mean turn-around handling time</div>
       </div>
-      <div class="kpi-card card-pink">
+      <div class="kpi-card-navy card-pink">
         <div class="kpi-title">Active Roster Agents</div>
         <div id="statAgents" class="kpi-number">27 / 27</div>
         <div class="kpi-subtext">Deployed across 5 teams</div>
       </div>
-      <div class="kpi-card card-amber">
+      <div class="kpi-card-navy card-amber">
         <div class="kpi-title">Top Performer</div>
-        <div id="statTop" class="kpi-number" style="font-size: 20px; margin-top: 10px;">--</div>
+        <div id="statTop" class="kpi-number" style="font-size: 22px; margin-top: 10px;">--</div>
         <div id="statTopOutput" class="kpi-subtext">0 consultations</div>
       </div>
     </section>
 
+    <!-- Teamwise Data Containers -->
     <main id="dashboardHook"></main>
 
   </div>
@@ -497,7 +538,7 @@
       let maxIndividualTotal = 1;
       let topAgent = { name: "--", total: 0 };
 
-      // Calculate max for graph bar normalization
+      // Get highest volume for spark bars
       currentDataset.forEach(team => {
         team.members.forEach(member => {
           if (member.total > maxIndividualTotal) maxIndividualTotal = member.total;
@@ -523,7 +564,7 @@
             topAgent = { name: member.name, total: member.total };
           }
 
-          // Slot cells: If 0, show empty dash '-'
+          // Slot cells: If 0, show clean dash '-'
           const slotCells = SLOTS.map(s => {
             const val = member.hours[s] || 0;
             if (val > 0) {
@@ -533,7 +574,6 @@
             }
           }).join('');
 
-          // Progress bar percentage calculation
           const percent = maxIndividualTotal > 0 ? Math.min(100, Math.round((member.total / maxIndividualTotal) * 100)) : 0;
           const displayTotal = member.total > 0 ? member.total : "-";
           const displayTat = member.total > 0 ? `${member.tat}m` : "-";
@@ -568,12 +608,12 @@
             <table>
               <thead>
                 <tr>
-                  <th style="text-align: left; padding-left: 18px; min-width: 210px;">AGENT NAME</th>
-                  <th style="min-width: 140px;">KEY REGIONS</th>
+                  <th style="text-align: left; padding-left: 20px; min-width: 220px;">AGENT NAME</th>
+                  <th style="min-width: 150px;">KEY REGIONS</th>
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
                   <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
-                  <th style="background-color: #091322 !important; min-width: 130px;">TOTAL</th>
-                  <th style="background-color: #091322 !important; min-width: 105px;">AVG TAT</th>
+                  <th style="background-color: #070e1c !important; min-width: 140px;">TOTAL</th>
+                  <th style="background-color: #070e1c !important; min-width: 110px;">AVG TAT</th>
                 </tr>
               </thead>
               <tbody>
@@ -594,7 +634,7 @@
       document.getElementById("statTopOutput").innerText = topAgent.total > 0 ? `${topAgent.total} consultations completed` : "0 consultations";
     }
 
-    // CSV line parser handling embedded commas
+    // CSV Line Parser
     function parseCSVLine(line) {
       const arr = [];
       let entry = '';
@@ -623,7 +663,7 @@
         const text = evt.target.result;
         const lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
 
-        // Header auto-finder (skips top garbage rows)
+        // Header auto-finder (skips first 3 lines metadata)
         let headerIdx = -1;
         for (let i = 0; i < Math.min(lines.length, 15); i++) {
           const lower = lines[i].toLowerCase();
@@ -634,7 +674,7 @@
         }
 
         if (headerIdx === -1) {
-          alert("CSV me 'Med Agent' ya 'Appt Time' columns nahi mile. Kripya valid file upload karein.");
+          alert("CSV file me 'Med Agent' ya 'Appt Time' column nahi mila.");
           return;
         }
 
@@ -688,7 +728,7 @@
           let tatSum = 0;
           let tatCount = 0;
 
-          // Multi-alias & Emp code match
+          // Multi-alias & Emp Code Match
           const matches = rows.filter(r => {
             const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
             const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
@@ -696,20 +736,17 @@
           });
 
           matches.forEach(row => {
-            // Hour slot calculation
             const timeVal = row["Appt Time"] || row["Consult StartTime"] || "";
             const slot = getHourSlot(timeVal);
             if (slot && hours[slot] !== undefined) {
               hours[slot] += 1;
             }
 
-            // Region breakdown
             const reg = row["Region Name"] || row["Clinic State"] || "";
             if (reg && reg.trim().length > 0) {
               regionMap[reg] = (regionMap[reg] || 0) + 1;
             }
 
-            // TAT handling (Doc 1st + Consult Time in mins)
             const tatVal = parseFloat(row["Doc 1st(mins)"] || row["Total Doc(mins)"] || row["Consult Time(mins)"]);
             if (!isNaN(tatVal) && tatVal > 0) {
               tatSum += tatVal;
@@ -719,7 +756,6 @@
 
           const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
 
-          // Top 2 dominant regions
           const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
           const displayRegion = sortedRegions.length > 0 ? sortedRegions.slice(0, 2).join(", ") : "-";
 
@@ -738,7 +774,7 @@
       render();
     }
 
-    // Direct initialization
+    // Direct initial render
     currentDataset = buildEmptyState();
     render();
   </script>
