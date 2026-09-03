@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOURLY KPI CONSULTATION  UNIT II</title>
+  <title>HOURLY KPI CONSULTATION UNIT II</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
@@ -772,7 +772,7 @@
               <circle cx="50" cy="50" r="4.5" fill="#0f1e36" />
             </svg>
           </div>
-          <h1 class="main-heading">HOURLY KPI CONSULTATION  UNIT II</h1>
+          <h1 class="main-heading">HOURLY KPI CONSULTATION UNIT II</h1>
         </div>
 
         <div>
@@ -819,16 +819,16 @@
     <section class="break-panel" id="breakPanel">
       <div class="break-header-banner">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <span>☕ TOP 5 AGENTS — MAXIMUM BREAK / IDLE TIME</span>
+          <span>TOP 5 AGENTS — MAXIMUM BREAK / IDLE DURATION</span>
         </div>
-        <span class="break-badge-danger">Gaps &gt; 15 Mins Detected (Click Agent Name)</span>
+        <span class="break-badge-danger">Intervals &gt; 15 Mins Detected (Click Agent Name)</span>
       </div>
       <div class="table-container">
         <table class="break-table">
           <thead>
             <tr>
               <th style="width: 70px;">RANK</th>
-              <th style="min-width: 220px;">AGENT NAME (CLICK FOR DETAILS)</th>
+              <th style="min-width: 220px;">AGENT NAME (CLICK FOR TIMELINE)</th>
               <th style="min-width: 160px;">TEAM</th>
               <th style="min-width: 140px;">SHIFT</th>
               <th style="min-width: 130px;">TOTAL CASES</th>
@@ -838,7 +838,7 @@
           </thead>
           <tbody id="breakTableBody">
             <tr>
-              <td colspan="7" style="padding: 24px; color: #94a3b8; font-weight: 700;">CSV file upload kijiye break analysis dekhne ke liye.</td>
+              <td colspan="7" style="padding: 24px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">Please upload a CSV file to evaluate break and idle intervals.</td>
             </tr>
           </tbody>
         </table>
@@ -851,7 +851,7 @@
         <div class="break-detail-title">
           <span id="breakDetailTitleText">AGENT BREAK TIMELINE</span>
         </div>
-        <button class="btn-close-break-detail" onclick="closeBreakDetail()">✕ Close Break Details</button>
+        <button class="btn-close-break-detail" onclick="closeBreakDetail()">✕ Close Details</button>
       </div>
       <div class="table-container">
         <table class="break-detail-table">
@@ -1067,9 +1067,9 @@
           let arrowHtml = "";
           if (memberTatVal > 0) {
             if (memberTatVal === teamMin.tat) {
-              arrowHtml = `<span class="badge-arrow-green" title="Lowest TAT in Team (Best)">↑</span>`;
+              arrowHtml = `<span class="badge-arrow-green" title="Lowest TAT in Team (Best Performance)">↑</span>`;
             } else if (memberTatVal === teamMax.tat) {
-              arrowHtml = `<span class="badge-arrow-red" title="Highest TAT in Team (Slowest)">↓</span>`;
+              arrowHtml = `<span class="badge-arrow-red" title="Highest TAT in Team (Needs Improvement)">↓</span>`;
             }
           }
 
@@ -1084,7 +1084,7 @@
 
           rowsHtml += `
             <tr>
-              <td class="col-agent-name" title="Click to view full details for ${member.name}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
+              <td class="col-agent-name" title="Click to view full case logs for ${member.name}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
                 ${member.name}
               </td>
               <td class="col-shift-tag"><span class="shift-pill">${member.shift}</span></td>
@@ -1154,7 +1154,7 @@
       renderTopBreakAgents();
     }
 
-    // Logic: Previous Consultation End Time to Next Appt Time gap > 15 mins
+    // Previous Consultation End Time to Next Appt Time (> 15 mins)
     function renderTopBreakAgents() {
       const tbody = document.getElementById("breakTableBody");
       if (!tbody) return;
@@ -1176,7 +1176,6 @@
 
           if (allCases.length < 2) return;
 
-          // Chronological sort based on Appt Time
           const validCases = allCases.filter(c => c.apptTime && c.apptTime !== '-');
           validCases.sort((a, b) => {
             const timeA = new Date(a.apptTime.trim().replace(' ', 'T')).getTime();
@@ -1188,7 +1187,6 @@
           const breakList = [];
 
           for (let i = 0; i < validCases.length - 1; i++) {
-            // Priority: Pure Consultation End Time -> Feedback End Time -> Appt Time
             const currentEndStr = validCases[i].consultEndTime && validCases[i].consultEndTime !== '-'
               ? validCases[i].consultEndTime
               : (validCases[i].feedbackEndTime && validCases[i].feedbackEndTime !== '-' 
@@ -1202,7 +1200,6 @@
 
             if (!isNaN(curEnd) && !isNaN(nxtStart)) {
               const gapMins = (nxtStart - curEnd) / (1000 * 60);
-              // Threshold: 15 min se zyada kitni der tak break liya
               if (gapMins > 15 && gapMins <= 360) {
                 totalBreakMins += gapMins;
                 breakList.push({
@@ -1236,7 +1233,7 @@
       const top5 = breakStats.slice(0, 5);
 
       if (top5.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #94a3b8; font-weight: 700;">Data me koi 15+ mins ka break/gap record nahi mila.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">No break intervals exceeding 15 minutes detected in the uploaded dataset.</td></tr>`;
         return;
       }
 
@@ -1250,7 +1247,7 @@
         html += `
           <tr>
             <td><span class="rank-badge ${rankClass}">#${index + 1}</span></td>
-            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view breakdown: kitne bje se kitne bje tak break liya" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
+            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view detailed break timeline" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
             <td style="color: #4338ca; font-weight: 900;">${item.team}</td>
             <td><span class="shift-pill">${item.shift}</span></td>
             <td style="font-weight: 900;">${item.totalCases}</td>
@@ -1263,7 +1260,7 @@
       tbody.innerHTML = html;
     }
 
-    // Modal view: Consultation End Time se Next Appt Time tak
+    // Modal view for Break Schedule Breakdown
     function openBreakDetail(agentName) {
       const section = document.getElementById("breakDetailSection");
       const titleText = document.getElementById("breakDetailTitleText");
@@ -1271,11 +1268,11 @@
 
       const breaks = agentBreakStore[agentName] || [];
       if (breaks.length === 0) {
-        alert(`${agentName} ka koi 15+ mins ka break record nahi mila.`);
+        alert(`No break intervals exceeding 15 minutes found for ${agentName}.`);
         return;
       }
 
-      titleText.innerHTML = `☕ ${agentName.toUpperCase()} — DETAILED BREAK TIMELINE (&gt; 15 MINS GAPS)`;
+      titleText.innerHTML = `${agentName.toUpperCase()} — BREAK SCHEDULE BREAKDOWN (${breaks.length} SESSIONS)`;
       tbody.innerHTML = "";
 
       breaks.forEach((b, idx) => {
@@ -1321,7 +1318,7 @@
       const tbody = document.getElementById("drillTableBody");
 
       if (!agentCaseStore[agentName]) {
-        alert("Is agent ka koi case record upload nahi hua hai.");
+        alert(`No records found for agent: ${agentName}.`);
         return;
       }
 
@@ -1338,10 +1335,10 @@
             casesToShow = casesToShow.concat(agentCaseStore[agentName][s]);
           }
         });
-        titleText.innerText = `${agentName.toUpperCase()} — COMPLETE PROFILE BREAKDOWN`;
+        titleText.innerText = `${agentName.toUpperCase()} — COMPLETE CASE LOGS`;
       } else {
         casesToShow = agentCaseStore[agentName][slot] || [];
-        titleText.innerText = `${agentName.toUpperCase()} — SLOT: ${slot} BREAKDOWN`;
+        titleText.innerText = `${agentName.toUpperCase()} — HOURLY SLOT: ${slot}`;
       }
 
       const regionCounts = {};
@@ -1370,13 +1367,13 @@
         <div class="drill-info-chip">Shift: <strong>${agentShift}</strong></div>
         <div class="drill-info-chip">Total Cases: <strong>${casesToShow.length}</strong></div>
         <div class="drill-info-chip">Average TAT: <strong>${avgTat}</strong></div>
-        <div class="drill-info-chip">Regions: <strong>${sortedRegions || 'None'}</strong></div>
+        <div class="drill-info-chip">Key Regions: <strong>${sortedRegions || 'None'}</strong></div>
       `;
 
       tbody.innerHTML = "";
 
       if (casesToShow.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #94a3b8; font-size: 16px; font-weight: 800;">Koi record nahi mila.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #64748b; font-size: 16px; font-weight: 800;">No consult records found for this selection.</td></tr>`;
       } else {
         casesToShow.forEach((c, idx) => {
           const tr = document.createElement("tr");
@@ -1442,7 +1439,7 @@
         }
 
         if (headerIdx === -1) {
-          alert("CSV file me 'Med Agent' ya 'Appt Time' column nahi mila.");
+          alert("Invalid CSV format: Required columns 'Med Agent' or 'Appt Time' could not be found.");
           return;
         }
 
@@ -1540,7 +1537,6 @@
             }
 
             const fbEndTime = row["Immediate Feedback End Time"] || "";
-            
             const consultEndTime = row["Consult EndTime"] || row["Doc Consult EndTime"] || row["Consultation End Time"] || row["Immediate Feedback End Time"] || "";
 
             const calculatedTatMins = parseDifferenceInMinutes(apptTime, fbEndTime);
