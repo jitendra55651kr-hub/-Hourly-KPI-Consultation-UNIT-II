@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HOURLY KPI CONSULTATION  UNIT II</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
@@ -57,6 +58,7 @@
       gap: 20px;
       box-shadow: 0 10px 30px -5px rgba(244, 114, 182, 0.22), 0 8px 20px rgba(7, 14, 28, 0.4);
       margin-bottom: 24px;
+      position: relative;
     }
 
     .header-center-content {
@@ -123,6 +125,20 @@
       height: 20px;
       stroke-width: 2.4;
       color: #38bdf8;
+    }
+
+    /* Upload Status Badge */
+    #statusBadge {
+      display: none;
+      background: #0284c7;
+      color: #ffffff;
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
     }
 
     /* KPI Grid */
@@ -512,11 +528,13 @@
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
           </svg>
-          <span>Upload CSV File</span>
-          <input type="file" id="csvUploader" accept=".csv" style="display: none;">
+          <span>Upload CSV / Excel</span>
+          <input type="file" id="csvUploader" accept=".csv, .xlsx, .xls" onclick="this.value=null;" style="display: none;">
         </label>
       </div>
     </header>
+
+    <div id="statusBadge">Processing File... Please wait.</div>
 
     <section class="kpi-board">
       <div class="kpi-card-navy card-cyan">
@@ -575,7 +593,7 @@
   </div>
 
   <script>
-    // 27 Total Agents Roster (With Isha Mehta added in TEAM ISHANT)
+    // 27 Total Agents Roster (Includes Isha Mehta in TEAM ISHANT)
     const ROSTER = [
       {
         team: "TEAM JITENDRA",
@@ -586,10 +604,3 @@
           { name: "Shivam Verma", match: ["shivam", "ms00982"] },
           { name: "Jogender Singh", match: ["jogender", "ms02312"] }
         ]
-      },
-      {
-        team: "TEAM DEEPTI",
-        members: [
-          { name: "Renu Rani", match: ["ms00067"] },
-          { name: "Pooja Rathore", match: ["ms00879"] },
-          { name: "Roshni Prajapati", match:
