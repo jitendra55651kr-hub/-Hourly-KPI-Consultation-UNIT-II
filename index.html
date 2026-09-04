@@ -928,7 +928,7 @@
         team: "TEAM SHIVAM",
         members: [
           { name: "Nandani", shift: "7:00 AM - 4:00 PM", match: ["nandani"] },
-          { name: "Kamni Sharma", shift: "7:00 AM - 4:00 PM", match: ["kamni"] },
+          { name: "Kamni Sharma", shift: "7:00 AM - 4:00 PM", match: ["kamni", "kamini", "kamni sharma", "kamini sharma", "na"] },
           { name: "Burhan", shift: "9:00 AM - 6:00 PM", match: ["burhan", "ms00857"] },
           { name: "Chandrabhanu", shift: "8:00 AM - 5:00 PM", match: ["chandrabhanu", "ms02383"] },
           { name: "Munsi shakil Ahamed", shift: "8:00 AM - 5:00 PM", match: ["munsi", "shakil", "ms00928"] },
@@ -1564,9 +1564,18 @@
           const matches = rows.filter(r => {
             const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
             const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
+
+            if (agentObj.name === "Kamni Sharma") {
+              const hasKamniName = medAgent.includes("kamni") || medAgent.includes("kamini");
+              const isKamniCode = empCode === "na" || empCode === "n/a";
+              return hasKamniName || (isKamniCode && (medAgent.includes("kam") || medAgent === ""));
+            }
+
             return agentObj.match.some(m => {
               const query = m.toLowerCase().trim();
-              return empCode === query || medAgent === query || medAgent.includes(query);
+              return (empCode !== "" && empCode !== "na" && empCode === query) || 
+                     medAgent === query || 
+                     medAgent.includes(query);
             });
           });
 
