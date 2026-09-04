@@ -46,7 +46,6 @@
       margin-bottom: 22px;
     }
 
-    /* Top Command Header Bar */
     .top-bar {
       background: rgba(9, 19, 34, 0.92);
       backdrop-filter: blur(16px);
@@ -129,7 +128,6 @@
       color: #38bdf8;
     }
 
-    /* KPI Grid */
     .kpi-board {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -202,7 +200,6 @@
       text-shadow: 0 0 10px rgba(251, 113, 133, 0.4);
     }
 
-    /* Team Panels & Data Tables */
     .team-panel {
       background: #ffffff;
       border: 1px solid #cbd5e1;
@@ -450,7 +447,6 @@
       line-height: 1;
     }
 
-    /* Drilldown Table Section */
     #drilldownSection {
       display: none;
       background: #ffffff;
@@ -608,7 +604,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* All Break Agents Panel Styling */
     .break-panel {
       background: #ffffff;
       border: 1px solid #cbd5e1;
@@ -684,7 +679,6 @@
       font-size: 16.5px;
     }
 
-    /* Dedicated Break Breakdown Section */
     #breakDetailSection {
       display: none;
       background: #ffffff;
@@ -755,7 +749,6 @@
 
     <div class="sticky-top-section">
 
-      <!-- Top Command Header Bar -->
       <header class="top-bar">
         <div style="width: 40px;" class="hidden-spacer"></div>
 
@@ -786,7 +779,6 @@
         </div>
       </header>
 
-      <!-- Top KPI Board -->
       <section class="kpi-board">
         <div class="kpi-card-navy card-cyan">
           <div class="kpi-title">Total Consultations</div>
@@ -812,10 +804,8 @@
 
     </div>
 
-    <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
 
-    <!-- All Agents Break Duration Panel (Max to Min) -->
     <section class="break-panel" id="breakPanel">
       <div class="break-header-banner">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -845,7 +835,6 @@
       </div>
     </section>
 
-    <!-- Dedicated Break Details Breakdown Section -->
     <section id="breakDetailSection">
       <div class="break-detail-header">
         <div class="break-detail-title">
@@ -869,7 +858,6 @@
       </div>
     </section>
 
-    <!-- Interactive Drill-Down Section -->
     <section id="drilldownSection">
       <div class="drill-header">
         <div class="drill-header-top">
@@ -910,30 +898,30 @@
         team: "TEAM JITENDRA",
         members: [
           { name: "Saurav Pal", shift: "7:00 AM - 4:00 PM", match: ["saurav", "ms00405"] },
-          { name: "Md Anas", shift: "7:30 AM - 4:30 PM", match: ["md", "anas", "ms01213"] },
-          { name: "Renu Gupta", shift: "8:00 AM - 5:00 PM", match: ["ms00633"] },
-          { name: "Shivam Verma", shift: "9:00 AM - 6:00 PM", match: ["shivam", "ms00982"] },
+          { name: "Md Anas", shift: "7:30 AM - 4:30 PM", match: ["md anas", "anas", "ms01213"] },
+          { name: "Renu Gupta", shift: "8:00 AM - 5:00 PM", match: ["renu gupta", "ms00633"] },
+          { name: "Shivam Verma", shift: "9:00 AM - 6:00 PM", match: ["shivam verma", "ms00982"] },
           { name: "Jogender Singh", shift: "9:00 AM - 6:00 PM", match: ["jogender", "ms02312"] }
         ]
       },
       {
         team: "TEAM DEEPTI",
         members: [
-          { name: "Renu Rani", shift: "8:00 AM - 5:00 PM", match: ["ms00067"] },
-          { name: "Pooja Rathore", shift: "8:00 AM - 5:00 PM", match: ["ms00879"] },
+          { name: "Renu Rani", shift: "8:00 AM - 5:00 PM", match: ["renu rani", "ms00067"] },
+          { name: "Pooja Rathore", shift: "8:00 AM - 5:00 PM", match: ["pooja rathore", "ms00879"] },
           { name: "Roshni Prajapati", shift: "7:00 AM - 4:00 PM", match: ["roshni", "ms01386"] },
           { name: "Garvit Jha", shift: "7:00 AM - 4:00 PM", match: ["garvit", "ms01034"] },
           { name: "Rajni Saini", shift: "8:00 AM - 5:00 PM", match: ["rajni"] },
-          { name: "Puja Chauhan", shift: "9:00 AM - 6:00 PM", match: ["puja", "ms00470"] }
+          { name: "Puja Chauhan", shift: "9:00 AM - 6:00 PM", match: ["puja chauhan", "ms00470"] }
         ]
       },
       {
         team: "TEAM RAVI",
         members: [
-          { name: "Jyoti Singh Unit 2", shift: "7:00 AM - 4:00 PM", match: ["ms01006"] },
+          { name: "Jyoti Singh Unit 2", shift: "7:00 AM - 4:00 PM", match: ["jyoti singh", "ms01006"] },
           { name: "Rajendra Mourya", shift: "7:00 AM - 4:00 PM", match: ["rajendra"] },
           { name: "Apurv Acharya", shift: "7:30 AM - 4:30 PM", match: ["apurv"] },
-          { name: "Amit Sharma", shift: "9:00 AM - 6:00 PM", match: ["amit", "ms01219"] }
+          { name: "Amit Sharma", shift: "9:00 AM - 6:00 PM", match: ["amit sharma", "ms01219"] }
         ]
       },
       {
@@ -961,11 +949,31 @@
     ];
 
     const TOTAL_CAPACITY = 27;
-    // Removed "6-7"
     const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6"];
     let currentDataset = [];
     let agentCaseStore = {};
     let agentBreakStore = {};
+
+    function parseShiftEndTime(datePrefix, shiftStr) {
+      if (!shiftStr || !shiftStr.includes('-')) return null;
+      try {
+        const endPart = shiftStr.split('-')[1].trim();
+        const match = endPart.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (!match) return null;
+        let hours = parseInt(match[1], 10);
+        const mins = parseInt(match[2], 10);
+        const ampm = match[3].toUpperCase();
+
+        if (ampm === "PM" && hours < 12) hours += 12;
+        if (ampm === "AM" && hours === 12) hours = 0;
+
+        const hStr = String(hours).padStart(2, '0');
+        const mStr = String(mins).padStart(2, '0');
+        return `${datePrefix} ${hStr}:${mStr}:00`;
+      } catch (err) {
+        return null;
+      }
+    }
 
     function buildEmptyState() {
       agentCaseStore = {};
@@ -1155,7 +1163,6 @@
       renderAllBreakAgents();
     }
 
-    // Previous Consultation End Time to Next Appt Time (> 15 mins) - Shows ALL Agents Max to Min
     function renderAllBreakAgents() {
       const tbody = document.getElementById("breakTableBody");
       if (!tbody) return;
@@ -1175,9 +1182,11 @@
             }
           });
 
-          if (allCases.length < 2) return;
+          if (allCases.length < 1) return;
 
           const validCases = allCases.filter(c => c.apptTime && c.apptTime !== '-');
+          if (validCases.length === 0) return;
+
           validCases.sort((a, b) => {
             const timeA = new Date(a.apptTime.trim().replace(' ', 'T')).getTime();
             const timeB = new Date(b.apptTime.trim().replace(' ', 'T')).getTime();
@@ -1187,6 +1196,7 @@
           let totalBreakMins = 0;
           const breakList = [];
 
+          // 1. Gaps between consecutive consultations
           for (let i = 0; i < validCases.length - 1; i++) {
             const currentEndStr = validCases[i].consultEndTime && validCases[i].consultEndTime !== '-'
               ? validCases[i].consultEndTime
@@ -1201,7 +1211,7 @@
 
             if (!isNaN(curEnd) && !isNaN(nxtStart)) {
               const gapMins = (nxtStart - curEnd) / (1000 * 60);
-              if (gapMins > 15 && gapMins <= 360) {
+              if (gapMins > 15 && gapMins <= 480) {
                 totalBreakMins += gapMins;
                 breakList.push({
                   startTime: currentEndStr,
@@ -1210,7 +1220,39 @@
                   prevEmr: validCases[i].emr,
                   nextEmr: validCases[i + 1].emr,
                   prevDoc: validCases[i].doctor,
-                  nextDoc: validCases[i + 1].doctor
+                  nextDoc: validCases[i + 1].doctor,
+                  type: 'INTER_CASE_BREAK'
+                });
+              }
+            }
+          }
+
+          // 2. Shift End Gap: idle time from last consultation end till scheduled shift end
+          const lastCase = validCases[validCases.length - 1];
+          const lastEndStr = lastCase.consultEndTime && lastCase.consultEndTime !== '-'
+            ? lastCase.consultEndTime
+            : (lastCase.feedbackEndTime && lastCase.feedbackEndTime !== '-' ? lastCase.feedbackEndTime : lastCase.apptTime);
+
+          const datePart = (lastEndStr.split(' ')[0] || "").trim();
+          const scheduledShiftEndStr = parseShiftEndTime(datePart, agent.shift);
+
+          if (scheduledShiftEndStr) {
+            const lastCaseEndTime = new Date(lastEndStr.trim().replace(' ', 'T')).getTime();
+            const shiftEndTime = new Date(scheduledShiftEndStr.trim().replace(' ', 'T')).getTime();
+
+            if (!isNaN(lastCaseEndTime) && !isNaN(shiftEndTime)) {
+              const remainingGapMins = (shiftEndTime - lastCaseEndTime) / (1000 * 60);
+              if (remainingGapMins > 15 && remainingGapMins <= 480) {
+                totalBreakMins += remainingGapMins;
+                breakList.push({
+                  startTime: lastEndStr,
+                  endTime: scheduledShiftEndStr,
+                  durationMins: Math.round(remainingGapMins),
+                  prevEmr: lastCase.emr,
+                  nextEmr: "SHIFT END",
+                  prevDoc: lastCase.doctor,
+                  nextDoc: "Scheduled End",
+                  type: 'SHIFT_END_GAP'
                 });
               }
             }
@@ -1230,7 +1272,6 @@
         });
       });
 
-      // Sort in descending order: Highest/Max Break Time to Lowest/Min Break Time
       breakStats.sort((a, b) => b.totalBreakMins - a.totalBreakMins);
 
       if (breakStats.length === 0) {
@@ -1261,7 +1302,6 @@
       tbody.innerHTML = html;
     }
 
-    // Modal view for Break Schedule Breakdown
     function openBreakDetail(agentName) {
       const section = document.getElementById("breakDetailSection");
       const titleText = document.getElementById("breakDetailTitleText");
@@ -1282,15 +1322,23 @@
         const durFormatted = hours > 0 ? `${hours}h ${mins}m` : `${mins} mins`;
 
         const tr = document.createElement("tr");
+        let contextHtml = `
+          <span>Case ${b.prevEmr || '-'} (${b.prevDoc || '-'})</span> ➔ 
+          <span style="font-weight: 900; color: #0284c7;">Case ${b.nextEmr || '-'} (${b.nextDoc || '-'})</span>
+        `;
+        if (b.type === 'SHIFT_END_GAP') {
+          contextHtml = `
+            <span>Last Case ${b.prevEmr || '-'}</span> ➔ 
+            <span style="font-weight: 900; color: #e11d48;">[SHIFT LOGOFF GAP / IDLE TILL SHIFT END]</span>
+          `;
+        }
+
         tr.innerHTML = `
           <td><span class="rank-badge" style="background:#fee2e2; color:#b91c1c; border:1px solid #f87171;">#${idx + 1}</span></td>
           <td>${formatDateTimeBold(b.startTime)}</td>
           <td>${formatDateTimeBold(b.endTime)}</td>
           <td><span class="break-time-badge">${durFormatted}</span></td>
-          <td style="font-size: 14.5px; color: #334155;">
-            <span>Case ${b.prevEmr || '-'} (${b.prevDoc || '-'})</span> ➔ 
-            <span style="font-weight: 900; color: #0284c7;">Case ${b.nextEmr || '-'} (${b.nextDoc || '-'})</span>
-          </td>
+          <td style="font-size: 14.5px; color: #334155;">${contextHtml}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -1480,7 +1528,6 @@
       if (hour === 15) return "3-4";
       if (hour === 16) return "4-5";
       if (hour === 17) return "5-6";
-      // Hour 18 (6-7) removed
       return null;
     }
 
@@ -1519,7 +1566,10 @@
           const matches = rows.filter(r => {
             const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
             const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
-            return agentObj.match.some(m => medAgent === m || medAgent.includes(m) || empCode === m);
+            return agentObj.match.some(m => {
+              const query = m.toLowerCase();
+              return medAgent === query || medAgent.includes(query) || empCode === query;
+            });
           });
 
           matches.forEach(row => {
