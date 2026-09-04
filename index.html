@@ -928,7 +928,7 @@
         team: "TEAM SHIVAM",
         members: [
           { name: "Nandani", shift: "7:00 AM - 4:00 PM", match: ["nandani"] },
-          { name: "Kamni Sharma", shift: "7:00 AM - 4:00 PM", match: ["kamni", "kamini", "kamni sharma", "kamini sharma", "na"] },
+          { name: "Kamni Sharma", shift: "7:00 AM - 4:00 PM", match: ["kamni", "kamini", "kamni sharma"] },
           { name: "Burhan", shift: "9:00 AM - 6:00 PM", match: ["burhan", "ms00857"] },
           { name: "Chandrabhanu", shift: "8:00 AM - 5:00 PM", match: ["chandrabhanu", "ms02383"] },
           { name: "Munsi shakil Ahamed", shift: "8:00 AM - 5:00 PM", match: ["munsi", "shakil", "ms00928"] },
@@ -1479,14 +1479,14 @@
         let headerIdx = -1;
         for (let i = 0; i < Math.min(lines.length, 15); i++) {
           const lower = lines[i].toLowerCase();
-          if (lower.includes("med agent") || lower.includes("appt time")) {
+          if (lower.includes("med agent") || lower.includes("appt time") || lower.includes("consult starttime")) {
             headerIdx = i;
             break;
           }
         }
 
         if (headerIdx === -1) {
-          alert("Invalid CSV format: Required columns 'Med Agent' or 'Appt Time' could not be found.");
+          alert("Invalid CSV format: Required columns could not be found.");
           return;
         }
 
@@ -1510,10 +1510,16 @@
 
     function getHourSlot(timeStr) {
       if (!timeStr) return null;
-      const parts = timeStr.split(' ');
-      const t = parts.length > 1 ? parts[1] : parts[0];
-      const hour = parseInt(t.split(':')[0], 10);
-      if (isNaN(hour)) return null;
+      const str = timeStr.trim();
+      
+      const match = str.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
+      if (!match) return null;
+
+      let hour = parseInt(match[1], 10);
+      const ampm = match[3] ? match[3].toUpperCase() : null;
+
+      if (ampm === "PM" && hour < 12) hour += 12;
+      if (ampm === "AM" && hour === 12) hour = 0;
 
       if (hour === 7) return "7-8";
       if (hour === 8) return "8-9";
@@ -1562,13 +1568,11 @@
           }
 
           const matches = rows.filter(r => {
-            const medAgent = (r["Med Agent"] || "").toLowerCase().trim();
-            const empCode = (r["Med Agent Emp Code"] || "").toLowerCase().trim();
+            const medAgent = (r["Med Agent"] || r["Pharmacist"] || r["Agent Name"] || r["Agent"] || "").toLowerCase().trim();
+            const empCode = (r["Med Agent Emp Code"] || r["Emp Code"] || r["Agent Emp Code"] || "").toLowerCase().trim();
 
             if (agentObj.name === "Kamni Sharma") {
-              const hasKamniName = medAgent.includes("kamni") || medAgent.includes("kamini");
-              const isKamniCode = empCode === "na" || empCode === "n/a";
-              return hasKamniName || (isKamniCode && (medAgent.includes("kam") || medAgent === ""));
+              return medAgent === "kamni" || medAgent.startsWith("kamni") || medAgent.includes("kamini");
             }
 
             return agentObj.match.some(m => {
@@ -1581,7 +1585,7 @@
 
           matches.forEach(row => {
             const status = (row["Status"] || "").trim().toUpperCase();
-            if (status !== "DONE") return;
+            if (status !== "DONE" && status !== "COMPLETED") return;
 
             const apptTime = row["Appt Time"] || row["Consult StartTime"] || "";
             const slot = getHourSlot(apptTime);
