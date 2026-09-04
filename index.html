@@ -607,146 +607,6 @@
       color: #070e1c !important;
       letter-spacing: 0.3px;
     }
-
-    /* Top 5 Break Panel Styling */
-    .break-panel {
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      margin-top: 36px;
-      margin-bottom: 30px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.1);
-    }
-
-    .break-header-banner {
-      background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%);
-      color: #ffffff;
-      padding: 16px 26px;
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 0.8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #6366f1;
-    }
-
-    .break-badge-danger {
-      background: rgba(239, 68, 68, 0.25);
-      border: 1px solid #f87171;
-      color: #fca5a5;
-      font-size: 14px;
-      font-weight: 800;
-      padding: 5px 14px;
-      border-radius: 6px;
-    }
-
-    .break-table th {
-      background-color: #0f172a !important;
-      color: #ffffff !important;
-      font-size: 15.5px !important;
-      font-weight: 900;
-      padding: 14px 10px;
-    }
-
-    .break-table td {
-      font-size: 16.5px;
-      font-weight: 800;
-      padding: 13px 10px;
-    }
-
-    .rank-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #e2e8f0;
-      color: #0f172a;
-      font-weight: 900;
-      font-size: 15px;
-    }
-
-    .rank-1 { background: #fef08a; color: #854d0e; border: 2px solid #eab308; }
-    .rank-2 { background: #e2e8f0; color: #334155; border: 2px solid #94a3b8; }
-    .rank-3 { background: #ffedd5; color: #9a3412; border: 2px solid #fb923c; }
-
-    .break-time-badge {
-      background: #fee2e2;
-      color: #b91c1c;
-      border: 1px solid #fca5a5;
-      padding: 4px 14px;
-      border-radius: 6px;
-      font-weight: 900;
-      display: inline-block;
-      font-size: 16.5px;
-    }
-
-    /* Dedicated Break Breakdown Section */
-    #breakDetailSection {
-      display: none;
-      background: #ffffff;
-      border: 2px solid #4338ca;
-      border-radius: 14px;
-      overflow: hidden;
-      margin-top: 24px;
-      margin-bottom: 40px;
-      box-shadow: 0 14px 35px -5px rgba(67, 56, 202, 0.25);
-    }
-
-    .break-detail-header {
-      background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%);
-      color: #ffffff;
-      padding: 18px 26px;
-      border-bottom: 2px solid #818cf8;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .break-detail-title {
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: 0.6px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-close-break-detail {
-      background: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      padding: 7px 16px;
-      border-radius: 7px;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-close-break-detail:hover {
-      background: #ef4444;
-      border-color: #ef4444;
-    }
-
-    .break-detail-table th {
-      background-color: #1e1b4b !important;
-      color: #ffffff !important;
-      font-size: 15.5px !important;
-      font-weight: 900;
-      padding: 14px 10px;
-    }
-
-    .break-detail-table td {
-      font-size: 16px;
-      font-weight: 800;
-      padding: 13px 10px;
-    }
   </style>
 </head>
 <body>
@@ -814,60 +674,6 @@
 
     <!-- Teamwise Data Tables Hook -->
     <main id="dashboardHook"></main>
-
-    <!-- Top 5 Highest Break Agents Panel -->
-    <section class="break-panel" id="breakPanel">
-      <div class="break-header-banner">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <span>TOP 5 AGENTS — MAXIMUM BREAK / IDLE DURATION</span>
-        </div>
-        <span class="break-badge-danger">Intervals &gt; 15 Mins Detected (Click Agent Name)</span>
-      </div>
-      <div class="table-container">
-        <table class="break-table">
-          <thead>
-            <tr>
-              <th style="width: 70px;">RANK</th>
-              <th style="min-width: 220px;">AGENT NAME (CLICK FOR TIMELINE)</th>
-              <th style="min-width: 160px;">TEAM</th>
-              <th style="min-width: 140px;">SHIFT</th>
-              <th style="min-width: 130px;">TOTAL CASES</th>
-              <th style="min-width: 180px; background: #991b1b !important;">TOTAL BREAK TIME</th>
-              <th style="min-width: 160px;">BREAK SESSIONS</th>
-            </tr>
-          </thead>
-          <tbody id="breakTableBody">
-            <tr>
-              <td colspan="7" style="padding: 24px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">Please upload a CSV file to evaluate break and idle intervals.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Dedicated Break Details Breakdown Section -->
-    <section id="breakDetailSection">
-      <div class="break-detail-header">
-        <div class="break-detail-title">
-          <span id="breakDetailTitleText">AGENT BREAK TIMELINE</span>
-        </div>
-        <button class="btn-close-break-detail" onclick="closeBreakDetail()">✕ Close Details</button>
-      </div>
-      <div class="table-container">
-        <table class="break-detail-table">
-          <thead>
-            <tr>
-              <th style="width: 80px;">SESSION</th>
-              <th style="min-width: 170px;">CONSULTATION END TIME (BREAK START)</th>
-              <th style="min-width: 170px;">NEXT APPT TIME (BREAK END)</th>
-              <th style="min-width: 150px; background-color: #991b1b !important;">TOTAL BREAK</th>
-              <th style="min-width: 220px;">CASE CONTEXT (PREVIOUS → NEXT)</th>
-            </tr>
-          </thead>
-          <tbody id="breakDetailTableBody"></tbody>
-        </table>
-      </div>
-    </section>
 
     <!-- Interactive Drill-Down Section -->
     <section id="drilldownSection">
@@ -961,14 +767,13 @@
     ];
 
     const TOTAL_CAPACITY = 27;
-    const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7"];
+    // Removed "6-7"
+    const SLOTS = ["7-8", "8-9", "9-10", "10-11", "11-12", "12-1", "1-2", "2-3", "3-4", "4-5", "5-6"];
     let currentDataset = [];
     let agentCaseStore = {};
-    let agentBreakStore = {};
 
     function buildEmptyState() {
       agentCaseStore = {};
-      agentBreakStore = {};
       return ROSTER.map(team => ({
         team: team.team,
         members: team.members.map(m => {
@@ -1127,7 +932,7 @@
                   <th style="min-width: 140px;">SHIFT</th>
                   <th style="min-width: 200px;">KEY REGIONS (TOP 3)</th>
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
-                  <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th><th>6-7</th>
+                  <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th>
                   <th style="background-color: #070e1c !important; min-width: 135px;">TOTAL</th>
                   <th style="background-color: #070e1c !important; min-width: 125px;">AVG TAT</th>
                 </tr>
@@ -1150,156 +955,6 @@
       
       document.getElementById("statLowestAgent").innerText = globalMinAgent.tat !== 9999 ? `${globalMinAgent.name} (${globalMinAgent.tat}m)` : "--";
       document.getElementById("statHighestAgent").innerText = globalMaxAgent.tat !== -1 ? `${globalMaxAgent.name} (${globalMaxAgent.tat}m)` : "--";
-
-      renderTopBreakAgents();
-    }
-
-    // Previous Consultation End Time to Next Appt Time (> 15 mins)
-    function renderTopBreakAgents() {
-      const tbody = document.getElementById("breakTableBody");
-      if (!tbody) return;
-
-      agentBreakStore = {};
-      const breakStats = [];
-
-      ROSTER.forEach(team => {
-        team.members.forEach(agent => {
-          const store = agentCaseStore[agent.name];
-          if (!store) return;
-
-          let allCases = [];
-          SLOTS.forEach(s => {
-            if (store[s] && store[s].length > 0) {
-              allCases = allCases.concat(store[s]);
-            }
-          });
-
-          if (allCases.length < 2) return;
-
-          const validCases = allCases.filter(c => c.apptTime && c.apptTime !== '-');
-          validCases.sort((a, b) => {
-            const timeA = new Date(a.apptTime.trim().replace(' ', 'T')).getTime();
-            const timeB = new Date(b.apptTime.trim().replace(' ', 'T')).getTime();
-            return timeA - timeB;
-          });
-
-          let totalBreakMins = 0;
-          const breakList = [];
-
-          for (let i = 0; i < validCases.length - 1; i++) {
-            const currentEndStr = validCases[i].consultEndTime && validCases[i].consultEndTime !== '-'
-              ? validCases[i].consultEndTime
-              : (validCases[i].feedbackEndTime && validCases[i].feedbackEndTime !== '-' 
-                 ? validCases[i].feedbackEndTime 
-                 : validCases[i].apptTime);
-
-            const nextStartStr = validCases[i + 1].apptTime;
-
-            const curEnd = new Date(currentEndStr.trim().replace(' ', 'T')).getTime();
-            const nxtStart = new Date(nextStartStr.trim().replace(' ', 'T')).getTime();
-
-            if (!isNaN(curEnd) && !isNaN(nxtStart)) {
-              const gapMins = (nxtStart - curEnd) / (1000 * 60);
-              if (gapMins > 15 && gapMins <= 360) {
-                totalBreakMins += gapMins;
-                breakList.push({
-                  startTime: currentEndStr,
-                  endTime: nextStartStr,
-                  durationMins: Math.round(gapMins),
-                  prevEmr: validCases[i].emr,
-                  nextEmr: validCases[i + 1].emr,
-                  prevDoc: validCases[i].doctor,
-                  nextDoc: validCases[i + 1].doctor
-                });
-              }
-            }
-          }
-
-          if (totalBreakMins > 0) {
-            agentBreakStore[agent.name] = breakList;
-            breakStats.push({
-              name: agent.name,
-              team: team.team,
-              shift: agent.shift || "--",
-              totalCases: allCases.length,
-              totalBreakMins: Math.round(totalBreakMins),
-              breakCount: breakList.length
-            });
-          }
-        });
-      });
-
-      breakStats.sort((a, b) => b.totalBreakMins - a.totalBreakMins);
-      const top5 = breakStats.slice(0, 5);
-
-      if (top5.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">No break intervals exceeding 15 minutes detected in the uploaded dataset.</td></tr>`;
-        return;
-      }
-
-      let html = "";
-      top5.forEach((item, index) => {
-        const rankClass = index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : "";
-        const hoursPart = Math.floor(item.totalBreakMins / 60);
-        const minsPart = item.totalBreakMins % 60;
-        const formattedTotal = hoursPart > 0 ? `${hoursPart}h ${minsPart}m` : `${minsPart}m`;
-
-        html += `
-          <tr>
-            <td><span class="rank-badge ${rankClass}">#${index + 1}</span></td>
-            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view detailed break timeline" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
-            <td style="color: #4338ca; font-weight: 900;">${item.team}</td>
-            <td><span class="shift-pill">${item.shift}</span></td>
-            <td style="font-weight: 900;">${item.totalCases}</td>
-            <td><span class="break-time-badge">${formattedTotal}</span></td>
-            <td style="font-weight: 900; color: #b91c1c;">${item.breakCount} sessions</td>
-          </tr>
-        `;
-      });
-
-      tbody.innerHTML = html;
-    }
-
-    // Modal view for Break Schedule Breakdown
-    function openBreakDetail(agentName) {
-      const section = document.getElementById("breakDetailSection");
-      const titleText = document.getElementById("breakDetailTitleText");
-      const tbody = document.getElementById("breakDetailTableBody");
-
-      const breaks = agentBreakStore[agentName] || [];
-      if (breaks.length === 0) {
-        alert(`No break intervals exceeding 15 minutes found for ${agentName}.`);
-        return;
-      }
-
-      titleText.innerHTML = `${agentName.toUpperCase()} — BREAK SCHEDULE BREAKDOWN (${breaks.length} SESSIONS)`;
-      tbody.innerHTML = "";
-
-      breaks.forEach((b, idx) => {
-        const hours = Math.floor(b.durationMins / 60);
-        const mins = b.durationMins % 60;
-        const durFormatted = hours > 0 ? `${hours}h ${mins}m` : `${mins} mins`;
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><span class="rank-badge" style="background:#fee2e2; color:#b91c1c; border:1px solid #f87171;">#${idx + 1}</span></td>
-          <td>${formatDateTimeBold(b.startTime)}</td>
-          <td>${formatDateTimeBold(b.endTime)}</td>
-          <td><span class="break-time-badge">${durFormatted}</span></td>
-          <td style="font-size: 14.5px; color: #334155;">
-            <span>Case ${b.prevEmr || '-'} (${b.prevDoc || '-'})</span> ➔ 
-            <span style="font-weight: 900; color: #0284c7;">Case ${b.nextEmr || '-'} (${b.nextDoc || '-'})</span>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      section.style.display = "block";
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function closeBreakDetail() {
-      document.getElementById("breakDetailSection").style.display = "none";
     }
 
     function formatDateTimeBold(str) {
@@ -1479,7 +1134,7 @@
       if (hour === 15) return "3-4";
       if (hour === 16) return "4-5";
       if (hour === 17) return "5-6";
-      if (hour === 18) return "6-7";
+      // 18 (6-7) removed
       return null;
     }
 
@@ -1583,7 +1238,6 @@
       }));
 
       closeDrilldown();
-      closeBreakDetail();
       render();
     }
 
