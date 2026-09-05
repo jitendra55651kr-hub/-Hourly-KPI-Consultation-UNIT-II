@@ -366,6 +366,16 @@
       font-size: 14px;
       font-weight: 800;
       color: #0f172a;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .region-pill:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
     }
 
     .cell-val-active {
@@ -452,7 +462,7 @@
     }
 
     /* =========================================================
-       LUXURY POPUP MODAL STYLES (NO MORE SCROLLING DOWN!)
+       LUXURY POPUP MODAL STYLES
        ========================================================= */
     .modal-overlay {
       display: none;
@@ -578,7 +588,6 @@
       background: #ffffff;
     }
 
-    /* Custom Stylish Scrollbar */
     .modal-scroll-area::-webkit-scrollbar {
       width: 10px;
       height: 10px;
@@ -789,6 +798,23 @@
       font-weight: 800;
       padding: 12px 10px;
     }
+
+    /* REGION MODAL SPECIFIC */
+    .region-modal-card {
+      max-width: 640px !important;
+    }
+    .region-table th {
+      background-color: #071326 !important;
+      color: #ffffff !important;
+      font-size: 15px !important;
+      font-weight: 900 !important;
+      padding: 14px 16px !important;
+    }
+    .region-table td {
+      font-size: 16px !important;
+      padding: 13px 16px !important;
+      font-weight: 800 !important;
+    }
   </style>
 </head>
 <body>
@@ -949,6 +975,35 @@
     </div>
   </div>
 
+  <!-- =========================================================
+       MODAL 3: REGION WISE CASES POPUP (ONLY REGION & CASES)
+       ========================================================= -->
+  <div class="modal-overlay" id="regionModal" onclick="handleOverlayClick(event, 'regionModal')">
+    <div class="modal-card region-modal-card">
+      <div class="drill-header" style="background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);">
+        <div class="drill-header-top">
+          <div class="drill-title">
+            <span id="regionModalTitle">AGENT REGION BREAKDOWN</span>
+          </div>
+          <button class="btn-close-modal" onclick="closeRegionModal()">✕ Close [ESC]</button>
+        </div>
+        <div class="drill-details-bar" id="regionDetailsBar"></div>
+      </div>
+      <div class="modal-scroll-area">
+        <table class="region-table">
+          <thead>
+            <tr>
+              <th style="width: 70px; text-align: center;">#</th>
+              <th style="text-align: left; padding-left: 24px;">REGION NAME</th>
+              <th style="text-align: right; padding-right: 28px; width: 180px;">TOTAL CASES</th>
+            </tr>
+          </thead>
+          <tbody id="regionTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <script>
     const ROSTER = [
       {
@@ -1010,6 +1065,7 @@
     let currentDataset = [];
     let agentCaseStore = {};
     let agentBreakStore = {};
+    let agentRegionMapStore = {}; // Holds complete region-wise case count per agent
 
     function parseSafeDate(val) {
       if (!val || val === '-' || val === 'NA' || val === 'NaN') return null;
@@ -1122,6 +1178,7 @@
     function buildEmptyState() {
       agentCaseStore = {};
       agentBreakStore = {};
+      agentRegionMapStore = {};
       return ROSTER.map(team => ({
         team: team.team,
         members: team.members.map(m => {
@@ -1233,7 +1290,7 @@
             </div>
           ` : "";
 
-          const displayRegion = member.region ? `<span class="region-pill">${member.region}</span>` : "";
+          const displayRegion = member.region ? `<span class="region-pill" title="Click to see all region-wise cases done by ${member.name}" onclick="openRegionModal('${member.name.replace(/'/g, "\\'")}')">${member.region}</span>` : "";
 
           rowsHtml += `
             <tr>
@@ -1532,7 +1589,7 @@
       }
 
       modal.classList.add("active");
-      document.body.style.overflow = "hidden"; // background scroll lock
+      document.body.style.overflow = "hidden";
     }
 
     function closeDrilldown() {
@@ -1592,10 +1649,58 @@
       document.body.style.overflow = "auto";
     }
 
+    // =========================================================
+    // REGION BREAKDOWN POPUP CONTROLLER
+    // =========================================================
+    function openRegionModal(agentName) {
+      const modal = document.getElementById("regionModal");
+      const title = document.getElementById("regionModalTitle");
+      const detailsBar = document.getElementById("regionDetailsBar");
+      const tbody = document.getElementById("regionTableBody");
+
+      const regMap = agentRegionMapStore[agentName] || {};
+      const entries = Object.entries(regMap).sort((a, b) => b[1] - a[1]);
+
+      let totalCases = entries.reduce((sum, item) => sum + item[1], 0);
+
+      title.innerHTML = `${agentName.toUpperCase()} — REGIONS SUMMARY`;
+      detailsBar.innerHTML = `
+        <div class="drill-info-chip">Agent: <strong>${agentName}</strong></div>
+        <div class="drill-info-chip">Unique Regions: <strong>${entries.length}</strong></div>
+        <div class="drill-info-chip">Total Region Cases: <strong>${totalCases}</strong></div>
+      `;
+
+      tbody.innerHTML = "";
+
+      if (entries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="padding: 24px; color: #64748b; font-size: 16px; font-weight: 800;">No region records available for this agent.</td></tr>`;
+      } else {
+        entries.forEach(([regionName, count], idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="text-align: center; color: #64748b; font-weight: 900;">${idx + 1}</td>
+            <td style="text-align: left; padding-left: 24px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: #0f172a;">${regionName}</td>
+            <td style="text-align: right; padding-right: 28px; font-weight: 900; color: #0284c7; font-size: 17px;">${count}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeRegionModal() {
+      const modal = document.getElementById("regionModal");
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
     function handleOverlayClick(e, modalId) {
       if (e.target.id === modalId) {
         if (modalId === 'drilldownModal') closeDrilldown();
         if (modalId === 'breakModal') closeBreakDetail();
+        if (modalId === 'regionModal') closeRegionModal();
       }
     }
 
@@ -1603,6 +1708,7 @@
       if (e.key === 'Escape') {
         closeDrilldown();
         closeBreakDetail();
+        closeRegionModal();
       }
     });
 
@@ -1742,6 +1848,7 @@
 
     function processRawRows(rows) {
       agentCaseStore = {};
+      agentRegionMapStore = {};
 
       currentDataset = ROSTER.map(team => ({
         team: team.team,
@@ -1783,8 +1890,8 @@
 
             hours[slot] += 1;
 
-            const reg = row["Region Name"] || row["Clinic State"] || "";
-            if (reg && reg.trim().length > 0) {
+            const reg = (row["Region Name"] || row["Clinic State"] || "").trim();
+            if (reg && reg.length > 0 && reg !== "-") {
               regionMap[reg] = (regionMap[reg] || 0) + 1;
             }
 
@@ -1814,6 +1921,8 @@
             });
           });
 
+          agentRegionMapStore[agentObj.name] = regionMap;
+
           const totalOutput = Object.values(hours).reduce((a, b) => a + b, 0);
 
           const sortedRegions = Object.keys(regionMap).sort((a, b) => regionMap[b] - regionMap[a]);
@@ -1836,6 +1945,7 @@
 
       closeDrilldown();
       closeBreakDetail();
+      closeRegionModal();
       render();
     }
 
