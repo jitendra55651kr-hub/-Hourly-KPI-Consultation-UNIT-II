@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
   
-  <!-- SheetJS Library Excel (.xlsx, .xls) Parsing ke liye -->
+  <!-- SheetJS Library for Excel (.xlsx, .xls) Parsing -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <style>
@@ -958,6 +958,61 @@
     let agentCaseStore = {};
     let agentBreakStore = {};
 
+    // Universal Date Parser: handles ISO, Excel Date objects, M/D/YY, YYYY-MM-DD
+    function parseSafeDate(val) {
+      if (!val || val === '-' || val === 'NA' || val === 'NaN') return null;
+      if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
+      
+      let str = String(val).trim();
+      if (str.includes("2050") || str.length < 4) return null;
+
+      // Direct Date parsing (e.g., standard formats)
+      let d = new Date(str);
+      if (!isNaN(d.getTime())) return d;
+
+      // Try replacing space with 'T' (ISO format)
+      d = new Date(str.replace(' ', 'T'));
+      if (!isNaN(d.getTime())) return d;
+
+      // Handle custom Excel outputs like "9/4/26 7:03:52" or "04-09-2026 07:03"
+      try {
+        const parts = str.split(' ');
+        const datePart = parts[0];
+        const timePart = parts[1] || "00:00:00";
+        
+        const dParts = datePart.split(/[\/\-]/);
+        const tParts = timePart.split(':');
+
+        if (dParts.length === 3) {
+          let y, m, day;
+          if (dParts[0].length === 4) {
+            // YYYY-MM-DD
+            y = parseInt(dParts[0], 10);
+            m = parseInt(dParts[1], 10);
+            day = parseInt(dParts[2], 10);
+          } else {
+            // M/D/YY or M/D/YYYY
+            m = parseInt(dParts[0], 10);
+            day = parseInt(dParts[1], 10);
+            y = parseInt(dParts[2], 10);
+            if (y < 100) y += 2000;
+          }
+
+          let hr = parseInt(tParts[0] || 0, 10);
+          const min = parseInt(tParts[1] || 0, 10);
+          const sec = parseInt(tParts[2] || 0, 10);
+
+          if (str.toLowerCase().includes('pm') && hr < 12) hr += 12;
+          if (str.toLowerCase().includes('am') && hr === 12) hr = 0;
+
+          const customDate = new Date(y, m - 1, day, hr, min, sec);
+          if (!isNaN(customDate.getTime())) return customDate;
+        }
+      } catch (e) {}
+
+      return null;
+    }
+
     function parseShiftEndTime(datePrefix, shiftStr) {
       if (!shiftStr || !shiftStr.includes('-')) return null;
       try {
@@ -977,6 +1032,44 @@
       } catch (err) {
         return null;
       }
+    }
+
+    function parseDifferenceInMinutes(startStr, endStr) {
+      const s = parseSafeDate(startStr);
+      const e = parseSafeDate(endStr);
+      if (!s || !e) return null;
+
+      const diffMs = e.getTime() - s.getTime();
+      const diffMins = diffMs / (1000 * 60);
+
+      return (diffMins >= 0 && diffMins <= 360) ? diffMins : null;
+    }
+
+    function getHourSlot(timeStr) {
+      if (!timeStr) return null;
+      const str = String(timeStr).trim();
+      
+      const match = str.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
+      if (!match) return null;
+
+      let hour = parseInt(match[1], 10);
+      const ampm = match[3] ? match[3].toUpperCase() : null;
+
+      if (ampm === "PM" && hour < 12) hour += 12;
+      if (ampm === "AM" && hour === 12) hour = 0;
+
+      if (hour === 7) return "7-8";
+      if (hour === 8) return "8-9";
+      if (hour === 9) return "9-10";
+      if (hour === 10) return "10-11";
+      if (hour === 11) return "11-12";
+      if (hour === 12) return "12-1";
+      if (hour === 13) return "1-2";
+      if (hour === 14) return "2-3";
+      if (hour === 15) return "3-4";
+      if (hour === 16) return "4-5";
+      if (hour === 17) return "5-6";
+      return null;
     }
 
     function buildEmptyState() {
@@ -1192,8 +1285,10 @@
           if (validCases.length === 0) return;
 
           validCases.sort((a, b) => {
-            const timeA = new Date(a.apptTime.trim().replace(' ', 'T')).getTime();
-            const timeB = new Date(b.apptTime.trim().replace(' ', 'T')).getTime();
+            const dateA = parseSafeDate(a.apptTime);
+            const dateB = parseSafeDate(b.apptTime);
+            const timeA = dateA ? dateA.getTime() : 0;
+            const timeB = dateB ? dateB.getTime() : 0;
             return timeA - timeB;
           });
 
@@ -1209,11 +1304,11 @@
 
             const nextStartStr = validCases[i + 1].apptTime;
 
-            const curEnd = new Date(currentEndStr.trim().replace(' ', 'T')).getTime();
-            const nxtStart = new Date(nextStartStr.trim().replace(' ', 'T')).getTime();
+            const curEnd = parseSafeDate(currentEndStr);
+            const nxtStart = parseSafeDate(nextStartStr);
 
-            if (!isNaN(curEnd) && !isNaN(nxtStart)) {
-              const gapMins = (nxtStart - curEnd) / (1000 * 60);
+            if (curEnd && nxtStart) {
+              const gapMins = (nxtStart.getTime() - curEnd.getTime()) / (1000 * 60);
               if (gapMins > 15 && gapMins <= 480) {
                 totalBreakMins += gapMins;
                 breakList.push({
@@ -1235,15 +1330,15 @@
             ? lastCase.consultEndTime
             : (lastCase.feedbackEndTime && lastCase.feedbackEndTime !== '-' ? lastCase.feedbackEndTime : lastCase.apptTime);
 
-          const datePart = (lastEndStr.split(' ')[0] || "").trim();
+          const datePart = (String(lastEndStr).split(' ')[0] || "").trim();
           const scheduledShiftEndStr = parseShiftEndTime(datePart, agent.shift);
 
           if (scheduledShiftEndStr) {
-            const lastCaseEndTime = new Date(lastEndStr.trim().replace(' ', 'T')).getTime();
-            const shiftEndTime = new Date(scheduledShiftEndStr.trim().replace(' ', 'T')).getTime();
+            const lastCaseEndDate = parseSafeDate(lastEndStr);
+            const shiftEndDate = parseSafeDate(scheduledShiftEndStr);
 
-            if (!isNaN(lastCaseEndTime) && !isNaN(shiftEndTime)) {
-              const remainingGapMins = (shiftEndTime - lastCaseEndTime) / (1000 * 60);
+            if (lastCaseEndDate && shiftEndDate) {
+              const remainingGapMins = (shiftEndDate.getTime() - lastCaseEndDate.getTime()) / (1000 * 60);
               if (remainingGapMins > 15 && remainingGapMins <= 480) {
                 totalBreakMins += remainingGapMins;
                 breakList.push({
@@ -1355,7 +1450,7 @@
 
     function formatDateTimeBold(str) {
       if (!str || str === '-') return '-';
-      const parts = str.trim().split(' ');
+      const parts = String(str).trim().split(' ');
       if (parts.length >= 2) {
         return `<div class="time-container"><span class="time-date-part">${parts[0]}</span><span class="time-bold-part">${parts[1]}</span></div>`;
       }
@@ -1459,22 +1554,27 @@
 
       const fileName = file.name.toLowerCase();
       const isExcel = fileName.endsWith('.xlsx') || fileName.endsWith('.xls');
-
       const reader = new FileReader();
 
       if (isExcel) {
-        // Read Excel Binary
         reader.onload = function(evt) {
           try {
             const data = new Uint8Array(evt.target.result);
-            const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+            const workbook = XLSX.read(data, { 
+              type: 'array', 
+              cellDates: true, 
+              dateNF: 'yyyy-mm-dd hh:mm:ss' 
+            });
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
             
-            // Raw 2D Array format me convert karein
-            const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: false, defval: "" });
+            const rawRows = XLSX.utils.sheet_to_json(worksheet, { 
+              header: 1, 
+              raw: false, 
+              dateNF: 'yyyy-mm-dd hh:mm:ss', 
+              defval: "" 
+            });
             
-            // Header search (Top 25 rows me se)
             let headerIdx = -1;
             for (let i = 0; i < Math.min(rawRows.length, 25); i++) {
               const rowStr = rawRows[i].map(c => String(c).toLowerCase()).join(" ");
@@ -1511,7 +1611,6 @@
         reader.readAsArrayBuffer(file);
 
       } else {
-        // Standard CSV Parser
         reader.onload = function(evt) {
           try {
             const text = evt.target.result;
@@ -1571,48 +1670,6 @@
       }
       arr.push(entry.trim());
       return arr.map(s => s.replace(/^"|"$/g, ''));
-    }
-
-    function getHourSlot(timeStr) {
-      if (!timeStr) return null;
-      const str = timeStr.trim();
-      
-      const match = str.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
-      if (!match) return null;
-
-      let hour = parseInt(match[1], 10);
-      const ampm = match[3] ? match[3].toUpperCase() : null;
-
-      if (ampm === "PM" && hour < 12) hour += 12;
-      if (ampm === "AM" && hour === 12) hour = 0;
-
-      if (hour === 7) return "7-8";
-      if (hour === 8) return "8-9";
-      if (hour === 9) return "9-10";
-      if (hour === 10) return "10-11";
-      if (hour === 11) return "11-12";
-      if (hour === 12) return "12-1";
-      if (hour === 13) return "1-2";
-      if (hour === 14) return "2-3";
-      if (hour === 15) return "3-4";
-      if (hour === 16) return "4-5";
-      if (hour === 17) return "5-6";
-      return null;
-    }
-
-    function parseDifferenceInMinutes(startStr, endStr) {
-      if (!startStr || !endStr) return null;
-      if (endStr.includes("2050") || startStr.includes("2050")) return null;
-
-      const s = new Date(startStr.trim().replace(' ', 'T'));
-      const e = new Date(endStr.trim().replace(' ', 'T'));
-
-      if (isNaN(s.getTime()) || isNaN(e.getTime())) return null;
-
-      const diffMs = e.getTime() - s.getTime();
-      const diffMins = diffMs / (1000 * 60);
-
-      return (diffMins >= 0 && diffMins <= 360) ? diffMins : null;
     }
 
     function processRawRows(rows) {
