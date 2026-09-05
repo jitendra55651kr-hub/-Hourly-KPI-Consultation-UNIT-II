@@ -258,6 +258,43 @@
       border-bottom: 2px solid #1e3a68;
     }
 
+    .team-left-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-team-break-toggle {
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(248, 113, 113, 0.45);
+      color: #fca5a5;
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      letter-spacing: 0.5px;
+      transition: all 0.22s ease;
+    }
+
+    .btn-team-break-toggle:hover {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: #f87171;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    }
+
+    .btn-team-break-toggle.active-open {
+      background: #dc2626;
+      border-color: #ef4444;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.65);
+    }
+
     .team-tat-stats {
       display: flex;
       align-items: center;
@@ -565,6 +602,47 @@
       font-size: 14px;
       font-weight: 900;
       line-height: 1;
+    }
+
+    /* INLINE TEAM BREAK SECTION STYLES */
+    .team-inline-break-panel {
+      display: none;
+      background: #ffffff;
+      border-top: 3px solid #6366f1;
+      animation: fadeInSlide 0.25s ease forwards;
+    }
+
+    .team-inline-break-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .team-inline-break-header {
+      background: linear-gradient(90deg, #1e1b4b 0%, #2e2b69 100%);
+      color: #ffffff;
+      padding: 12px 22px;
+      font-size: 16.5px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      letter-spacing: 0.6px;
+    }
+
+    .team-inline-break-table th {
+      background-color: #1e1b4b !important;
+      color: #ffffff !important;
+      font-size: 14.5px !important;
+      padding: 11px 10px !important;
+    }
+
+    .team-inline-break-table td {
+      font-size: 15px !important;
+      padding: 11px 10px !important;
     }
 
     /* MODAL STYLES */
@@ -1379,9 +1457,17 @@
       "TEAM ISHANT":   { column: "tat", order: "asc" }
     };
 
+    // Tracks which teams have their inline break section open
+    let teamInlineBreakOpen = {};
+
     // State for Break Panel Sorting & Team Filter
-    let breakSortOrder = "desc"; // "desc" = High to Low, "asc" = Low to High
-    let selectedBreakTeams = ROSTER.map(t => t.team); // Initially all teams selected
+    let breakSortOrder = "desc";
+    let selectedBreakTeams = ROSTER.map(t => t.team);
+
+    function toggleTeamBreakInline(teamName) {
+      teamInlineBreakOpen[teamName] = !teamInlineBreakOpen[teamName];
+      render();
+    }
 
     function toggleBreakSort() {
       breakSortOrder = breakSortOrder === "desc" ? "asc" : "desc";
@@ -1535,6 +1621,112 @@
       }));
     }
 
+    // Calculates and returns break statistics for a given list of agents
+    function calculateTeamBreakList(agentList, teamName) {
+      const breakStats = [];
+
+      agentList.forEach(agent => {
+        const store = agentCaseStore[agent.name];
+        if (!store) return;
+
+        let allCases = [];
+        SLOTS.forEach(s => {
+          if (store[s] && store[s].length > 0) {
+            allCases = allCases.concat(store[s]);
+          }
+        });
+
+        if (allCases.length < 1) return;
+
+        const validCases = allCases.filter(c => c.apptTime && c.apptTime !== '-');
+        if (validCases.length === 0) return;
+
+        validCases.sort((a, b) => {
+          const dateA = parseSafeDate(a.apptTime);
+          const dateB = parseSafeDate(b.apptTime);
+          const timeA = dateA ? dateA.getTime() : 0;
+          const timeB = dateB ? dateB.getTime() : 0;
+          return timeA - timeB;
+        });
+
+        let totalBreakMins = 0;
+        const breakList = [];
+
+        for (let i = 0; i < validCases.length - 1; i++) {
+          const currentEndStr = validCases[i].consultEndTime && validCases[i].consultEndTime !== '-'
+            ? validCases[i].consultEndTime
+            : (validCases[i].feedbackEndTime && validCases[i].feedbackEndTime !== '-' 
+               ? validCases[i].feedbackEndTime 
+               : validCases[i].apptTime);
+
+          const nextStartStr = validCases[i + 1].apptTime;
+          const curEnd = parseSafeDate(currentEndStr);
+          const nxtStart = parseSafeDate(nextStartStr);
+
+          if (curEnd && nxtStart) {
+            const gapMins = (nxtStart.getTime() - curEnd.getTime()) / (1000 * 60);
+            if (gapMins > 15 && gapMins <= 480) {
+              totalBreakMins += gapMins;
+              breakList.push({
+                startTime: currentEndStr,
+                endTime: nextStartStr,
+                durationMins: Math.round(gapMins),
+                prevEmr: validCases[i].emr,
+                nextEmr: validCases[i + 1].emr,
+                prevDoc: validCases[i].doctor,
+                nextDoc: validCases[i + 1].doctor,
+                type: 'INTER_CASE_BREAK'
+              });
+            }
+          }
+        }
+
+        const lastCase = validCases[validCases.length - 1];
+        const lastEndStr = lastCase.consultEndTime && lastCase.consultEndTime !== '-'
+          ? lastCase.consultEndTime
+          : (lastCase.feedbackEndTime && lastCase.feedbackEndTime !== '-' ? lastCase.feedbackEndTime : lastCase.apptTime);
+
+        const datePart = (String(lastEndStr).split(' ')[0] || "").trim();
+        const scheduledShiftEndStr = parseShiftEndTime(datePart, agent.shift);
+
+        if (scheduledShiftEndStr) {
+          const lastCaseEndDate = parseSafeDate(lastEndStr);
+          const shiftEndDate = parseSafeDate(scheduledShiftEndStr);
+
+          if (lastCaseEndDate && shiftEndDate) {
+            const remainingGapMins = (shiftEndDate.getTime() - lastCaseEndDate.getTime()) / (1000 * 60);
+            if (remainingGapMins > 15 && remainingGapMins <= 480) {
+              totalBreakMins += remainingGapMins;
+              breakList.push({
+                startTime: lastEndStr,
+                endTime: scheduledShiftEndStr,
+                durationMins: Math.round(remainingGapMins),
+                prevEmr: lastCase.emr,
+                nextEmr: "SHIFT END",
+                prevDoc: lastCase.doctor,
+                nextDoc: "Scheduled End",
+                type: 'SHIFT_END_GAP'
+              });
+            }
+          }
+        }
+
+        if (totalBreakMins > 0) {
+          breakStats.push({
+            name: agent.name,
+            team: teamName,
+            shift: agent.shift || "--",
+            totalCases: allCases.length,
+            totalBreakMins: Math.round(totalBreakMins),
+            breakCount: breakList.length
+          });
+        }
+      });
+
+      breakStats.sort((a, b) => b.totalBreakMins - a.totalBreakMins);
+      return breakStats;
+    }
+
     function render() {
       const hook = document.getElementById("dashboardHook");
       if (!hook) return;
@@ -1673,14 +1865,50 @@
           </div>
         ` : '';
 
+        // Inline Team Break Table Generator
+        const isInlineOpen = !!teamInlineBreakOpen[team.team];
+        const teamBreakStats = calculateTeamBreakList(team.members, team.team);
+        let inlineBreakRows = "";
+
+        if (teamBreakStats.length === 0) {
+          inlineBreakRows = `<tr><td colspan="6" style="padding: 16px; color: #64748b; font-weight: 700;">No break intervals exceeding 15 minutes detected for this team.</td></tr>`;
+        } else {
+          teamBreakStats.forEach((item, index) => {
+            const rankClass = index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : "";
+            const hoursPart = Math.floor(item.totalBreakMins / 60);
+            const minsPart = item.totalBreakMins % 60;
+            const formattedTotal = hoursPart > 0 ? `${hoursPart}h ${minsPart}m` : `${minsPart}m`;
+
+            inlineBreakRows += `
+              <tr>
+                <td style="width: 70px;"><span class="rank-badge ${rankClass}">#${index + 1}</span></td>
+                <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view detailed timeline" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
+                <td><span class="shift-pill">${item.shift}</span></td>
+                <td style="font-weight: 900;">${item.totalCases}</td>
+                <td><span class="break-time-badge">${formattedTotal}</span></td>
+                <td style="font-weight: 900; color: #b91c1c;">${item.breakCount} sessions</td>
+              </tr>
+            `;
+          });
+        }
+
         teamBox.innerHTML = `
           <div class="team-title-banner">
-            <div style="display:flex; align-items:center; gap:12px;">
+            <div class="team-left-cluster">
               <span>${team.team}</span>
               <span class="team-badge">${team.members.length} AGENTS</span>
             </div>
+
+            <!-- Center Break Toggle Button -->
+            <div>
+              <button class="btn-team-break-toggle ${isInlineOpen ? 'active-open' : ''}" onclick="toggleTeamBreakInline('${team.team}')" title="Toggle team break duration list">
+                <span>${isInlineOpen ? '✕ Hide Break' : '⏱ Break Stats'}</span>
+              </button>
+            </div>
+
             ${teamTatHtml}
           </div>
+
           <div class="table-container">
             <table>
               <thead>
@@ -1708,6 +1936,31 @@
                 ${rowsHtml}
               </tbody>
             </table>
+          </div>
+
+          <!-- Inline Expandable Team Break Panel -->
+          <div class="team-inline-break-panel ${isInlineOpen ? 'active' : ''}">
+            <div class="team-inline-break-header">
+              <span>${team.team} — AGENTS BREAK DURATION (&gt; 15 Mins)</span>
+              <span style="font-size: 13px; font-weight: 800; color: #cbd5e1;">Click agent name for breakdown</span>
+            </div>
+            <div class="table-container">
+              <table class="team-inline-break-table">
+                <thead>
+                  <tr>
+                    <th>RANK</th>
+                    <th>AGENT NAME</th>
+                    <th>SHIFT</th>
+                    <th>TOTAL CASES</th>
+                    <th style="background-color: #991b1b !important;">TOTAL BREAK TIME</th>
+                    <th>BREAK SESSIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${inlineBreakRows}
+                </tbody>
+              </table>
+            </div>
           </div>
         `;
 
@@ -1769,7 +2022,6 @@
                  : validCases[i].apptTime);
 
             const nextStartStr = validCases[i + 1].apptTime;
-
             const curEnd = parseSafeDate(currentEndStr);
             const nxtStart = parseSafeDate(nextStartStr);
 
