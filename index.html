@@ -168,7 +168,6 @@
     .card-green::before { background: var(--accent-emerald); box-shadow: 0 0 12px var(--accent-emerald); }
     .card-red::before { background: var(--accent-rose); box-shadow: 0 0 12px var(--accent-rose); }
 
-    /* Clickable KPI Cards */
     .kpi-card-clickable {
       cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
@@ -323,6 +322,60 @@
       text-transform: uppercase;
     }
 
+    /* Interactive Sortable Header Buttons */
+    .th-sortable {
+      user-select: none;
+      transition: background-color 0.2s ease;
+      padding: 8px 6px !important;
+    }
+
+    .btn-sort-filter {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-sort-filter:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-sort-filter.active-sort {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+    }
+
+    .sort-icon-badge {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-sort-filter.active-sort .sort-icon-badge {
+      background: #ffffff;
+      color: #0369a1;
+      font-weight: 900;
+    }
+
     tbody td {
       padding: 12px 8px;
       border: 1px solid #cbd5e1;
@@ -429,7 +482,7 @@
       font-weight: 900;
       font-size: 16.5px;
       color: #1d4ed8;
-      min-width: 135px;
+      min-width: 145px;
       padding: 8px 12px;
       cursor: pointer;
     }
@@ -460,7 +513,7 @@
       font-weight: 900;
       font-size: 18.5px;
       color: #0f766e;
-      min-width: 130px;
+      min-width: 145px;
     }
 
     .tat-cell-flex {
@@ -492,9 +545,7 @@
       line-height: 1;
     }
 
-    /* =========================================================
-       LUXURY POPUP MODAL STYLES
-       ========================================================= */
+    /* MODAL STYLES */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -987,9 +1038,7 @@
 
   </div>
 
-  <!-- =========================================================
-       MODAL 1: AGENT CASES DRILLDOWN POPUP (FULL SCROLLABLE)
-       ========================================================= -->
+  <!-- MODAL 1: AGENT DRILLDOWN -->
   <div class="modal-overlay" id="drilldownModal" onclick="handleOverlayClick(event, 'drilldownModal')">
     <div class="modal-card">
       <div class="drill-header">
@@ -1023,9 +1072,7 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 2: BREAK & IDLE DETAILS POPUP (FULL SCROLLABLE)
-       ========================================================= -->
+  <!-- MODAL 2: BREAK DETAILS -->
   <div class="modal-overlay" id="breakModal" onclick="handleOverlayClick(event, 'breakModal')">
     <div class="modal-card">
       <div class="break-detail-header">
@@ -1051,9 +1098,7 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 3: REGION WISE CASES POPUP (ONLY REGION & CASES)
-       ========================================================= -->
+  <!-- MODAL 3: REGION BREAKDOWN -->
   <div class="modal-overlay" id="regionModal" onclick="handleOverlayClick(event, 'regionModal')">
     <div class="modal-card region-modal-card">
       <div class="drill-header" style="background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);">
@@ -1080,9 +1125,7 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 4: TOP 5 TAT RANKING POPUP (BEST & SLOWEST)
-       ========================================================= -->
+  <!-- MODAL 4: TOP 5 TAT RANKING -->
   <div class="modal-overlay" id="tatRankingModal" onclick="handleOverlayClick(event, 'tatRankingModal')">
     <div class="modal-card tat-ranking-modal-card">
       <div class="drill-header" id="tatRankingHeader">
@@ -1173,7 +1216,28 @@
     let currentDataset = [];
     let agentCaseStore = {};
     let agentBreakStore = {};
-    let agentRegionMapStore = {}; // Holds complete region-wise case count per agent
+    let agentRegionMapStore = {};
+    
+    // Per-team sorting state: default by tat ascending
+    let teamSortState = {
+      "TEAM JITENDRA": { column: "tat", order: "asc" },
+      "TEAM DEEPTI":   { column: "tat", order: "asc" },
+      "TEAM RAVI":     { column: "tat", order: "asc" },
+      "TEAM SHIVAM":   { column: "tat", order: "asc" },
+      "TEAM ISHANT":   { column: "tat", order: "asc" }
+    };
+
+    function toggleTeamSort(teamName, column) {
+      if (!teamSortState[teamName]) {
+        teamSortState[teamName] = { column: column, order: "desc" };
+      } else if (teamSortState[teamName].column === column) {
+        teamSortState[teamName].order = teamSortState[teamName].order === "desc" ? "asc" : "desc";
+      } else {
+        teamSortState[teamName].column = column;
+        teamSortState[teamName].order = "desc";
+      }
+      render();
+    }
 
     function parseSafeDate(val) {
       if (!val || val === '-' || val === 'NA' || val === 'NaN') return null;
@@ -1356,14 +1420,30 @@
           }
         });
 
+        // Team Sort Logic using per-team state
+        const currentSort = teamSortState[team.team] || { column: "tat", order: "asc" };
         const sortedMembers = [...team.members].sort((a, b) => {
           const tatA = parseFloat(a.tat) || 0;
           const tatB = parseFloat(b.tat) || 0;
-          if (tatA === 0 && tatB === 0) return 0;
-          if (tatA === 0) return 1;
-          if (tatB === 0) return -1;
-          return tatA - tatB;
+          const totA = a.total || 0;
+          const totB = b.total || 0;
+
+          if (currentSort.column === "total") {
+            if (totA === totB) return 0;
+            return currentSort.order === "desc" ? totB - totA : totA - totB;
+          } else {
+            // column === 'tat'
+            if (tatA === 0 && tatB === 0) return 0;
+            if (tatA === 0) return 1;
+            if (tatB === 0) return -1;
+            return currentSort.order === "desc" ? tatB - tatA : tatA - tatB;
+          }
         });
+
+        const isTotalActive = currentSort.column === "total";
+        const isTatActive = currentSort.column === "tat";
+        const totalArrow = isTotalActive ? (currentSort.order === "desc" ? "↓" : "↑") : "⇅";
+        const tatArrow = isTatActive ? (currentSort.order === "desc" ? "↓" : "↑") : "⇅";
 
         let rowsHtml = "";
         sortedMembers.forEach(member => {
@@ -1446,8 +1526,18 @@
                   <th style="min-width: 200px;">KEY REGIONS (TOP 3)</th>
                   <th>7-8</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th>
                   <th>1-2</th><th>2-3</th><th>3-4</th><th>4-5</th><th>5-6</th>
-                  <th style="background-color: #070e1c !important; min-width: 135px;">TOTAL</th>
-                  <th style="background-color: #070e1c !important; min-width: 125px;">AVG TAT</th>
+                  <th class="th-sortable" style="background-color: #070e1c !important; min-width: 145px;">
+                    <button class="btn-sort-filter ${isTotalActive ? 'active-sort' : ''}" onclick="toggleTeamSort('${team.team}', 'total')" title="Filter Total Cases: Click for High ➔ Low, click again for Low ➔ High">
+                      <span>TOTAL</span>
+                      <span class="sort-icon-badge">${totalArrow}</span>
+                    </button>
+                  </th>
+                  <th class="th-sortable" style="background-color: #070e1c !important; min-width: 145px;">
+                    <button class="btn-sort-filter ${isTatActive ? 'active-sort' : ''}" onclick="toggleTeamSort('${team.team}', 'tat')" title="Filter Avg TAT: Click for High ➔ Low, click again for Low ➔ High">
+                      <span>AVG TAT</span>
+                      <span class="sort-icon-badge">${tatArrow}</span>
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1611,9 +1701,7 @@
       tbody.innerHTML = html;
     }
 
-    // =========================================================
-    // MODAL POPUP CONTROLLERS (OPEN / CLOSE / KEYBOARD)
-    // =========================================================
+    // MODAL POPUP CONTROLLERS
     function openDrilldown(agentName, slot) {
       const modal = document.getElementById("drilldownModal");
       const titleText = document.getElementById("drillTitleText");
@@ -1757,9 +1845,6 @@
       document.body.style.overflow = "auto";
     }
 
-    // =========================================================
-    // REGION BREAKDOWN POPUP CONTROLLER
-    // =========================================================
     function openRegionModal(agentName) {
       const modal = document.getElementById("regionModal");
       const title = document.getElementById("regionModalTitle");
@@ -1804,9 +1889,6 @@
       document.body.style.overflow = "auto";
     }
 
-    // =========================================================
-    // TOP 5 TAT RANKING POPUP CONTROLLER (LOWEST & HIGHEST)
-    // =========================================================
     function openTatRankingModal(type) {
       const modal = document.getElementById("tatRankingModal");
       const title = document.getElementById("tatRankingTitleText");
@@ -1840,7 +1922,6 @@
       const isLowest = type === 'LOWEST';
 
       if (isLowest) {
-        // Ascending sort (Fastest / Lowest TAT first)
         sorted = [...activeAgents].sort((a, b) => a.tat - b.tat).slice(0, 5);
         header.style.background = "linear-gradient(90deg, #064e3b 0%, #065f46 100%)";
         header.style.borderBottom = "3px solid #10b981";
@@ -1852,7 +1933,6 @@
           <div class="drill-info-chip">Top Rank: <strong>${sorted[0].name} (${sorted[0].tat.toFixed(1)}m)</strong></div>
         `;
       } else {
-        // Descending sort (Slowest / Highest TAT first)
         sorted = [...activeAgents].sort((a, b) => b.tat - a.tat).slice(0, 5);
         header.style.background = "linear-gradient(90deg, #881337 0%, #9f1239 100%)";
         header.style.borderBottom = "3px solid #f43f5e";
