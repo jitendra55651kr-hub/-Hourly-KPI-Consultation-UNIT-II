@@ -451,21 +451,56 @@
       line-height: 1;
     }
 
-    #drilldownSection {
+    /* =========================================================
+       LUXURY POPUP MODAL STYLES (NO MORE SCROLLING DOWN!)
+       ========================================================= */
+    .modal-overlay {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-card {
       background: #ffffff;
-      border: 2px solid #0f274a;
-      border-radius: 14px;
+      border-radius: 18px;
+      width: 95vw;
+      max-width: 1580px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
       overflow: hidden;
-      margin-top: 30px;
-      box-shadow: 0 14px 35px -5px rgba(15, 23, 42, 0.25);
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1) translateY(0);
     }
 
     .drill-header {
-      background: linear-gradient(90deg, #070e1c 0%, #1e293b 100%);
+      background: linear-gradient(90deg, #070e1c 0%, #111d35 100%);
       color: #ffffff;
-      padding: 18px 26px;
-      border-bottom: 2px solid #38bdf8;
+      padding: 18px 28px;
+      border-bottom: 3px solid #38bdf8;
+      flex-shrink: 0;
     }
 
     .drill-header-top {
@@ -477,72 +512,104 @@
     }
 
     .drill-title {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 900;
       letter-spacing: 0.6px;
       display: flex;
       align-items: center;
       gap: 12px;
       text-transform: uppercase;
+      color: #f8fafc;
     }
 
-    .btn-close-drill {
-      background: rgba(255, 255, 255, 0.18);
+    .btn-close-modal {
+      background: rgba(255, 255, 255, 0.12);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       padding: 8px 18px;
       border-radius: 8px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.2s ease;
     }
 
-    .btn-close-drill:hover {
+    .btn-close-modal:hover {
       background: #ef4444;
       border-color: #ef4444;
+      transform: translateY(-1px);
     }
 
     .drill-details-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
     }
 
     .drill-info-chip {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      padding: 7px 16px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 5px 14px;
       border-radius: 8px;
-      font-size: 15.5px;
-      font-weight: 900;
+      font-size: 14.5px;
+      font-weight: 800;
       color: #f1f5f9;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .drill-info-chip strong {
       color: #38bdf8;
-      font-size: 16px;
+      font-size: 15px;
+    }
+
+    .modal-scroll-area {
+      overflow-x: auto;
+      overflow-y: auto;
+      padding: 0;
+      flex: 1;
+      background: #ffffff;
+    }
+
+    /* Custom Stylish Scrollbar */
+    .modal-scroll-area::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    .modal-scroll-area::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .modal-scroll-area::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 5px;
+    }
+    .modal-scroll-area::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
     }
 
     .drill-table th {
       background-color: #071326 !important;
       color: #ffffff !important;
-      font-size: 16px !important;
+      font-size: 15px !important;
       font-weight: 900 !important;
-      padding: 14px 10px !important;
+      padding: 13px 10px !important;
       letter-spacing: 0.6px;
       border: 1px solid #1a273f;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .drill-table td {
-      font-size: 16.5px !important;
-      padding: 13px 10px !important;
+      font-size: 15.5px !important;
+      padding: 12px 10px !important;
       font-weight: 800 !important;
       font-family: 'JetBrains Mono', monospace;
       color: #0f172a;
@@ -551,7 +618,7 @@
     .drill-col-emr {
       font-weight: 900 !important;
       color: #0284c7 !important;
-      font-size: 17px !important;
+      font-size: 16px !important;
     }
 
     .drill-col-doctor {
@@ -578,14 +645,14 @@
       border-radius: 5px;
       font-weight: 900 !important;
       color: #0f172a !important;
-      font-size: 15px !important;
+      font-size: 14px !important;
       display: inline-block;
     }
 
     .drill-col-tat {
       color: #059669 !important;
       font-weight: 900 !important;
-      font-size: 18px !important;
+      font-size: 17px !important;
     }
 
     .time-container {
@@ -596,18 +663,19 @@
     }
 
     .time-date-part {
-      font-size: 13px;
+      font-size: 12.5px;
       color: #64748b;
       font-weight: 700;
     }
 
     .time-bold-part {
-      font-size: 17px !important;
+      font-size: 16px !important;
       font-weight: 900 !important;
       color: #070e1c !important;
       letter-spacing: 0.3px;
     }
 
+    /* BREAK PANEL & POPUP */
     .break-panel {
       background: #ffffff;
       border: 1px solid #cbd5e1;
@@ -683,27 +751,17 @@
       font-size: 16.5px;
     }
 
-    #breakDetailSection {
-      display: none;
-      background: #ffffff;
-      border: 2px solid #4338ca;
-      border-radius: 14px;
-      overflow: hidden;
-      margin-top: 24px;
-      margin-bottom: 40px;
-      box-shadow: 0 14px 35px -5px rgba(67, 56, 202, 0.25);
-    }
-
     .break-detail-header {
       background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%);
       color: #ffffff;
-      padding: 18px 26px;
-      border-bottom: 2px solid #818cf8;
+      padding: 18px 28px;
+      border-bottom: 3px solid #818cf8;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
+      flex-shrink: 0;
     }
 
     .break-detail-title {
@@ -715,35 +773,21 @@
       gap: 10px;
     }
 
-    .btn-close-break-detail {
-      background: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      padding: 7px 16px;
-      border-radius: 7px;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-close-break-detail:hover {
-      background: #ef4444;
-      border-color: #ef4444;
-    }
-
     .break-detail-table th {
       background-color: #1e1b4b !important;
       color: #ffffff !important;
-      font-size: 15.5px !important;
+      font-size: 15px !important;
       font-weight: 900;
-      padding: 14px 10px;
+      padding: 13px 10px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .break-detail-table td {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 800;
-      padding: 13px 10px;
+      padding: 12px 10px;
     }
   </style>
 </head>
@@ -822,7 +866,7 @@
           <thead>
             <tr>
               <th style="width: 70px;">RANK</th>
-              <th style="min-width: 220px;">AGENT NAME (CLICK FOR TIMELINE)</th>
+              <th style="min-width: 220px;">AGENT NAME (CLICK FOR POPUP DETAILS)</th>
               <th style="min-width: 160px;">TEAM</th>
               <th style="min-width: 140px;">SHIFT</th>
               <th style="min-width: 130px;">TOTAL CASES</th>
@@ -839,41 +883,23 @@
       </div>
     </section>
 
-    <section id="breakDetailSection">
-      <div class="break-detail-header">
-        <div class="break-detail-title">
-          <span id="breakDetailTitleText">AGENT BREAK TIMELINE</span>
-        </div>
-        <button class="btn-close-break-detail" onclick="closeBreakDetail()">✕ Close Details</button>
-      </div>
-      <div class="table-container">
-        <table class="break-detail-table">
-          <thead>
-            <tr>
-              <th style="width: 80px;">SESSION</th>
-              <th style="min-width: 170px;">CONSULTATION END TIME (BREAK START)</th>
-              <th style="min-width: 170px;">NEXT APPT TIME (BREAK END)</th>
-              <th style="min-width: 150px; background-color: #991b1b !important;">TOTAL BREAK</th>
-              <th style="min-width: 220px;">CASE CONTEXT (PREVIOUS → NEXT)</th>
-            </tr>
-          </thead>
-          <tbody id="breakDetailTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+  </div>
 
-    <section id="drilldownSection">
+  <!-- =========================================================
+       MODAL 1: AGENT CASES DRILLDOWN POPUP (FULL SCROLLABLE)
+       ========================================================= -->
+  <div class="modal-overlay" id="drilldownModal" onclick="handleOverlayClick(event, 'drilldownModal')">
+    <div class="modal-card">
       <div class="drill-header">
         <div class="drill-header-top">
           <div class="drill-title">
             <span id="drillTitleText">AGENT CASE DETAILS</span>
           </div>
-          <button class="btn-close-drill" onclick="closeDrilldown()">✕ Close Details</button>
+          <button class="btn-close-modal" onclick="closeDrilldown()">✕ Close [ESC]</button>
         </div>
-
         <div class="drill-details-bar" id="drillAgentDetailsBar"></div>
       </div>
-      <div class="table-container">
+      <div class="modal-scroll-area">
         <table class="drill-table">
           <thead>
             <tr>
@@ -892,8 +918,35 @@
           <tbody id="drillTableBody"></tbody>
         </table>
       </div>
-    </section>
+    </div>
+  </div>
 
+  <!-- =========================================================
+       MODAL 2: BREAK & IDLE DETAILS POPUP (FULL SCROLLABLE)
+       ========================================================= -->
+  <div class="modal-overlay" id="breakModal" onclick="handleOverlayClick(event, 'breakModal')">
+    <div class="modal-card">
+      <div class="break-detail-header">
+        <div class="break-detail-title">
+          <span id="breakDetailTitleText">AGENT BREAK TIMELINE</span>
+        </div>
+        <button class="btn-close-modal" onclick="closeBreakDetail()">✕ Close [ESC]</button>
+      </div>
+      <div class="modal-scroll-area">
+        <table class="break-detail-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">SESSION</th>
+              <th style="min-width: 170px;">CONSULTATION END TIME (BREAK START)</th>
+              <th style="min-width: 170px;">NEXT APPT TIME (BREAK END)</th>
+              <th style="min-width: 150px; background-color: #991b1b !important;">TOTAL BREAK</th>
+              <th style="min-width: 220px;">CASE CONTEXT (PREVIOUS → NEXT)</th>
+            </tr>
+          </thead>
+          <tbody id="breakDetailTableBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -958,7 +1011,6 @@
     let agentCaseStore = {};
     let agentBreakStore = {};
 
-    // Universal Date Parser: handles ISO, Excel Date objects, M/D/YY, YYYY-MM-DD
     function parseSafeDate(val) {
       if (!val || val === '-' || val === 'NA' || val === 'NaN') return null;
       if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
@@ -966,15 +1018,12 @@
       let str = String(val).trim();
       if (str.includes("2050") || str.length < 4) return null;
 
-      // Direct Date parsing (e.g., standard formats)
       let d = new Date(str);
       if (!isNaN(d.getTime())) return d;
 
-      // Try replacing space with 'T' (ISO format)
       d = new Date(str.replace(' ', 'T'));
       if (!isNaN(d.getTime())) return d;
 
-      // Handle custom Excel outputs like "9/4/26 7:03:52" or "04-09-2026 07:03"
       try {
         const parts = str.split(' ');
         const datePart = parts[0];
@@ -986,12 +1035,10 @@
         if (dParts.length === 3) {
           let y, m, day;
           if (dParts[0].length === 4) {
-            // YYYY-MM-DD
             y = parseInt(dParts[0], 10);
             m = parseInt(dParts[1], 10);
             day = parseInt(dParts[2], 10);
           } else {
-            // M/D/YY or M/D/YYYY
             m = parseInt(dParts[0], 10);
             day = parseInt(dParts[1], 10);
             y = parseInt(dParts[2], 10);
@@ -1160,7 +1207,7 @@
           const slotCells = SLOTS.map(s => {
             const val = member.hours[s] || 0;
             if (val > 0) {
-              return `<td class="cell-val-active" title="Click to view ${val} cases in slot ${s}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', '${s}')">${val}</td>`;
+              return `<td class="cell-val-active" title="Click to view cases in slot ${s}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', '${s}')">${val}</td>`;
             } else {
               return `<td class="cell-val-blank"></td>`;
             }
@@ -1190,7 +1237,7 @@
 
           rowsHtml += `
             <tr>
-              <td class="col-agent-name" title="Click to view full case logs for ${member.name}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
+              <td class="col-agent-name" title="Click to view all cases for ${member.name}" onclick="openDrilldown('${member.name.replace(/'/g, "\\'")}', 'ALL')">
                 ${member.name}
               </td>
               <td class="col-shift-tag"><span class="shift-pill">${member.shift}</span></td>
@@ -1386,7 +1433,7 @@
         html += `
           <tr>
             <td><span class="rank-badge ${rankClass}">#${index + 1}</span></td>
-            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to view detailed break timeline" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
+            <td class="col-agent-name" style="text-align: center; color: #4338ca;" title="Click to open popup break breakdown" onclick="openBreakDetail('${item.name.replace(/'/g, "\\'")}')">${item.name}</td>
             <td style="color: #4338ca; font-weight: 900;">${item.team}</td>
             <td><span class="shift-pill">${item.shift}</span></td>
             <td style="font-weight: 900;">${item.totalCases}</td>
@@ -1399,8 +1446,103 @@
       tbody.innerHTML = html;
     }
 
+    // =========================================================
+    // MODAL POPUP CONTROLLERS (OPEN / CLOSE / KEYBOARD)
+    // =========================================================
+    function openDrilldown(agentName, slot) {
+      const modal = document.getElementById("drilldownModal");
+      const titleText = document.getElementById("drillTitleText");
+      const detailsBar = document.getElementById("drillAgentDetailsBar");
+      const tbody = document.getElementById("drillTableBody");
+
+      if (!agentCaseStore[agentName]) {
+        alert(`No records found for agent: ${agentName}.`);
+        return;
+      }
+
+      let agentShift = "--";
+      ROSTER.forEach(t => {
+        const found = t.members.find(m => m.name === agentName);
+        if (found) agentShift = found.shift || "--";
+      });
+
+      let casesToShow = [];
+      if (slot === 'ALL') {
+        SLOTS.forEach(s => {
+          if (agentCaseStore[agentName][s]) {
+            casesToShow = casesToShow.concat(agentCaseStore[agentName][s]);
+          }
+        });
+        titleText.innerText = `${agentName.toUpperCase()} — COMPLETE CASE LOGS`;
+      } else {
+        casesToShow = agentCaseStore[agentName][slot] || [];
+        titleText.innerText = `${agentName.toUpperCase()} — HOURLY SLOT [ ${slot} ]`;
+      }
+
+      const regionCounts = {};
+      let tatSum = 0;
+      let tatCount = 0;
+
+      casesToShow.forEach(c => {
+        if (c.region && c.region !== '-') {
+          regionCounts[c.region] = (regionCounts[c.region] || 0) + 1;
+        }
+        const parsedTat = parseFloat(c.tat);
+        if (!isNaN(parsedTat)) {
+          tatSum += parsedTat;
+          tatCount++;
+        }
+      });
+
+      const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) + ' m' : '--';
+      const sortedRegions = Object.entries(regionCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([reg, count]) => `${reg} (${count})`)
+        .join(', ');
+
+      detailsBar.innerHTML = `
+        <div class="drill-info-chip">Agent: <strong>${agentName}</strong></div>
+        <div class="drill-info-chip">Shift: <strong>${agentShift}</strong></div>
+        <div class="drill-info-chip">Cases: <strong>${casesToShow.length}</strong></div>
+        <div class="drill-info-chip">Average TAT: <strong>${avgTat}</strong></div>
+        <div class="drill-info-chip">Top Regions: <strong>${sortedRegions || 'None'}</strong></div>
+      `;
+
+      tbody.innerHTML = "";
+
+      if (casesToShow.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #64748b; font-size: 16px; font-weight: 800;">No consult records found for this selection.</td></tr>`;
+      } else {
+        casesToShow.forEach((c, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="color: #64748b; font-weight: 900;">${idx + 1}</td>
+            <td class="drill-col-emr">${c.emr || '-'}</td>
+            <td class="drill-col-doctor">${c.doctor || '-'}</td>
+            <td class="drill-col-agent">${c.medAgent || '-'}</td>
+            <td><span class="region-pill">${c.region || '-'}</span></td>
+            <td class="drill-col-branch">${c.branch || '-'}</td>
+            <td><span class="drill-col-type">${c.type || '-'}</span></td>
+            <td class="drill-col-tat">${c.tat && c.tat !== '-' ? c.tat + ' m' : '-'}</td>
+            <td>${formatDateTimeBold(c.apptTime)}</td>
+            <td>${formatDateTimeBold(c.feedbackEndTime)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden"; // background scroll lock
+    }
+
+    function closeDrilldown() {
+      const modal = document.getElementById("drilldownModal");
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
     function openBreakDetail(agentName) {
-      const section = document.getElementById("breakDetailSection");
+      const modal = document.getElementById("breakModal");
       const titleText = document.getElementById("breakDetailTitleText");
       const tbody = document.getElementById("breakDetailTableBody");
 
@@ -1410,7 +1552,7 @@
         return;
       }
 
-      titleText.innerHTML = `${agentName.toUpperCase()} — BREAK SCHEDULE BREAKDOWN (${breaks.length} SESSIONS)`;
+      titleText.innerHTML = `${agentName.toUpperCase()} — BREAK SCHEDULE (${breaks.length} SESSIONS)`;
       tbody.innerHTML = "";
 
       breaks.forEach((b, idx) => {
@@ -1440,13 +1582,29 @@
         tbody.appendChild(tr);
       });
 
-      section.style.display = "block";
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
     }
 
     function closeBreakDetail() {
-      document.getElementById("breakDetailSection").style.display = "none";
+      const modal = document.getElementById("breakModal");
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
     }
+
+    function handleOverlayClick(e, modalId) {
+      if (e.target.id === modalId) {
+        if (modalId === 'drilldownModal') closeDrilldown();
+        if (modalId === 'breakModal') closeBreakDetail();
+      }
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeDrilldown();
+        closeBreakDetail();
+      }
+    });
 
     function formatDateTimeBold(str) {
       if (!str || str === '-') return '-';
@@ -1455,96 +1613,6 @@
         return `<div class="time-container"><span class="time-date-part">${parts[0]}</span><span class="time-bold-part">${parts[1]}</span></div>`;
       }
       return `<span class="time-bold-part">${str}</span>`;
-    }
-
-    function openDrilldown(agentName, slot) {
-      const section = document.getElementById("drilldownSection");
-      const titleText = document.getElementById("drillTitleText");
-      const detailsBar = document.getElementById("drillAgentDetailsBar");
-      const tbody = document.getElementById("drillTableBody");
-
-      if (!agentCaseStore[agentName]) {
-        alert(`No records found for agent: ${agentName}.`);
-        return;
-      }
-
-      let agentShift = "--";
-      ROSTER.forEach(t => {
-        const found = t.members.find(m => m.name === agentName);
-        if (found) agentShift = found.shift || "--";
-      });
-
-      let casesToShow = [];
-      if (slot === 'ALL') {
-        SLOTS.forEach(s => {
-          if (agentCaseStore[agentName][s]) {
-            casesToShow = casesToShow.concat(agentCaseStore[agentName][s]);
-          }
-        });
-        titleText.innerText = `${agentName.toUpperCase()} — COMPLETE CASE LOGS`;
-      } else {
-        casesToShow = agentCaseStore[agentName][slot] || [];
-        titleText.innerText = `${agentName.toUpperCase()} — HOURLY SLOT: ${slot}`;
-      }
-
-      const regionCounts = {};
-      let tatSum = 0;
-      let tatCount = 0;
-
-      casesToShow.forEach(c => {
-        if (c.region && c.region !== '-') {
-          regionCounts[c.region] = (regionCounts[c.region] || 0) + 1;
-        }
-        const parsedTat = parseFloat(c.tat);
-        if (!isNaN(parsedTat)) {
-          tatSum += parsedTat;
-          tatCount++;
-        }
-      });
-
-      const avgTat = tatCount > 0 ? (tatSum / tatCount).toFixed(1) + ' m' : '--';
-      const sortedRegions = Object.entries(regionCounts)
-        .sort((a, b) => b[1] - a[1])
-        .map(([reg, count]) => `${reg} (${count})`)
-        .join(', ');
-
-      detailsBar.innerHTML = `
-        <div class="drill-info-chip">Agent: <strong>${agentName}</strong></div>
-        <div class="drill-info-chip">Shift: <strong>${agentShift}</strong></div>
-        <div class="drill-info-chip">Total Cases: <strong>${casesToShow.length}</strong></div>
-        <div class="drill-info-chip">Average TAT: <strong>${avgTat}</strong></div>
-        <div class="drill-info-chip">Key Regions: <strong>${sortedRegions || 'None'}</strong></div>
-      `;
-
-      tbody.innerHTML = "";
-
-      if (casesToShow.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #64748b; font-size: 16px; font-weight: 800;">No consult records found for this selection.</td></tr>`;
-      } else {
-        casesToShow.forEach((c, idx) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td style="color: #64748b; font-weight: 900;">${idx + 1}</td>
-            <td class="drill-col-emr">${c.emr || '-'}</td>
-            <td class="drill-col-doctor">${c.doctor || '-'}</td>
-            <td class="drill-col-agent">${c.medAgent || '-'}</td>
-            <td><span class="region-pill">${c.region || '-'}</span></td>
-            <td class="drill-col-branch">${c.branch || '-'}</td>
-            <td><span class="drill-col-type">${c.type || '-'}</span></td>
-            <td class="drill-col-tat">${c.tat && c.tat !== '-' ? c.tat + ' m' : '-'}</td>
-            <td>${formatDateTimeBold(c.apptTime)}</td>
-            <td>${formatDateTimeBold(c.feedbackEndTime)}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      section.style.display = "block";
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function closeDrilldown() {
-      document.getElementById("drilldownSection").style.display = "none";
     }
 
     // Universal File Handler (Excel XLSX, XLS & CSV)
