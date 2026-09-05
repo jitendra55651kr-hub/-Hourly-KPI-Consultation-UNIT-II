@@ -322,10 +322,8 @@
       text-transform: uppercase;
     }
 
-    /* Interactive Sortable Header Buttons */
     .th-sortable {
       user-select: none;
-      transition: background-color 0.2s ease;
       padding: 8px 6px !important;
     }
 
@@ -362,6 +360,24 @@
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
     }
 
+    .btn-sort-break {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-sort-break:hover {
+      background: rgba(244, 63, 94, 0.3);
+      border-color: #f43f5e;
+      color: #ffffff;
+    }
+
+    .btn-sort-break.active-sort {
+      background: #dc2626 !important;
+      border-color: #f87171 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6) !important;
+    }
+
     .sort-icon-badge {
       font-size: 12px;
       font-family: 'JetBrains Mono', monospace;
@@ -373,6 +389,12 @@
     .btn-sort-filter.active-sort .sort-icon-badge {
       background: #ffffff;
       color: #0369a1;
+      font-weight: 900;
+    }
+
+    .btn-sort-break.active-sort .sort-icon-badge {
+      background: #ffffff;
+      color: #991b1b;
       font-weight: 900;
     }
 
@@ -766,7 +788,7 @@
       letter-spacing: 0.3px;
     }
 
-    /* BREAK PANEL & POPUP */
+    /* BREAK PANEL */
     .break-panel {
       background: #ffffff;
       border: 1px solid #cbd5e1;
@@ -785,8 +807,10 @@
       font-weight: 900;
       letter-spacing: 0.8px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
       border-bottom: 2px solid #6366f1;
     }
 
@@ -936,6 +960,97 @@
       font-size: 17px;
       display: inline-block;
     }
+
+    /* TEAM MULTI-FILTER MODAL SPECIFIC */
+    .team-filter-modal-card {
+      max-width: 580px !important;
+    }
+
+    .team-filter-list {
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #ffffff;
+    }
+
+    .team-checkbox-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 800;
+      font-size: 15.5px;
+      color: #0f172a;
+    }
+
+    .team-checkbox-label:hover {
+      background: #f0f9ff;
+      border-color: #38bdf8;
+      transform: translateX(4px);
+    }
+
+    .team-checkbox-label.selected {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #1e3a8a;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+
+    .team-custom-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
+
+    .team-modal-footer {
+      padding: 18px 28px;
+      background: #f1f5f9;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-quick-team {
+      background: transparent;
+      border: none;
+      color: #0284c7;
+      font-weight: 900;
+      font-size: 13.5px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .btn-quick-team:hover {
+      color: #0369a1;
+    }
+
+    .btn-apply-teams {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #ffffff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-apply-teams:hover {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
@@ -1020,10 +1135,20 @@
             <tr>
               <th style="width: 70px;">RANK</th>
               <th style="min-width: 220px;">AGENT NAME (CLICK FOR POPUP DETAILS)</th>
-              <th style="min-width: 160px;">TEAM</th>
+              <th class="th-sortable" style="min-width: 170px;">
+                <button class="btn-sort-filter" id="btnTeamFilterBreak" onclick="openTeamFilterModal()" title="Click to filter by single or multiple teams">
+                  <span>TEAM</span>
+                  <span class="sort-icon-badge" id="teamFilterBadge">ALL</span>
+                </button>
+              </th>
               <th style="min-width: 140px;">SHIFT</th>
               <th style="min-width: 130px;">TOTAL CASES</th>
-              <th style="min-width: 180px; background: #991b1b !important;">TOTAL BREAK TIME</th>
+              <th class="th-sortable" style="min-width: 190px; background: #991b1b !important;">
+                <button class="btn-sort-filter btn-sort-break" id="btnSortBreakDuration" onclick="toggleBreakSort()" title="Filter Break Time: Click for High ➔ Low, click again for Low ➔ High">
+                  <span>TOTAL BREAK TIME</span>
+                  <span class="sort-icon-badge" id="breakSortArrowBadge">↓</span>
+                </button>
+              </th>
               <th style="min-width: 160px;">BREAK SESSIONS</th>
             </tr>
           </thead>
@@ -1155,6 +1280,33 @@
     </div>
   </div>
 
+  <!-- MODAL 5: TEAM MULTI-FILTER POPUP (BREAK TABLE) -->
+  <div class="modal-overlay" id="teamFilterModal" onclick="handleOverlayClick(event, 'teamFilterModal')">
+    <div class="modal-card team-filter-modal-card">
+      <div class="drill-header" style="background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%); border-bottom: 3px solid #818cf8;">
+        <div class="drill-header-top">
+          <div class="drill-title">
+            <span>FILTER BY TEAM</span>
+          </div>
+          <button class="btn-close-modal" onclick="closeTeamFilterModal()">✕ Close [ESC]</button>
+        </div>
+        <div class="drill-details-bar">
+          <div class="drill-info-chip">Multi-selection: <strong>Select one or multiple teams</strong></div>
+        </div>
+      </div>
+      <div class="modal-scroll-area">
+        <div class="team-filter-list" id="teamFilterListContainer"></div>
+      </div>
+      <div class="team-modal-footer">
+        <div style="display:flex; gap: 14px;">
+          <button type="button" class="btn-quick-team" onclick="selectAllTeams(true)">Select All</button>
+          <button type="button" class="btn-quick-team" onclick="selectAllTeams(false)">Clear All</button>
+        </div>
+        <button type="button" class="btn-apply-teams" onclick="applyTeamFilters()">Apply Filter</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const ROSTER = [
       {
@@ -1218,7 +1370,7 @@
     let agentBreakStore = {};
     let agentRegionMapStore = {};
     
-    // Per-team sorting state: default by tat ascending
+    // Per-team sorting state for main dashboard
     let teamSortState = {
       "TEAM JITENDRA": { column: "tat", order: "asc" },
       "TEAM DEEPTI":   { column: "tat", order: "asc" },
@@ -1226,6 +1378,19 @@
       "TEAM SHIVAM":   { column: "tat", order: "asc" },
       "TEAM ISHANT":   { column: "tat", order: "asc" }
     };
+
+    // State for Break Panel Sorting & Team Filter
+    let breakSortOrder = "desc"; // "desc" = High to Low, "asc" = Low to High
+    let selectedBreakTeams = ROSTER.map(t => t.team); // Initially all teams selected
+
+    function toggleBreakSort() {
+      breakSortOrder = breakSortOrder === "desc" ? "asc" : "desc";
+      const arrowBadge = document.getElementById("breakSortArrowBadge");
+      const btn = document.getElementById("btnSortBreakDuration");
+      if (arrowBadge) arrowBadge.innerText = breakSortOrder === "desc" ? "↓" : "↑";
+      if (btn) btn.classList.add("active-sort");
+      renderAllBreakAgents();
+    }
 
     function toggleTeamSort(teamName, column) {
       if (!teamSortState[teamName]) {
@@ -1432,7 +1597,6 @@
             if (totA === totB) return 0;
             return currentSort.order === "desc" ? totB - totA : totA - totB;
           } else {
-            // column === 'tat'
             if (tatA === 0 && tatB === 0) return 0;
             if (tatA === 0) return 1;
             if (tatB === 0) return -1;
@@ -1671,15 +1835,36 @@
         });
       });
 
-      breakStats.sort((a, b) => b.totalBreakMins - a.totalBreakMins);
+      // Filter by Selected Teams
+      const filteredStats = breakStats.filter(item => selectedBreakTeams.includes(item.team));
 
-      if (breakStats.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">No break intervals exceeding 15 minutes detected in the uploaded dataset.</td></tr>`;
+      // Sort by Total Break Minutes (Toggleable: Descending vs Ascending)
+      filteredStats.sort((a, b) => {
+        return breakSortOrder === "desc" 
+          ? b.totalBreakMins - a.totalBreakMins 
+          : a.totalBreakMins - b.totalBreakMins;
+      });
+
+      // Update Team Filter Badge in Table Header
+      const teamBadge = document.getElementById("teamFilterBadge");
+      const btnTeamFilter = document.getElementById("btnTeamFilterBreak");
+      if (teamBadge && btnTeamFilter) {
+        if (selectedBreakTeams.length === ROSTER.length) {
+          teamBadge.innerText = "ALL";
+          btnTeamFilter.classList.remove("active-sort");
+        } else {
+          teamBadge.innerText = `${selectedBreakTeams.length} TEAMS`;
+          btnTeamFilter.classList.add("active-sort");
+        }
+      }
+
+      if (filteredStats.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">No break intervals exceeding 15 minutes found for the selected filter.</td></tr>`;
         return;
       }
 
       let html = "";
-      breakStats.forEach((item, index) => {
+      filteredStats.forEach((item, index) => {
         const rankClass = index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : "";
         const hoursPart = Math.floor(item.totalBreakMins / 60);
         const minsPart = item.totalBreakMins % 60;
@@ -1974,12 +2159,66 @@
       document.body.style.overflow = "auto";
     }
 
+    // TEAM MULTI-FILTER MODAL CONTROLLER (FOR BREAK TABLE)
+    function openTeamFilterModal() {
+      const modal = document.getElementById("teamFilterModal");
+      const container = document.getElementById("teamFilterListContainer");
+      if (!modal || !container) return;
+
+      container.innerHTML = "";
+      ROSTER.forEach(teamObj => {
+        const isChecked = selectedBreakTeams.includes(teamObj.team);
+        const label = document.createElement("label");
+        label.className = `team-checkbox-label ${isChecked ? 'selected' : ''}`;
+        label.innerHTML = `
+          <span>${teamObj.team} (${teamObj.members.length} Agents)</span>
+          <input type="checkbox" class="team-custom-checkbox" value="${teamObj.team}" ${isChecked ? 'checked' : ''} onchange="this.parentElement.classList.toggle('selected', this.checked)">
+        `;
+        container.appendChild(label);
+      });
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeTeamFilterModal() {
+      const modal = document.getElementById("teamFilterModal");
+      if (modal) modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    function selectAllTeams(check) {
+      const checkboxes = document.querySelectorAll("#teamFilterListContainer input[type='checkbox']");
+      checkboxes.forEach(cb => {
+        cb.checked = check;
+        cb.parentElement.classList.toggle('selected', check);
+      });
+    }
+
+    function applyTeamFilters() {
+      const checkboxes = document.querySelectorAll("#teamFilterListContainer input[type='checkbox']");
+      const selected = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(cb.value);
+      });
+
+      if (selected.length === 0) {
+        alert("Please select at least one team.");
+        return;
+      }
+
+      selectedBreakTeams = selected;
+      closeTeamFilterModal();
+      renderAllBreakAgents();
+    }
+
     function handleOverlayClick(e, modalId) {
       if (e.target.id === modalId) {
         if (modalId === 'drilldownModal') closeDrilldown();
         if (modalId === 'breakModal') closeBreakDetail();
         if (modalId === 'regionModal') closeRegionModal();
         if (modalId === 'tatRankingModal') closeTatRankingModal();
+        if (modalId === 'teamFilterModal') closeTeamFilterModal();
       }
     }
 
@@ -1989,6 +2228,7 @@
         closeBreakDetail();
         closeRegionModal();
         closeTatRankingModal();
+        closeTeamFilterModal();
       }
     });
 
@@ -2227,6 +2467,7 @@
       closeBreakDetail();
       closeRegionModal();
       closeTatRankingModal();
+      closeTeamFilterModal();
       render();
     }
 
